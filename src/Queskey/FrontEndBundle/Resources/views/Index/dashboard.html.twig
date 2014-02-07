@@ -1,0 +1,12 @@
+{% set loggedInUser = app.session.get('User') %}
+{% block title %}FrontEndBundle:Homepage:index{% endblock %}
+
+{% block body %}
+<h1>Welcome to the Homepage:index page</h1>
+{{ dump(loggedInUser) }}
+
+{% block logout_button%}
+<a href="{{ path('logout') }}">logout</a>
+{% endblock %}
+
+{% endblock %}

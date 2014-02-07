@@ -1,7 +1,12 @@
-front_end_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: FrontEndBundle:Default:index }
-
-index:
+index_frontEnd:
     pattern: /
-    defaults: { _controller: FrontEndBundle:Login:index }
+    defaults: { _controller: FrontEndBundle:Index:index }
+    
+login_ajax:
+  pattern: /login
+  defaults: { _controller: FrontEndBundle:Login:login }
+  
+logout:
+  pattern: /logout
+  defaults: { _controller: FrontEndBundle:Login:logout }
+
