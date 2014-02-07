@@ -6,5 +6,7 @@ login_ajax:
   pattern: /login
   defaults: { _controller: FrontEndBundle:Login:login }
   
-
+logout:
+  pattern: /logout
+  defaults: { _controller: FrontEndBundle:Login:logout }
 

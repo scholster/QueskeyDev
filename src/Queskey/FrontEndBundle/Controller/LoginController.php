@@ -34,4 +34,13 @@ class LoginController extends Controller
             
         }
     }
+    
+    public function logoutAction()
+    {
+        $session = new \Symfony\Component\HttpFoundation\Session\Session();
+        $session->start();
+        $session->invalidate();
+        
+        return $this->redirect($this->generateUrl('index_frontEnd'));
+    }
 }
