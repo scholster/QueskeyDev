@@ -10,3 +10,9 @@ logout:
   pattern: /logout
   defaults: { _controller: FrontEndBundle:Login:logout }
 
+<<<<<<< HEAD
+=======
+register:
+  pattern: /register
+  defaults: { _controller: FrontEndBundle:Register:register }
+>>>>>>> origin/Anuj
