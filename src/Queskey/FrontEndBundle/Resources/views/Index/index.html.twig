@@ -172,15 +172,26 @@
     <p class="dino"><span>or, the old-fashioned way</span></p>
     <div class="email_field">
       <div class="email_icon"></div>
-      <input  class="email_txt"  />
+      <input  class="email_txt" id='register_email' type="email"/>
     </div>
     <div class="error">This is a error</div>
-    <div class="sign_in_box">Signup</div>
+    <!--to be changed later div class for username-->
+    <div class="email_field">
+        <div class="email_icon"></div>
+        <input  class="email_txt" id='register_username' type="text"/>
+    </div>
+    <div class="error">This is a error</div>
+    <div class="pwd_field">
+    <div class="pwd_icon"></div>
+    <input  class="pwd_txt" id='register_pwd' type="password"  />
+  </div>
+    <div class="sign_in_box" id='signup_btn'>Signup</div>
   </div>
 </div>
 
 <script type='text/javascript' src='js/jquery.js'></script>
 <script type='text/javascript' src='js/login.js?v=1'></script>
+<script type='text/javascript' src='js/register.js?v=1'></script>
 <script type="text/javascript" src="js/jquery.reveal.js"></script>
 <script type='text/javascript'>//<![CDATA[ 
 $(window).load(function(){

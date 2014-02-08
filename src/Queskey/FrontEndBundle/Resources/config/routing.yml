@@ -10,3 +10,6 @@ logout:
   pattern: /logout
   defaults: { _controller: FrontEndBundle:Login:logout }
 
+register:
+  pattern: /register
+  defaults: { _controller: FrontEndBundle:Register:register }
