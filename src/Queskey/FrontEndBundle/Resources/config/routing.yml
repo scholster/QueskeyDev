@@ -9,3 +9,4 @@ login_ajax:
 logout:
   pattern: /logout
   defaults: { _controller: FrontEndBundle:Login:logout }
+
