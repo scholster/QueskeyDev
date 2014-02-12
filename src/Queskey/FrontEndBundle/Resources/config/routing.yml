@@ -13,3 +13,7 @@ logout:
 register:
   pattern: /register
   defaults: { _controller: FrontEndBundle:Register:register }
+
+filter:
+    pattern: /searchFilter
+    defaults: { _controller: FrontEndBundle:Search:filter }
