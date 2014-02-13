@@ -28,7 +28,6 @@ $(document).ready(function(){
                                 '1' : cat,
                                 '2' : gre
       }, function(data){
-          alert(data);
           var a = 0;
           if(data[0]==="error"){
               alert("everything went wrong");
@@ -39,7 +38,6 @@ $(document).ready(function(){
           while(data[a]){
               if(data[a])
                   {
-                      alert("it worked well");
                       var b = document.createElement('p');
                       b.innerHTML = data[a];
                       $( ".search" ).append( b );
