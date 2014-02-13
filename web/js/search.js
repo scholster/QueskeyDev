@@ -1,6 +1,7 @@
 $(document).ready(function(){
    
    $("#submit").click(function(){
+       $("p").empty();
        var jee = false;
        var cat = false;
        var gre = false;
@@ -28,23 +29,26 @@ $(document).ready(function(){
                                 '2' : gre
       }, function(data){
           alert(data);
+          var a = 0;
           if(data[0]==="error"){
               alert("everything went wrong");
               
           }
       
       else {
-          for(var a=0; a<=2; a++){
+          while(data[a]){
               if(data[a])
                   {
                       alert("it worked well");
                       var b = document.createElement('p');
                       b.innerHTML = data[a];
                       $( ".search" ).append( b );
+                      a++;
                   }
                   else
                       {
-                          alert("something went wrong"); 
+                          alert("something went wrong");
+                          a++;
                       }
           }
           
