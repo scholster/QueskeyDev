@@ -1,6 +1,5 @@
 $(document).ready(function(){
    
-<<<<<<< HEAD
    $("#search_btn").click(function(){
        $("p").empty();
        search();       
@@ -35,7 +34,7 @@ function search(){
        }}
    , 'json');
 }
-=======
+
    $("#submit").click(function(){
        $("p").empty();
        var jee = false;
@@ -55,7 +54,7 @@ function search(){
        
       searchFilter(jee, cat, gre);
    });
-});
+
    
    function searchFilter(jee, cat, gre){
       
@@ -90,4 +89,3 @@ function search(){
       }, 'json')
    }
    
->>>>>>> origin/akshat
