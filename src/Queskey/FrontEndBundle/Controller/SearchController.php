@@ -52,7 +52,6 @@ class SearchController extends Controller
              {
              
                 $this->array[] = $course->getDescription();
-                //var_dump($this->array);
                 return;
             }
 
