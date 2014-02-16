@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SearchController extends Controller
 {
-<<<<<<< HEAD
+
     public function searchAction()
     {
         $request=$this->get('request');
@@ -72,7 +72,6 @@ class SearchController extends Controller
                 
     }
 
-=======
     
     private $array = array();
     
@@ -126,5 +125,4 @@ class SearchController extends Controller
                 $this->multiToOne($a);
             }
     }
->>>>>>> origin/akshat
 }
