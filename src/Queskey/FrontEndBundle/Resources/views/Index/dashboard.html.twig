@@ -4,6 +4,17 @@
 {% block body %}
 <h1>Welcome to the Homepage:index page</h1>
 {{ dump(loggedInUser) }}
+<br><br>
+<input class="search_text" type="text" id="search_string">
+<div class="search">
+<button type="button" class="search_box" id="search_btn">Search</button><br><br><br><br>
+</div>
+
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+</script>
+<script type='text/javascript' src='js/search.js?v=1'></script>
 
 {% block logout_button%}
 <a href="{{ path('logout') }}">logout</a>

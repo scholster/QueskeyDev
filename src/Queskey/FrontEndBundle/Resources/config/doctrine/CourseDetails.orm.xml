@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Queskey\FrontEndBundle\Entity\CourseDetails" table="course_details">
+    <indexes>
+      <index name="category" columns="category"/>
+      <index name="name" columns="course_name"/>
+      <index name="provider" columns="course_provider"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="category" type="string" column="category" length="45" nullable="false"/>
+    <field name="courseName" type="string" column="course_name" length="45" nullable="false"/>
+    <field name="courseImage" type="blob" column="course_image" nullable="true"/>
+    <field name="courseProvider" type="string" column="course_provider" length="45" nullable="false"/>
+    <field name="courseProviderImg" type="blob" column="course_provider_img" nullable="true"/>
+    <field name="coursePrice" type="integer" column="course_price" nullable="false"/>
+  </entity>
+</doctrine-mapping>
