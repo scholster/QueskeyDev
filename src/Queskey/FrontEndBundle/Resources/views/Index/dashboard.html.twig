@@ -1,6 +1,11 @@
 {% set loggedInUser = app.session.get('User') %}
 {% block title %}FrontEndBundle:Homepage:index{% endblock %}
 
+{% block javascript %}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type='text/javascript' src='js/search.js?v=1'></script>
+{% endblock %}
+
 {% block body %}
 <h1>Welcome to the Homepage:index page</h1>
 {{ dump(loggedInUser) }}
@@ -16,8 +21,26 @@
 </script>
 <script type='text/javascript' src='js/search.js?v=1'></script>
 
+{% block search %}
+<div class="search">
+<ul>
+    <li>
+        <input type="checkbox" id="jee" value="JEE">JEE
+    </li>
+    <li>
+        <input type="checkbox" id="cat" value="CAT">CAT
+    </li>
+    <li>
+        <input type="checkbox" id="gre" value="GRE">GRE
+    </li>   
+</ul>
+        <input type="submit" id="submit" value="submit"><br><br>
+</div>
+
+{% endblock %}
+
 {% block logout_button%}
-<a href="{{ path('logout') }}">logout</a>
+<a href="{{ path('logout') }}"><b>logout</b></a>
 {% endblock %}
 
 {% endblock %}
