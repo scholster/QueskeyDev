@@ -1,0 +1,40 @@
+{% set loggedInUser = app.session.get('User') %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block javascript %}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+{% endblock %}
+
+{% block body %}
+<h1>Welcome to the Admin Dashboard page</h1>
+<br><br>
+<pre>
+<form id="course_form">
+Course Name  : <input class="course_name" type="text" id="cname">
+
+Category     : <select id="category" >
+    {% for categories in category %}
+  <option value={{ categories.id }} > {{ categories.name }} </option>
+  {% endfor %}
+</select>
+
+<script type='text/javascript' src='js/admindashboard.js?v=1'></script>
+
+Sub-Category : <select id="subcategory">
+    {% for subcategories in subcategory %}
+  <option value={{ subcategories.id }} > {{ subcategories.name }} </option>
+  {% endfor %}
+</select>
+
+Description  : <br><textarea rows="4" cols="50" name="description" id="course_desc"></textarea>
+<div class="submit">
+<button type="button" class="submit_box" id="submit_btn">Submit</button><br><br><br><br>
+</div>
+</form>
+</pre>
+
+
+
+
+{% endblock %}

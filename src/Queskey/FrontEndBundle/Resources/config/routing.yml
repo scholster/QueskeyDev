@@ -22,3 +22,11 @@ search:
 search_filter:
     pattern: /searchFilter
     defaults: { _controller: FrontEndBundle:Search:filter }
+
+admin:
+  pattern: /instructor
+  defaults: { _controller: FrontEndBundle:Admin:dashboard }
+
+admin_store:
+  pattern: /instructor/store
+  defaults: { _controller: FrontEndBundle:Admin:storecourse }
