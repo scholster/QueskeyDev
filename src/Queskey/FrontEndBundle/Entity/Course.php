@@ -10,9 +10,14 @@ use Doctrine\ORM\Mapping as ORM;
 class Course
 {
     /**
+     * @var integer
+     */
+    private $id;
+
+    /**
      * @var string
      */
-    private $category;
+    private $name;
 
     /**
      * @var string
@@ -20,32 +25,52 @@ class Course
     private $description;
 
     /**
-     * @var integer
+     * @var boolean
      */
-    private $id;
+    private $published;
+
+    /**
+     * @var \Queskey\FrontEndBundle\Entity\User
+     */
+    private $instructor;
+
+    /**
+     * @var \Queskey\FrontEndBundle\Entity\SubCategory
+     */
+    private $subcat;
 
 
     /**
-     * Set category
+     * Get id
      *
-     * @param string $category
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
      * @return Course
      */
-    public function setCategory($category)
+    public function setName($name)
     {
-        $this->category = $category;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get category
+     * Get name
      *
      * @return string 
      */
-    public function getCategory()
+    public function getName()
     {
-        return $this->category;
+        return $this->name;
     }
 
     /**
@@ -72,59 +97,6 @@ class Course
     }
 
     /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var boolean
-     */
-    private $published;
-
-    /**
-     * @var \Queskey\FrontEndBundle\Entity\SubCategory
-     */
-    private $subcat;
-
-    /**
-     * @var \Queskey\FrontEndBundle\Entity\User
-     */
-    private $instructor;
-
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return Course
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
      * Set published
      *
      * @param boolean $published
@@ -148,29 +120,6 @@ class Course
     }
 
     /**
-     * Set subcat
-     *
-     * @param \Queskey\FrontEndBundle\Entity\SubCategory $subcat
-     * @return Course
-     */
-    public function setSubcat(\Queskey\FrontEndBundle\Entity\SubCategory $subcat = null)
-    {
-        $this->subcat = $subcat;
-
-        return $this;
-    }
-
-    /**
-     * Get subcat
-     *
-     * @return \Queskey\FrontEndBundle\Entity\SubCategory 
-     */
-    public function getSubcat()
-    {
-        return $this->subcat;
-    }
-
-    /**
      * Set instructor
      *
      * @param \Queskey\FrontEndBundle\Entity\User $instructor
@@ -191,5 +140,28 @@ class Course
     public function getInstructor()
     {
         return $this->instructor;
+    }
+
+    /**
+     * Set subcat
+     *
+     * @param \Queskey\FrontEndBundle\Entity\SubCategory $subcat
+     * @return Course
+     */
+    public function setSubcat(\Queskey\FrontEndBundle\Entity\SubCategory $subcat = null)
+    {
+        $this->subcat = $subcat;
+
+        return $this;
+    }
+
+    /**
+     * Get subcat
+     *
+     * @return \Queskey\FrontEndBundle\Entity\SubCategory 
+     */
+    public function getSubcat()
+    {
+        return $this->subcat;
     }
 }

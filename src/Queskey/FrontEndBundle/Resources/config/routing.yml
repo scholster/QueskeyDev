@@ -2,7 +2,7 @@ index_frontEnd:
     pattern: /
     defaults: { _controller: FrontEndBundle:Index:index }
     
-login_ajax:
+login:
   pattern: /login
   defaults: { _controller: FrontEndBundle:Login:login }
   
@@ -22,3 +22,7 @@ search:
 search_filter:
     pattern: /searchFilter
     defaults: { _controller: FrontEndBundle:Search:filter }
+    
+course:
+  pattern: /course
+  defaults: { _controller: FrontEndBundle:Course:index }

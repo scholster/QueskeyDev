@@ -25,9 +25,21 @@ class IndexController extends Controller
     
     
     
-    public function userDashboard(){
+    public function userDashboard()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $queryCourse = $em->createQuery("SELECT c.id,c.name,c.description FROM Queskey\FrontEndBundle\Entity\Course c where c.published = 1");
+        $queryCourse->setMaxResults(10);
+        $courses = $queryCourse->getResult();
+//        var_dump($courses);
+//        die;
+        
+        $querySubCategories = $em->createQuery("SELECT s.id, s.name, c.id as cid, c.name as cname FROM Queskey\FrontEndBundle\Entity\SubCategory s JOIN s.cat c where s.published = 1 and c.published = 1 order by cid desc");
+        $subCategories = $querySubCategories->getResult();
+//        var_dump($subCategories);
+//        die;
         
         
-        return $this->render("FrontEndBundle:Index:dashboard.html.twig");
+        return $this->render("FrontEndBundle:Index:dashboard.html.twig",array("courses"=>$courses, "subCategories" => $subCategories));
     }
 }
