@@ -28,3 +28,15 @@ course:
   defaults: { _controller: FrontEndBundle:Course:index }
   requirements:
         _method:  GET
+
+admin:
+  pattern: /instructor
+  defaults: { _controller: FrontEndBundle:Admin:dashboard }
+
+admin_store:
+  pattern: /instructor/store
+  defaults: { _controller: FrontEndBundle:Admin:storecourse }
+  
+admin_view:
+  pattern: /instructor/view
+  defaults: { _controller: FrontEndBundle:Admin:viewcourse }
