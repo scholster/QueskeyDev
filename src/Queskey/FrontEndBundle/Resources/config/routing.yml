@@ -30,3 +30,7 @@ admin:
 admin_store:
   pattern: /instructor/store
   defaults: { _controller: FrontEndBundle:Admin:storecourse }
+  
+admin_view:
+  pattern: /instructor/view
+  defaults: { _controller: FrontEndBundle:Admin:viewcourse }

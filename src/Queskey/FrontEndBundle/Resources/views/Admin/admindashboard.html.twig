@@ -3,12 +3,24 @@
 
 {% block javascript %}
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-
+<script type='text/javascript' src='js/admindashboard.js?v=1'></script>
 {% endblock %}
 
 {% block body %}
 <h1>Welcome to the Admin Dashboard page</h1>
+{{ dump(loggedInUser) }}
 <br><br>
+
+
+Click to view courses created by you:
+<br>
+<button type="button" class="list" id="course_list">Course List</button>
+<div id="course_view">
+
+</div>
+
+
+<div id="createcourse" class="course_box">
 <pre>
 <form id="course_form">
 Course Name  : <input class="course_name" type="text" id="cname">
@@ -19,7 +31,7 @@ Category     : <select id="category" >
   {% endfor %}
 </select>
 
-<script type='text/javascript' src='js/admindashboard.js?v=1'></script>
+
 
 Sub-Category : <select id="subcategory">
     {% for subcategories in subcategory %}
@@ -29,10 +41,11 @@ Sub-Category : <select id="subcategory">
 
 Description  : <br><textarea rows="4" cols="50" name="description" id="course_desc"></textarea>
 <div class="submit">
-<button type="button" class="submit_box" id="submit_btn">Submit</button><br><br><br><br>
+<button type="button" class="submit_box" id="submit_btn">Create Course</button><br><br><br><br>
 </div>
 </form>
 </pre>
+    </div>
 
 
 

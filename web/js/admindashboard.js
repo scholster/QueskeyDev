@@ -1,5 +1,9 @@
 $(document).ready(function(){
 
+$("#course_list").click(function(){
+    $("#course_view").empty();
+  viewcourse();  
+});
 
 $("#category").bind("change",(function(){
     $("#subcategory").empty();
@@ -9,6 +13,8 @@ $("#category").bind("change",(function(){
 $("#submit_btn").click(function(){
        storecourse();       
    });
+   
+
    
 });
 
@@ -42,7 +48,25 @@ function storecourse()
             description: $("#course_desc").val()
         },function(data){
             
-            
+            //redirect to further page to enter courses
         }
     ,'json');
     }
+    
+function viewcourse()
+{
+    $.post("/instructor/view",
+            function(courses) {
+                if (courses[0] === "fail")
+                {
+                    alert("No courses created by you.");
+                }
+                else
+                {
+                    $.each(courses,function(key,value){
+                        $("#course_view").append('<h3><a href="/course_id='+value.id+'">'+value.name+'</a></h3><p>'+value.description+'</p>' );
+                    });
+
+                }
+            },'json');
+}

@@ -108,4 +108,32 @@ class User
     {
         return $this->id;
     }
+    /**
+     * @var boolean
+     */
+    private $type;
+
+
+    /**
+     * Set type
+     *
+     * @param boolean $type
+     * @return User
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return boolean 
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
 }
