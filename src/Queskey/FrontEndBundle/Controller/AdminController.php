@@ -18,7 +18,8 @@ class AdminController extends Controller {
         }
         else
         {
-            return $this->render('FrontEndBundle:Index:dashboard.html.twig');
+            return false;
+            
         }
     }
     
@@ -68,6 +69,10 @@ class AdminController extends Controller {
         
         
         return $this->render('FrontEndBundle:Admin:admindashboard.html.twig', array('category' => $category,'subcategory'=>$sub_cat));
+        }
+        else
+        {
+            return $this->render('FrontEndBundle:Index:index.html.twig');
         }
         
     }

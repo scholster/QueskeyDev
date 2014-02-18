@@ -1,15 +1,28 @@
 {% set loggedInUser = app.session.get('User') %}
 {% block title %}Admin Dashboard{% endblock %}
 
+
+
 {% block javascript %}
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type='text/javascript' src='js/admindashboard.js?v=1'></script>
 {% endblock %}
 
+
+
 {% block body %}
 <h1>Welcome to the Admin Dashboard page</h1>
 {{ dump(loggedInUser) }}
 <br><br>
+
+
+
+{% block logout_button%}
+
+<a href="{{ path('logout') }}"><b>logout</b></a><br><br><br>
+
+{% endblock %}
+
 
 
 Click to view courses created by you:
