@@ -10,6 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
 class Category
 {
     /**
+     * @var integer
+     */
+    private $id;
+
+    /**
      * @var string
      */
     private $name;
@@ -24,11 +29,16 @@ class Category
      */
     private $published;
 
-    /**
-     * @var integer
-     */
-    private $id;
 
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Set name
@@ -97,15 +107,5 @@ class Category
     public function getPublished()
     {
         return $this->published;
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 }
