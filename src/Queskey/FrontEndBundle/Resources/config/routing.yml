@@ -23,6 +23,7 @@ search_filter:
     pattern: /searchFilter
     defaults: { _controller: FrontEndBundle:Search:filter }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 admin:
   pattern: /instructor
@@ -36,10 +37,16 @@ admin_view:
   pattern: /instructor/view
   defaults: { _controller: FrontEndBundle:Admin:viewcourse }
 =======
+=======
+>>>>>>> e3d086de0684063fbdecb81ac31b5b63ab3dab7f
     
 course:
   pattern: /course_id={id}
   defaults: { _controller: FrontEndBundle:Course:index }
   requirements:
+<<<<<<< HEAD
+        _method:  GET
+>>>>>>> e3d086de0684063fbdecb81ac31b5b63ab3dab7f
+=======
         _method:  GET
 >>>>>>> e3d086de0684063fbdecb81ac31b5b63ab3dab7f

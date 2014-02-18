@@ -109,6 +109,7 @@ class User
         return $this->password;
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     /**
      * Get id
@@ -147,6 +148,8 @@ class User
     {
         return $this->type;
     }
+=======
+>>>>>>> e3d086de0684063fbdecb81ac31b5b63ab3dab7f
 =======
 >>>>>>> e3d086de0684063fbdecb81ac31b5b63ab3dab7f
 }
