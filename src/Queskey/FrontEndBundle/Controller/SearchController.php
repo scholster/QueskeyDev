@@ -7,60 +7,35 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SearchController extends Controller
 {
+    
+    private $array = array();
 
     public function searchAction()
     {
         $request=$this->get('request');
         if($request->isXmlHttpRequest() && $request->getMethod()=="POST")
         {
-            $data=$request->request->all();
-            //var_dump($data);
-            //$cat=$data['text'];
-            //$data = strtoupper($data);
+            $string=$request->request->get('string');
             $em=$this->getDoctrine()->getManager();
             
-            /*$query=$em->createQuery(
-                    'SELECT id
-                     FROM FrontEndBundle:CourseDetails p
-                     WHERE p.category == :cat'
-                        )->setParameter('cat',$cat);
-                     $repository = $this->getDoctrine()->getRepository('FrontEndBundle:CourseDetails');*/
+            $query = $em->createQuery('SELECT c.name, c.id, c.description 
+                                       FROM Queskey\FrontEndBundle\Entity\Course c 
+                                       where c.name LIKE :string')->setParameter('string', '%'.$string.'%');
+
+            $result = $query->getResult();
             
-            $searchRepository=$em->getRepository('FrontEndBundle:CourseDetails');
-            $search = $searchRepository->findBy(array("category"=>$data['text']));
-            //var_dump($search);
-            /*$query=$searchRepository->createQueryBuilder('p')
-                    ->where('p.category' === $data['text'] )
-                    ->orderBy('p.category','ASC')
-                    ->getQuery();*/
-            $count=count($search);
-            //var_dump($count);
-            //$search = $searchRepository->findOneBy(array("category"=>$data['text']));
-            $searchDetails = array();
-            if($count>0)
-                
-            {
-                $j=1;
-                for($i=0;$i<$count;$i++)
+            if($result)
                 {
-                //$searchDetails[] = $search[$i]->getId();
-                
-                $searchDetails[] = array(array($search[$i]->getId(),$search[$i]->getCourseName()));
-                $j=$j+1;
-               // var_dump($searchDetails);
+                $response=new Response(json_encode($result));
+                return $response;
                 }
                 
-                $response=new Response(json_encode($searchDetails));
+                else 
+                {
+                $response=new Response(json_encode(array("0"=>"fail")));
                 return $response;
-                /*$searchDetails = array
-                        (
-                    [$i]=>array
-                        (
-                        $search[$i]->getId(),
-                        $search[$i]->getName(),
-                        $search[$i]->getImage(),
-                        )
-                        );*/
+                
+                }
                 
             }       
             else
@@ -70,21 +45,21 @@ class SearchController extends Controller
             }
         }
                 
-    }
+    
 
     
-    private $array = array();
-    
+      
     public function filterAction()
     {
         $request = $this->get('request');
+
         if($request->isXmlHttpRequest() && $request->getMethod()=="POST")
         {
             
-            $data = $request->request->all();
-            $course = $this->dbHandle($data);
-            $this->multiToOne($course);
-            $response = new Response(json_encode($this->array));
+            $subCategories = $request->get('subcat');        
+            $this->dbHandle($subCategories);          
+            $courses = $this->array;          
+            $response = new Response(json_encode($courses));
             return $response;
         }
         
@@ -94,35 +69,31 @@ class SearchController extends Controller
 
     
     
-    public function dbHandle($data)
+    public function dbHandle($subCategories)
     {
-        $count = count($data);
         $em = $this->getDoctrine()->getManager();
-        $courseRepository = $em->getRepository('FrontEndBundle:Course');
-        $course = array();
+        $courses = array();
             
-        for($a = 0; $a<$count; $a++)
+        foreach($subCategories as $subcat)
         {
-            $course[] = $courseRepository->findBy(array('category'=>$data[$a]));
+            $courseQuery = $em->createQuery('SELECT c.id, c.name, c.description 
+                                             FROM Queskey\FrontEndBundle\Entity\Course c  
+                                             where c.subcat = :subcat and c.published = 1')->setParameter('subcat' , $subcat);
+
+            $courses = $courseQuery->getResult();
+            $this->multiToOne($courses);
         }
-        
-        return $course;
+        return ;
     }
 
     
     
-    public function multiToOne($course)
+    public function multiToOne($courses)
     {
-         if (!is_array($course)) 
-             {
-             
-                $this->array[] = $course->getDescription();
-                return;
-            }
-
-        foreach($course as $a) 
-            {
-                $this->multiToOne($a);
-            }
+        foreach($courses as $course)
+        {
+        $this->array[] = $course;
+        }
     }
+    
 }

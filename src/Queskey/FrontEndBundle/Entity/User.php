@@ -10,6 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
 class User
 {
     /**
+     * @var integer
+     */
+    private $id;
+
+    /**
      * @var string
      */
     private $name;
@@ -24,11 +29,16 @@ class User
      */
     private $password;
 
-    /**
-     * @var integer
-     */
-    private $id;
 
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Set name
@@ -98,6 +108,7 @@ class User
     {
         return $this->password;
     }
+<<<<<<< HEAD
 
     /**
      * Get id
@@ -136,4 +147,6 @@ class User
     {
         return $this->type;
     }
+=======
+>>>>>>> e3d086de0684063fbdecb81ac31b5b63ab3dab7f
 }
