@@ -5,7 +5,6 @@ $(document).ready(function()
         
         $("#filter_btn").click(function(){
             
-            $("#results").empty();
             $("input[name='category[]']:checked").each(function(){
                 
                 selectedCat.push($(this).val()) ;
@@ -17,15 +16,14 @@ $(document).ready(function()
           selectedSubCat.push($(this).val()) ;
           
       });    
-            
+$("#default_courses").empty();            
 filteredResults(selectedSubCat);
 
 })
             
        $("#search_btn").click(function(){
-           
-           $("#results").empty();
-            search();       
+           $("#default_courses").empty();
+           search();       
             
         });
             
@@ -42,14 +40,14 @@ function checkSubCategories(selectedCat){
 
 function filteredResults(selectedSubCat){
     
+        
         $.post("/searchFilter", 
                 { 'subcat' : selectedSubCat}, 
                         function(courses){
-        
+        $("#filtered_courses").empty();
+        $("#filtered_courses").append('<div id="course_list">Courses :<br></div>');
         $.each(courses, function(key, value) { 
-           
-           $("#results").append('<h4><a href="/course?id="'+value.id+'>'+value.name+'</a></h4><p>'+value.description+'</p>');
-            
+           $("#course_list").append('<ul><h4><a href="/course_id='+value.id+'">'+value.name+'</a></h4><li>'+value.description+'</li></ul>'); 
         });
             
 }, 'json');
@@ -71,10 +69,11 @@ function search(){
        }
        else
        {
-         $("#results").empty();
+         $("#filtered_courses").empty();
+         $("#filtered_courses").append('<div id="course_list">Courses :<br></div>');
          $.each(searchResult, function(key, value){
-             $("#results").append('<h4><a href="/course">'+value.name+'</a></h4><p>'+value.description+'</p>')
-         });        
+             $("#course_list").append('<h4><a href="/course_id='+value.id+'">'+value.name+'</a></h4><p>'+value.description+'</p>');                   
+     });        
            
        }}
    , 'json');

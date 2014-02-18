@@ -24,5 +24,7 @@ search_filter:
     defaults: { _controller: FrontEndBundle:Search:filter }
     
 course:
-  pattern: /course
+  pattern: /course_id={id}
   defaults: { _controller: FrontEndBundle:Course:index }
+  requirements:
+        _method:  GET

@@ -1,33 +1,50 @@
 {% set loggedInUser = app.session.get('User') %}
+
 {% block title %}FrontEndBundle:Homepage:index{% endblock %}
 
+
+
 {% block javascript %}
+
 <script type='text/javascript' src='js/jquery.js'></script></script>
 <script type='text/javascript' src='js/core.js?v=1'></script>
+
 {% endblock %}
 
+
+
 {% block body %}
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="-1">
+
 <h1>Welcome to the Homepage:index page</h1>
 {{ dump(loggedInUser) }}
 <br><br>
 
+{% endblock%}
+
+
+
 {% block logout_button%}
+
 <a href="{{ path('logout') }}"><b>logout</b></a><br><br><br>
+
 {% endblock %}
 
+
+
 {% block search %}
+
 <input class="search_text" type="text" id="search_string">
 <div class="search">
 <button type="button" class="search_box" id="search_btn">Search</button><br><br><br><br>
 </div>
+
 {% endblock %}
+
+
 
 {% block content %}
 
 <div id='filter'>
-
 {%set category = 0%}
 {%for subCategory in subCategories %}
 {%if (category == 0 or category!=subCategory.cid)%}
@@ -50,20 +67,36 @@
 <button id='filter_btn'>Filter</button>
 
 <br><br>
+
+
+
+{% block default_courses%}
+
 <div id="default_courses">
 Courses :
 <br>
-<div id="filter">
-<div id="results">
 {%for course in courses %}
-<ul>
-<h4>{{ course.name }}</h4>
+<ul><ul>
+<h4><a href="{{ path("course", { 'id' : course.id})}}">{{ course.name }}</a></h4>
 <li><p>{{ course.description }}</p></li>
-</ul><br>
+</ul></ul><br>
 {%endfor%}
 </div>
+
+{% endblock%}
+
+
+
+
+{% block filtered_courses%}
+
+<div id="filtered_courses">
+<ul id="course_list"></ul>
 </div>
 
 {% endblock %}
+
+
+
 
 {% endblock %}
