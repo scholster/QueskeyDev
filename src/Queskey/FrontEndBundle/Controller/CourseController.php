@@ -9,11 +9,31 @@ class CourseController extends Controller {
     
     public function indexAction($id)
     {
+        $session = new \Symfony\Component\HttpFoundation\Session\Session();
+        $session->start();
+        $loggedInUser = $session->get("User");
+        
+        if($loggedInUser)
+        {
         $em = $this->getDoctrine()->getManager();
-        $repository = $em->getRepository('FrontEndBundle:Course');
-        $course = $repository->findOneBy(array('id' => $id));  
-        return $this->render('FrontEndBundle:Course:course.html.twig',array('course'=>$course));
-                
+        $course_query = $em->createQuery('SELECT c.id, c.name, c.description, i.name as ins_name,
+                                          p.id as pid, p.price, p.expirytime, p.discountPercent,
+                                          p.resubscriptionPrice, p.description
+                                          FROM Queskey\FrontEndBundle\Entity\PaymentAssociation pass
+                                          JOIN pass.paymentplan p
+                                          JOIN pass.course c
+                                          JOIN c.instructor i
+                                          WHERE c.id = :id')->setParameter('id', $id);
+        
+        $course_info = $course_query->getResult();
+
+        return $this->render('FrontEndBundle:Course:course.html.twig',array('course'=>$course_info));
+        }
+        
+        else
+        {
+            return $this->render('FrontEndBundle:Common:pleaseLogin.html.twig');
+        }
     }
 }
 

@@ -10,11 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Course
 {
     /**
-     * @var integer
-     */
-    private $id;
-
-    /**
      * @var string
      */
     private $name;
@@ -30,25 +25,20 @@ class Course
     private $published;
 
     /**
-     * @var \Queskey\FrontEndBundle\Entity\User
+     * @var integer
      */
-    private $instructor;
+    private $id;
 
     /**
      * @var \Queskey\FrontEndBundle\Entity\SubCategory
      */
     private $subcat;
 
-
     /**
-     * Get id
-     *
-     * @return integer 
+     * @var \Queskey\FrontEndBundle\Entity\User
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    private $instructor;
+
 
     /**
      * Set name
@@ -120,26 +110,13 @@ class Course
     }
 
     /**
-     * Set instructor
+     * Get id
      *
-     * @param \Queskey\FrontEndBundle\Entity\User $instructor
-     * @return Course
+     * @return integer 
      */
-    public function setInstructor(\Queskey\FrontEndBundle\Entity\User $instructor = null)
+    public function getId()
     {
-        $this->instructor = $instructor;
-
-        return $this;
-    }
-
-    /**
-     * Get instructor
-     *
-     * @return \Queskey\FrontEndBundle\Entity\User 
-     */
-    public function getInstructor()
-    {
-        return $this->instructor;
+        return $this->id;
     }
 
     /**
@@ -163,5 +140,28 @@ class Course
     public function getSubcat()
     {
         return $this->subcat;
+    }
+
+    /**
+     * Set instructor
+     *
+     * @param \Queskey\FrontEndBundle\Entity\User $instructor
+     * @return Course
+     */
+    public function setInstructor(\Queskey\FrontEndBundle\Entity\User $instructor = null)
+    {
+        $this->instructor = $instructor;
+
+        return $this;
+    }
+
+    /**
+     * Get instructor
+     *
+     * @return \Queskey\FrontEndBundle\Entity\User 
+     */
+    public function getInstructor()
+    {
+        return $this->instructor;
     }
 }

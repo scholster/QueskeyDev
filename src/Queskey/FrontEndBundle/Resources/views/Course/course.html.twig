@@ -1,5 +1,41 @@
-{% block Course%}
-<h4>{{ course.getName() }}</h4>
-<p>{{ course.getDescription() }}</p>
+{% set loggedInUser = app.session.get('User') %}
+
+{% block title %}
+FrontEndBundle:Homepage:index
+{% endblock %}
+
+
+
+{% block body %}
+
+<h1>Welcome to the Course:course page</h1>
+{{ dump(loggedInUser) }}
+<br><br>
 
 {% endblock%}
+
+
+
+{% block logout_button%}
+
+<a href="{{ path('logout') }}"><b>logout</b></a><br><br><br>
+
+{% endblock %}
+
+{% block course%}
+        {% for course in course %}
+        Course id : {{course.id}}<br>
+        Course name : {{course.name}}<br>
+        Course description : {{course.description}}<br>
+        Course instructor name : {{course.ins_name}}<br>
+        Course paymentPlan id : {{course.pid}}<br>
+        Course price : ${{course.price}}<br>
+        Course expirytime : {{course.expirytime}}<br>
+        Course discount : {{course.discountPercent}}%<br>
+        course re-subscription fee : ${{course.resubscriptionPrice}}<br><br><br>
+        {% endfor%}
+{% endblock %}
+        
+{% block subscribe%}
+        <button>Subscribe</button>
+{% endblock %}     

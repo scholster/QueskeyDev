@@ -15,14 +15,16 @@ $(document).ready(function()
           
           selectedSubCat.push($(this).val()) ;
           
-      });    
-$("#default_courses").empty();            
+      });
+$("#default_courses").html('');
+$("#filtered_courses").html('');            
 filteredResults(selectedSubCat);
 
 })
             
        $("#search_btn").click(function(){
-           $("#default_courses").empty();
+           $("#default_courses").html('');
+           $("#filtered_courses").html('');
            search();       
             
         });
@@ -44,7 +46,7 @@ function filteredResults(selectedSubCat){
         $.post("/searchFilter", 
                 { 'subcat' : selectedSubCat}, 
                         function(courses){
-        $("#filtered_courses").empty();
+        $("#filtered_courses").html('');
         $("#filtered_courses").append('<div id="course_list">Courses :<br></div>');
         $.each(courses, function(key, value) { 
            $("#course_list").append('<ul><h4><a href="/course_id='+value.id+'">'+value.name+'</a></h4><li>'+value.description+'</li></ul>'); 
@@ -69,7 +71,7 @@ function search(){
        }
        else
        {
-         $("#filtered_courses").empty();
+         $("#filtered_courses").html('');
          $("#filtered_courses").append('<div id="course_list">Courses :<br></div>');
          $.each(searchResult, function(key, value){
              $("#course_list").append('<h4><a href="/course_id='+value.id+'">'+value.name+'</a></h4><p>'+value.description+'</p>');                   
