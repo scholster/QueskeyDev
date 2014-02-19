@@ -40,3 +40,11 @@ admin_store:
 admin_view:
   pattern: /instructor/view
   defaults: { _controller: FrontEndBundle:Admin:viewcourse }
+  
+admin_paymentview:
+  pattern: /instructor/paymentplan
+  defaults: { _controller: FrontEndBundle:Admin:paymentplanview }
+  
+admin_paymentcreate:
+  pattern: /instructor/paymentplan/create
+  defaults: { _controller: FrontEndBundle:Admin:paymentplancreate }

@@ -47,10 +47,19 @@ function storecourse()
             subcat: $("#subcategory").val(),
             description: $("#course_desc").val()
         },function(data){
-            
+            if(data[0]==="success")
+                {
+                    window.location.href = '/instructor';
+                }
+                else
+                    {
+                        alert("fails");
+                        window.location.href = '/instructor';
             //redirect to further page to enter courses
-        }
+        }}
     ,'json');
+    
+    
     }
     
 function viewcourse()

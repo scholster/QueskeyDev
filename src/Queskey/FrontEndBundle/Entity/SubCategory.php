@@ -10,11 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 class SubCategory
 {
     /**
-     * @var integer
-     */
-    private $id;
-
-    /**
      * @var string
      */
     private $name;
@@ -30,20 +25,15 @@ class SubCategory
     private $published;
 
     /**
+     * @var integer
+     */
+    private $id;
+
+    /**
      * @var \Queskey\FrontEndBundle\Entity\Category
      */
     private $cat;
 
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * Set name
@@ -112,6 +102,16 @@ class SubCategory
     public function getPublished()
     {
         return $this->published;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**

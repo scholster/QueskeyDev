@@ -7,131 +7,179 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AdminController extends Controller {
 
-     public function checkadminAction() {
+    public function checkadminAction() {
         $session = new \Symfony\Component\HttpFoundation\Session\Session();
         $session->start();
         $loggedInUser = $session->get("User");
-        
-        if($loggedInUser)
-        {
-        return true;
-        }
-        else
-        {
+
+        if ($loggedInUser) {
+            return true;
+        } else {
             return false;
-            
         }
     }
-    
+
     
     public function dashboardAction() {
-        if($this->checkadminAction())
-        {
-        $em = $this->getDoctrine()->getManager();
+        if ($this->checkadminAction()) {
+            $em = $this->getDoctrine()->getManager();
 
-        $query1 = $em->createQuery(
-                'SELECT C.id, C.name
+            $query1 = $em->createQuery(
+                    'SELECT C.id, C.name
                     FROM Queskey\FrontEndBundle\Entity\Category C
                     WHERE C.published=1
                     ');
-        $category = $query1->getResult();
-       /*var_dump($category);
-          die;*/
+            $category = $query1->getResult();
+            /* var_dump($category);
+              die; */
 //for default values
-       $a = $category[0]['id'];
-        $query2 = $em->createQuery(
-                        'SELECT SC.id,SC.name
+            $a = $category[0]['id'];
+            $query2 = $em->createQuery(
+                            'SELECT SC.id,SC.name
                         FROM Queskey\FrontEndBundle\Entity\SubCategory SC
                         WHERE SC.cat=:cat and SC.published=1
                         ')->setParameter('cat', $a);
-        $sub_cat = $query2->getResult();
-          
+            $sub_cat = $query2->getResult();
+
+            $request = $this->get("request");
+            if ($request->isXmlHttpRequest() && $request->getMethod() == "POST") {
+                $data = $request->request->all();
+                $em = $this->getDoctrine()->getManager();
+
+
+                $query3 = $em->createQuery(
+                                'SELECT SC.id,SC.name
+                        FROM Queskey\FrontEndBundle\Entity\SubCategory SC
+                        WHERE SC.cat=:cat and SC.published=1
+                        ')->setParameter('cat', $data['categoryid']);
+                $sub_cat = $query3->getResult();
+                if ($sub_cat) {
+                    $response = new Response(json_encode($sub_cat));
+                    return $response;
+                } else {
+                    $response = new Response(json_encode(array("0" => 'fail')));
+                    return $response;
+                }
+            }
+
+
+            return $this->render('FrontEndBundle:Admin:admindashboard.html.twig', array('category' => $category, 'subcategory' => $sub_cat));
+        } else {
+            return $this->render('FrontEndBundle:Index:index.html.twig');
+        }
+    }
+
+    
+    public function storecourseAction() {
+        $session = new \Symfony\Component\HttpFoundation\Session\Session();
+        $session->start();
+        $loggedInUser = $session->get("User");
+        $instructorId = $loggedInUser->getId();
         $request = $this->get("request");
         if ($request->isXmlHttpRequest() && $request->getMethod() == "POST") {
             $data = $request->request->all();
             $em = $this->getDoctrine()->getManager();
 
+            $newCourse = new \Queskey\FrontEndBundle\Entity\Course;
+            //error in the commented lines below
+            $subCat = $this->getDoctrine()->getRepository('FrontEndBundle:SubCategory')->find($data['subcat']);
+            $newCourse->setSubcat($subCat);
 
-            $query3 = $em->createQuery(
-                            'SELECT SC.id,SC.name
-                        FROM Queskey\FrontEndBundle\Entity\SubCategory SC
-                        WHERE SC.cat=:cat and SC.published=1
-                        ')->setParameter('cat', $data['categoryid']);
-            $sub_cat = $query3->getResult();
-            if ($sub_cat) {
-                $response = new Response(json_encode($sub_cat));
-                return $response;
-            } else {
-                $response = new Response(json_encode(array("0" => 'fail')));
-                return $response;
-            }
+            //$newCourse->setSubcat($data['subcat']);
+            $newCourse->setName($data['coursename']);
+
+            $instId = $this->getDoctrine()->getRepository('FrontEndBundle:User')->find($instructorId);
+            $newCourse->setInstructor($instId);
+            $newCourse->setDescription($data['description']);
+            $newCourse->setPublished('1');
+
+            $em->persist($newCourse);
+            $em->flush();
+            
+            //send data back to js page
+            $response = new Response(json_encode(array("0" => 'success')));
+            return $response;
+        } else {
+            $response = new Response(json_encode(array("0" => 'fail')));
+            return $response;
         }
-        
-        
-        return $this->render('FrontEndBundle:Admin:admindashboard.html.twig', array('category' => $category,'subcategory'=>$sub_cat));
-        }
-        else
-        {
-            return $this->render('FrontEndBundle:Index:index.html.twig');
-        }
-        
     }
 
     
-   
-    
-    public function storecourseAction(){
+    public function viewcourseAction() {
         $session = new \Symfony\Component\HttpFoundation\Session\Session();
         $session->start();
         $loggedInUser = $session->get("User");
         $instructorId = $loggedInUser->getId();
-        $request=$this->get("request");
-        if($request->isXmlHttpRequest() && $request->getMethod()=="POST")
-        {
-            $data=$request->request->all();
-            $em=$this->getDoctrine()->getManager();
-            
-            $newCourse=new \Queskey\FrontEndBundle\Entity\Course;
-            //error in the commented lines below
-            $subCat= $this->getDoctrine()->getRepository('FrontEndBundle:SubCategory')->find($data['subcat']); 
-            $newCourse->setSubcat($subCat); 
-            
-            //$newCourse->setSubcat($data['subcat']);
-            $newCourse->setName($data['coursename']);
-            
-            $instId=  $this->getDoctrine()->getRepository('FrontEndBundle:User')->find($instructorId);
-            $newCourse->setInstructor($instId);
-            $newCourse->setDescription($data['description']);
-            $newCourse->setPublished('1');
-            
-            $em->persist($newCourse);
-            $em->flush();
-            //send data back to js page
+        $em = $this->getDoctrine()->getManager();
+
+        $query = $em->createQuery(
+                        'SELECT C.name,C.description,C.id
+                    FROM Queskey\FrontEndBundle\Entity\Course C
+                    WHERE C.instructor=:iid
+                    ')->setParameter('iid', $instructorId);
+        $courses = $query->getResult();
+
+        if ($courses) {
+            $response = new Response(json_encode($courses));
+            return $response;
+        } else {
+            $response = new Response(json_encode(array("0" => 'fail')));
+            return $response;
         }
     }
+
     
-    public function viewcourseAction()
+    public function paymentplanviewAction() {
+        return $this->render('FrontEndBundle:Admin:admin_paymentplan.html.twig');
+    }
+    
+    
+    public function paymentplancreateAction()
     {
         $session = new \Symfony\Component\HttpFoundation\Session\Session();
         $session->start();
         $loggedInUser = $session->get("User");
         $instructorId = $loggedInUser->getId();
-        $em=$this->getDoctrine()->getManager();
         
-        $query=$em->createQuery(
-                'SELECT C.name,C.description,C.id
-                    FROM Queskey\FrontEndBundle\Entity\Course C
-                    WHERE C.instructor=:iid
-                    ')->setParameter('iid',$instructorId);
-        $courses=$query->getResult();
-        
-        if ($courses) {
-                $response = new Response(json_encode($courses));
-                return $response;
-            } else {
-                $response = new Response(json_encode(array("0" => 'fail')));
-                return $response;
-            }
+        $request = $this->get("request");
+        if ($request->isXmlHttpRequest() && $request->getMethod() == "POST") {
+            $data = $request->request->all();
+            $em = $this->getDoctrine()->getManager();
+            //$courseId=$data['course_id'];        
+
+            $newPaymentPlan = new \Queskey\FrontEndBundle\Entity\PaymentPlans;
+            
+            $newPaymentPlan->setPrice($data['price']);
+            $newPaymentPlan->setExpirytime($data['expirytime']);
+            $newPaymentPlan->setDiscountPercent($data['discount']);
+            $newPaymentPlan->setResubscriptionPrice($data['resubprice']);
+            $newPaymentPlan->setDescription($data['paydescription']);
+
+            $em->persist($newPaymentPlan);
+            $em->flush();
+            
+            $lastpayid=$newPaymentPlan->getId();
+            
+            $newPaymentPlanAssociation = new \Queskey\FrontEndBundle\Entity\PaymentAssociation;
+            
+            $courseId = $this->getDoctrine()->getRepository('FrontEndBundle:Course')->find($data['course_id']);
+            $newPaymentPlanAssociation->setCourse($courseId);
+            
+            $payplanId = $this->getDoctrine()->getRepository('FrontEndBundle:PaymentPlans')->find($lastpayid);
+            $newPaymentPlanAssociation->setPaymentplan($payplanId);
+            $newPaymentPlanAssociation->setAllLimit('1');
+            
+            $em->persist($newPaymentPlanAssociation);
+            $em->flush();
+            
+            //send data back to js page
+            $response = new Response(json_encode(array("0" => 'success')));
+            return $response;
+        } else {
+            $response = new Response(json_encode(array("0" => 'fail')));
+            return $response;
+        }
     }
 
 }
