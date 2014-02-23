@@ -24,7 +24,7 @@ search_filter:
     defaults: { _controller: FrontEndBundle:Search:filter }
     
 course:
-  pattern: /course_id={id}
+  pattern: /course/{id}
   defaults: { _controller: FrontEndBundle:Course:index }
   requirements:
         _method:  GET
@@ -40,3 +40,8 @@ admin_store:
 admin_view:
   pattern: /instructor/view
   defaults: { _controller: FrontEndBundle:Admin:viewcourse }
+  
+subscription:
+  pattern: /subscribe
+  defaults: { _controller: FrontEndBundle:Subscription:new }
+

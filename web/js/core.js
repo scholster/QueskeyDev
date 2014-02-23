@@ -1,9 +1,10 @@
 $(document).ready(function()
     {
-        var selectedCat = new Array();
-        var selectedSubCat = new Array();
         
         $("#filter_btn").click(function(){
+            
+            var selectedCat = new Array();
+            var selectedSubCat = new Array();
             
             $("input[name='category[]']:checked").each(function(){
                 
@@ -20,7 +21,7 @@ $("#default_courses").html('');
 $("#filtered_courses").html('');            
 filteredResults(selectedSubCat);
 
-})
+});
             
        $("#search_btn").click(function(){
            $("#default_courses").html('');
@@ -46,10 +47,10 @@ function filteredResults(selectedSubCat){
         $.post("/searchFilter", 
                 { 'subcat' : selectedSubCat}, 
                         function(courses){
-        $("#filtered_courses").html('');
+        $("#filtered_courses").empty();
         $("#filtered_courses").append('<div id="course_list">Courses :<br></div>');
         $.each(courses, function(key, value) { 
-           $("#course_list").append('<ul><h4><a href="/course_id='+value.id+'">'+value.name+'</a></h4><li>'+value.description+'</li></ul>'); 
+           $("#course_list").append('<ul><h4><a href="'+value.url+'">'+value.name+'</a></h4><li>'+value.description+'</li></ul>'); 
         });
             
 }, 'json');
