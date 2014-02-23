@@ -9,8 +9,8 @@ if (selected.length > 0) {
         paymentplan(id);
     });
 
-    $("#course_lists").click(function() {
-        $("#course_views").empty();
+    $("#course_pay_lists").click(function() {
+        $("#course_pay").empty();
         viewcourse();
     });
 
@@ -18,7 +18,7 @@ if (selected.length > 0) {
 
 function viewcourse()
 {
-    $.post("/instructor/create/paymentplan",
+    $.post("/instructor/update/paymentplan/courses",
             function(courses) {
                 if (courses[0] === "fail")
                 {
@@ -27,7 +27,9 @@ function viewcourse()
                 else
                 {
                     $.each(courses, function(key, value) {
-                        $("#course_views").append('<h3><input type="radio" name="course" value='+ value.id + '>' + value.name + '</input></h3><p>' + value.description + '</p>');
+                        $("#course_pay").append('<h3><input type="radio" name="course" value='+ value.id + '>' + value.name + '</input></h3>\n\<p>' 
+                                                + value.description + '<br>$' +value.price+"<br>"+value.expirytime+"days<br>"+value.discountPercent+"%<br>$"
+                                                   +value.resubscriptionPrice+"<br>"+value.ppdesc+'</p>');
                     });
 
                 }

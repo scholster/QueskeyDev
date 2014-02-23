@@ -32,19 +32,34 @@ course:
 admin:
   pattern: /instructor
   defaults: { _controller: FrontEndBundle:Admin:dashboard }
+  
+admin_view:
+  pattern: /instructor/view
+  defaults: { _controller: FrontEndBundle:Admin:viewcourse }
 
 admin_store:
   pattern: /instructor/store
   defaults: { _controller: FrontEndBundle:Admin:storecourse }
   
-admin_view:
-  pattern: /instructor/view
-  defaults: { _controller: FrontEndBundle:Admin:viewcourse }
-  
-admin_paymentview:
+admin_createpplanview:
   pattern: /instructor/paymentplan
-  defaults: { _controller: FrontEndBundle:Admin:paymentplanview }
+  defaults: { _controller: FrontEndBundle:Admin:createpplanview }
+  
+admin_create_paymentview:
+  pattern: /instructor/create/paymentplan
+  defaults: { _controller: FrontEndBundle:Admin:createpplancourse }
   
 admin_paymentcreate:
   pattern: /instructor/paymentplan/create
   defaults: { _controller: FrontEndBundle:Admin:paymentplancreate }
+  
+admin_updatepplanview:
+  pattern: /instructor/update/paymentplan
+  defaults: { _controller: FrontEndBundle:Admin:updatepplanview }
+  
+admin_update_paymentview:
+  pattern: /instructor/update/paymentplan/courses
+  defaults: { _controller: FrontEndBundle:Admin:updatepplancourse }
+  
+
+  

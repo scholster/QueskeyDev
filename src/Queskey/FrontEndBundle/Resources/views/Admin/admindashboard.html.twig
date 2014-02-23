@@ -64,7 +64,15 @@ Description  : <br><textarea rows="4" cols="50" name="description" id="course_de
 
 {% block paymentplan_button %}
 
-<a href="{{ path('admin_paymentview') }}"><b>Click here to generate Payment Plan</b></a><br><br><br>
+<a href="{{ path('admin_createpplanview') }}"><b>Click here to generate Payment Plan</b></a><br><br>
+
+{% endblock %}
+
+
+
+{% block update_paymentplan_button %}
+
+<a href="{{ path('admin_updatepplanview') }}"><b>Click here to update a Payment Plan</b></a><br><br>
 
 {% endblock %}
 
