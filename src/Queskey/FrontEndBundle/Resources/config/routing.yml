@@ -41,6 +41,26 @@ admin_store:
   pattern: /instructor/store
   defaults: { _controller: FrontEndBundle:Admin:storecourse }
   
+admin_store_subject:
+  pattern: /instructor/store/subject
+  defaults: { _controller: FrontEndBundle:Admin:storesubject }
+  
+admin_store_topic:
+  pattern: /instructor/store/topic
+  defaults: { _controller: FrontEndBundle:Admin:storetopic }
+  
+admin_view_topics:
+  pattern: /instructor/view/topics
+  defaults: { _controller: FrontEndBundle:Admin:viewtopics }
+  
+admin_store_lesson:
+  pattern: /instructor/store/lesson
+  defaults: { _controller: FrontEndBundle:Admin:storelesson }
+  
+admin_update:
+  pattern: /instructor/update
+  defaults: { _controller: FrontEndBundle:Admin:updatecourse }
+  
 admin_createpplanview:
   pattern: /instructor/paymentplan
   defaults: { _controller: FrontEndBundle:Admin:createpplanview }
@@ -60,6 +80,10 @@ admin_updatepplanview:
 admin_update_paymentview:
   pattern: /instructor/update/paymentplan/courses
   defaults: { _controller: FrontEndBundle:Admin:updatepplancourse }
+  
+admin_create_topics:
+  pattern: /instructor/create/topics
+  defaults: { _controller: FrontEndBundle:Admin:topics }
   
 
   

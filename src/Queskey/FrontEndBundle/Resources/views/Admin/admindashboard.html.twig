@@ -5,7 +5,7 @@
 
 {% block javascript %}
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script type='text/javascript' src='js/admindashboard.js?v=1'></script>
+<script type='text/javascript' src="{{ asset('js/admindashboard.js') }}" ></script>
 {% endblock %}
 
 
@@ -35,18 +35,16 @@ Click to view courses created by you:
 
 <div id="createcourse" class="course_box">
 <pre>
-<form id="course_form">
-Course Name  : <input class="course_name" type="text" id="cname">
+<form id="course_form" name = "CourseDetails">
+Course Name  : <input class="course_name" type="text" id="cname" name="coursename">
 
-Category     : <select id="category" >
+Category     : <select id="category" name="category">
     {% for categories in category %}
   <option value={{ categories.id }} > {{ categories.name }} </option>
   {% endfor %}
 </select>
 
-
-
-Sub-Category : <select id="subcategory">
+Sub-Category : <select id="subcategory" name="subcategory">
     {% for subcategories in subcategory %}
   <option value={{ subcategories.id }} > {{ subcategories.name }} </option>
   {% endfor %}
