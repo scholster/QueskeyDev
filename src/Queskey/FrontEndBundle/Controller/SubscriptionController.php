@@ -23,69 +23,50 @@ class SubscriptionController extends Controller
         
             $subscription = $request->request->all();
             $newSubscription = new \Queskey\FrontEndBundle\Entity\Subscriptions();
-            $newSubscription->setUserid($loggedInUser->getId());
-            $newSubscription->setCourseid($subscription['course_id']);
-            $newSubscription->setPaymentplanid($subscription['pid']);
+            
+            $em = $this->getDoctrine()->getManager();
+            $userId = $em->getRepository('FrontEndBundle:User')->find($loggedInUser->getId());
+            $course_id = $em->getRepository('FrontEndBundle:Course')->find($subscription['course_id']);
+            $pid = $em->getRepository('FrontEndBundle:PaymentPlans')->find($subscription['pid']);
+            
+            $newSubscription->setUserid($userId);
+            $newSubscription->setCourseid($course_id);
+            $newSubscription->setPaymentplanid($pid);
            
-            $date = new \DateTime(date('Y-m-d H:i:s'));
-            
-            $newSubscription->setJoiningtime($date);
-            
+            $date = new \DateTime(date('Y-m-d H:i:s'));         
+            $newSubscription->setJoiningtime($date);            
             $days = $subscription['expiryTime'].' days';
             $expiryDays = clone $date;
-            
             $newSubscription->setExpirytime($expiryDays->modify($days));
-       
-            $em = $this->getDoctrine()->getManager();
-
-            $query = $em->createQuery('SELECT s.courseid 
-                                       FROM Queskey\FrontEndBundle\Entity\Subscriptions s 
-                                       WHERE s.userid = :id')->setParameter('id', $newSubscription->getUserid());
             
-            $query_reult = $query->getResult();
-            
-            $flag = true;
-            
-            if($query_reult)
+            try
             {
-                foreach ($query_reult as $key => $value) 
-                    {
-                        if($value['courseid'] == $subscription['course_id'])
-                        {
-                            $flag = false;
-                            break;
-                        }
-                    } 
+            $em->persist($newSubscription);
+            $em->flush();
             }
-            else
+            catch(\Exception $e)
             {
-                $em->persist($newSubscription);
-                $em->flush();
-                $flag = false;
+                $msg = $e->getMessage();
+                $response = new Response(json_encode(array('success'=>$msg)));
+                return $response;
             }
-            
-            if($flag == true)
-            {
-                $em->persist($newSubscription);
-                $em->flush();
-            }
-            
-            else
-            {
-                return new Response("error");
-            }
-
-            return new Response("success");
-            
-        }
-        else 
-        {
-            return new Response("error");
-        }
-        }
-        else
-        {
-            return $this->render('FrontEndBundle:Common:pleaseLogin.html.twig');
-        }
+            $response = new Response(json_encode(array('success'=>1)));
+            return $response;
     }
+      
+    else
+    {
+        $response = new Response(json_encode(array('success'=>0)));
+        return $response;
+    }
+    
+    }
+    else
+    {
+
+            $response = new Response(json_encode(array('success'=>0)));
+            return $response;
+    }
+
+}
 }

@@ -1,3 +1,4 @@
+
 $(document).ready(function()
         {
             $('#confirm').hide();
@@ -11,13 +12,13 @@ $(document).ready(function()
 //                                var pid = $('#pid').val();
 //                                var expiryTime = $('#expiryTime').val();
                                 $.post('/subscribe', {
-                                                            'course_id' : {{ course[0].id}},//course_id,//$('#course_id').val(),
-                                                            'pid' : {{ course[0].pid}},//pid,//$('#pid').val(),
-                                                            'expiryTime' : {{ course[0].expirytime}}//expiryTime//$('#expiryTime').val()
+                                                            'course_id' : $('#course_id').val(),
+                                                            'pid' : $('#pid').val(),
+                                                            'expiryTime' : $('#expiryTime').val()
                                                             },
-                                        function()
+                                        function(msg)
                                         {
-                                
+                                            alert(msg.success);
                                         },
                                         'json'
                            );

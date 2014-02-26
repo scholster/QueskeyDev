@@ -9,8 +9,7 @@ FrontEndBundle:Homepage:index
 {% block js %}
 
 <script type='text/javascript' src='{{ asset('js/jquery.js') }}'></script>
-{#<script type='text/javascript' src='{{ asset('js/subscribe.js?v=1') }}'></script>#}
-
+{#<script type='text/javascript' src='{{ asset('js/subscribe.js') }}'></script>#}
 {% endblock%}
 
 
@@ -19,6 +18,7 @@ FrontEndBundle:Homepage:index
 
 <h1>Welcome to the Course:course page</h1>
 {{ dump(loggedInUser) }}
+{{ dump(subscriptionFlag) }}
 <br><br>
 
 {% endblock%}
@@ -32,8 +32,10 @@ FrontEndBundle:Homepage:index
 {% endblock %}
 <div id="course_details">
 {% block course%}
-        <ul id="course_id" value="{{ course[0].id}}">Course id : {{course[0].id}}</ul><br>
+        <ul id="course_id" value="{{ course[0].id}}"><b>Course id</b> : {{course[0].id}}</ul><br>
         <li>Course name : {{course[0].name}}</li><br>
+        <li>Course Cat : {{course[0].catname}}</li><br>
+        <li>Course SubCat : {{course[0].subcatname}}</li><br>
         <li>Course description : {{course[0].description}}</li><br>
         <li>Course instructor name : {{course[0].ins_name}}</li><br>
         <li id="pid" value="{{ course[0].pid}}">Course paymentPlan id : {{course[0].pid}}</li><br>
@@ -44,7 +46,9 @@ FrontEndBundle:Homepage:index
 {% endblock %}
         
 {% block subscribe%}
+        <div id="subscribe_study">
         <button id="subscribe">Subscribe</button>
+        </div>
 {% endblock %}
 </div>
 
@@ -58,7 +62,14 @@ FrontEndBundle:Homepage:index
 <script>
 $(document).ready(function()
         {
+                if({{ subscriptionFlag }})
+                {
+                    $('#subscribe').remove();
+                    $('#subscribe_study').append('<button id="study">study</button>');
+                }
+                
             $('#confirm').hide();
+            
             $('#subscribe').click(function()
                 {
                     $("#course_details").hide();
@@ -73,9 +84,22 @@ $(document).ready(function()
                                                             'pid' : {{ course[0].pid}},//pid,//$('#pid').val(),
                                                             'expiryTime' : {{ course[0].expirytime}}//expiryTime//$('#expiryTime').val()
                                                             },
-                                        function()
+                                        function(msg)
                                         {
-                                
+                                            if(msg.success === 1)
+                                                {
+                                                    alert('successfully subscribed. Redirecting to dashboard');
+                                                    window.location.href = '/';
+                                                }
+                                            else if(msg.success === 0)
+                                                {
+                                                    alert('some error occurred, please try again');
+                                                }
+                                                else
+                                                {
+                                                    alert('this course has alresy been subscribed by you');
+                                                    window.location.href = '/';
+                                                }
                                         },
                                         'json'
                            );

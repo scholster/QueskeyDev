@@ -28,7 +28,11 @@ class IndexController extends Controller
     public function userDashboard()
     {
         $em = $this->getDoctrine()->getManager();
-        $queryCourse = $em->createQuery("SELECT c.id,c.name,c.description FROM Queskey\FrontEndBundle\Entity\Course c where c.published = 1");
+        $queryCourse = $em->createQuery("SELECT c.id, c.name, c.description, s.name as subcatname, cat.name as catname 
+                                         FROM Queskey\FrontEndBundle\Entity\Course c 
+                                         JOIN c.subcat s
+                                         JOIN s.cat cat
+                                         WHERE c.published = 1");
         $queryCourse->setMaxResults(10);
         $courses = $queryCourse->getResult();
 //        var_dump($courses);
@@ -39,7 +43,9 @@ class IndexController extends Controller
 //        var_dump($subCategories);
 //        die;
         
+        $getMyCourse = new \Queskey\FrontEndBundle\Model\CheckSubscription();
+        $myCourses = $getMyCourse->myCourses($this->loggedInUser, $em);
         
-        return $this->render("FrontEndBundle:Index:dashboard.html.twig",array("courses"=>$courses, "subCategories" => $subCategories));
+        return $this->render("FrontEndBundle:Index:dashboard.html.twig",array("courses"=>$courses, "subCategories" => $subCategories, "myCourses"=>$myCourses));
     }
 }
