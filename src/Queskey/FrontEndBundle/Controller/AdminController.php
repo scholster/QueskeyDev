@@ -432,4 +432,33 @@ class AdminController extends Controller {
             return $this->render('FrontEndBundle:Index:index.html.twig');
         }
     }
+    
+    public function viewlessonsAction() {
+        if ($this->checkadminAction()) {
+            $em = $this->getDoctrine()->getManager();
+
+            $request = $this->get("request");
+            if ($request->isXmlHttpRequest() && $request->getMethod() == "POST") {
+                $data = $request->request->all();
+                $em = $this->getDoctrine()->getManager();
+
+                $getlessons = $em->createQuery('SELECT Cl.id, Cl.lessonname, Cl.lessontype
+                        FROM Queskey\FrontEndBundle\Entity\Courselessons Cl
+                        JOIN Cl.topicid ti
+                        WHERE ti.id=:tid
+                        ')->setParameter('tid', $data['topic_lesson']);
+                $lessons = $getlessons->getResult();
+                
+                if ($lessons) {
+                    $response = new Response(json_encode($lessons));
+                    return $response;
+                } else {
+                    $response = new Response(json_encode(array("0" => 'fail')));
+                    return $response;
+                }
+            }
+        } else {
+            return $this->render('FrontEndBundle:Index:index.html.twig');
+        }
+    }
 }

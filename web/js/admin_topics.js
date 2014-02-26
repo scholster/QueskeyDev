@@ -21,6 +21,16 @@ $("#addlesson_btn").click(function(){
        storelesson();        
 });
 
+$("#content_subject").bind("change",(function(){
+    $("#content_topic").empty();
+   populatecontenttopic(); 
+}));
+
+$("#content_topic").bind("change",(function(){
+    $("#content_lesson").empty();
+   populatecontentlesson(); 
+}));
+
 });
 
 function populatetopic()
@@ -40,6 +50,50 @@ function populatetopic()
             for (var i = 0; i < data.length; i++)
             {
                 $("#lesson_topic").append($('<option></option>').val(data[i].id).html(data[i].topicname));
+            }
+        }
+    }, 'json');
+}
+
+function populatecontenttopic()
+{
+    $.post("/instructor/view/topics", {
+        lesson_subject: $("#content_subject").val()
+
+    }, function(data) {
+
+        if (data[0] === "fail")
+        {
+            alert("No topics in selected subject");
+        }
+        else
+        {
+
+            for (var i = 0; i < data.length; i++)
+            {
+                $("#content_topic").append($('<option></option>').val(data[i].id).html(data[i].topicname));
+            }
+        }
+    }, 'json');
+}
+
+function populatecontentlesson()
+{
+    $.post("/instructor/view/lessons", {
+        topic_lesson: $("#content_topic").val()
+
+    }, function(data) {
+
+        if (data[0] === "fail")
+        {
+            alert("No topics in selected subject");
+        }
+        else
+        {
+
+            for (var i = 0; i < data.length; i++)
+            {
+                $("#content_lesson").append($('<option></option>').val(data[i].id).html(data[i].lessonname));
             }
         }
     }, 'json');
