@@ -31,6 +31,11 @@ $("#content_topic").bind("change",(function(){
    populatecontentlesson(); 
 }));
 
+$("#addcontent_btn").click(function(){
+    var val= CKEDITOR.instances['contents'].getData();
+       storecontent(val);        
+});
+
 });
 
 function populatetopic()
@@ -189,4 +194,27 @@ function storelesson()
     ,'json');
     
     
-    }    
+    } 
+    
+function storecontent(con)
+    {
+        $.post("/instructor/store/content",{
+            contentname: $("#ctname").val(),
+            content_lessonid: $("#content_lesson").val(),
+            contenttype: $("#contenttype").val(),
+            content:con
+        },function(data){
+            if(data[0]==="success")
+                {
+                    window.location.href = '/instructor/create/topics';
+                }
+                else
+                    {
+                        alert("fails");
+                        window.location.href = '/instructor';
+            //redirect to further page to enter courses
+        }}
+    ,'json');
+    
+    
+    }  

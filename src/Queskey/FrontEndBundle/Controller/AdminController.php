@@ -272,7 +272,11 @@ class AdminController extends Controller {
                                    WHERE c.id=:id')->setParameter('id',$course[0]['id']);
             $subject = $subjectqry->getResult();
             
-            return $this->render('FrontEndBundle:Admin:admin_topics.html.twig',array('course' => $course, 'category'=>$category, 'subcategory'=>$sub_cat, 'subject'=>$subject));
+            $qrycon = $em->createQuery('SELECT C.content FROM \Queskey\FrontEndBundle\Entity\Lessoncontents C WHERE C.id=2');
+            $content=$qrycon->getResult();
+            /*var_dump($content);
+            die;*/
+            return $this->render('FrontEndBundle:Admin:admin_topics.html.twig',array('course' => $course, 'category'=>$category, 'subcategory'=>$sub_cat, 'subject'=>$subject, 'content'=>$content));
         } else {
             return $this->render('FrontEndBundle:Index:index.html.twig');
         }
@@ -456,6 +460,37 @@ class AdminController extends Controller {
                     $response = new Response(json_encode(array("0" => 'fail')));
                     return $response;
                 }
+            }
+        } else {
+            return $this->render('FrontEndBundle:Index:index.html.twig');
+        }
+    }
+    
+    public function storecontentAction() {
+        $instructorId = $this->checkadminAction();
+        if ($instructorId) {
+            $request = $this->get("request");
+            if ($request->isXmlHttpRequest() && $request->getMethod() == "POST") {
+                $data = $request->request->all();
+                $em = $this->getDoctrine()->getManager();
+
+                $newContent = new \Queskey\FrontEndBundle\Entity\Lessoncontents;
+                $lessonId = $this->getDoctrine()->getRepository('FrontEndBundle:Courselessons')->find($data['content_lessonid']);
+                $newContent->setLessonid($lessonId);
+
+                $newContent->setContentname($data['contentname']);
+                $newContent->setContenttype($data['contenttype']);
+                $newContent->setContent($data['content']);
+
+                $em->persist($newContent);
+                $em->flush();
+
+                //send data back to js page
+                $response = new Response(json_encode(array("0" => 'success')));
+                return $response;
+            } else {
+                $response = new Response(json_encode(array("0" => 'fail')));
+                return $response;
             }
         } else {
             return $this->render('FrontEndBundle:Index:index.html.twig');

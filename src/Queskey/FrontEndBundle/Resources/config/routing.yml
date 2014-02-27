@@ -61,6 +61,10 @@ admin_view_lessons:
   pattern: /instructor/view/lessons
   defaults: { _controller: FrontEndBundle:Admin:viewlessons }
   
+admin_store_content:
+  pattern: /instructor/store/content
+  defaults: { _controller: FrontEndBundle:Admin:storecontent }
+  
 admin_update:
   pattern: /instructor/update
   defaults: { _controller: FrontEndBundle:Admin:updatecourse }
