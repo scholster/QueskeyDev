@@ -62,10 +62,18 @@ FrontEndBundle:Homepage:index
 <script>
 $(document).ready(function()
         {
-                if({{ subscriptionFlag }})
+                if({{ subscriptionFlag.flag }})
                 {
-                    $('#subscribe').remove();
-                    $('#subscribe_study').append('<button id="study">study</button>');
+                    if({{ subscriptionFlag.deleted }})
+                    {
+                        alert('your subscription has expired, redirecting to subscribe course');
+                        location.reload();
+                    }
+                    else
+                        {
+                           $('#subscribe').remove();
+                           $('#subscribe_study').append('<button id="study">study</button>'); 
+                        }
                 }
                 
             $('#confirm').hide();

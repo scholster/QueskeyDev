@@ -43,13 +43,15 @@ class CourseController extends Controller {
     public function checkSubscription($userid, $courseid, $em)
     {
         $course = new \Queskey\FrontEndBundle\Model\CheckSubscription();
-        if($course->checkIfSubscribed($userid, $courseid, $em))
+        $course_info = $course->checkIfSubscribed($userid, $courseid, $em);
+        if($course_info)
         {
-            return 1;
+            $flag = $course->expiry($course_info, $em);
+            return array('deleted'=>$flag, 'flag'=>1);
         }
         else
         {
-            return 0;
+            return array('deleted'=>0, 'flag'=>0);
         }
         
     }

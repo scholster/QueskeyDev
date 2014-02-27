@@ -23,6 +23,18 @@ class CheckSubscription
     {
         return $em->getRepository('FrontEndBundle:Subscriptions')->findOneBy(array('userid'=>$userid, 'courseid'=>$courseid));
     }
+    
+    public function expiry($course_info, $em)
+    {
+        if($course_info->getExpirytime() <= new \DateTime(date('Y-m-d H:i:s')))
+        {
+            $delete = $em->getRepository('FrontEndBundle:Subscriptions')->findOneBy(array('userid'=>$course_info->getUserid(), 'courseid'=>$course_info->getCourseid()));
+            $em->remove($delete);
+            $em->flush();
+            return 1;
+        }
+        return 0;
+    }
 }
 
 
