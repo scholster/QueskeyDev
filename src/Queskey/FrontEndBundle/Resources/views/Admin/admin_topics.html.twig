@@ -1,0 +1,303 @@
+{% set loggedInUser = app.session.get('User') %}
+{% block title %}Admin Dashboard{% endblock %}
+
+
+
+{% block javascript %}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type='text/javascript' src="{{ asset('js/admin_topics.js') }}"></script>
+<script type='text/javascript' src="{{ asset('js/admindashboard.js') }}" ></script>
+{% endblock %}
+
+
+
+{% block body %}
+<h1>Welcome to the Admin Topics & Course Creation page</h1>
+{{ dump(loggedInUser) }}
+<br><br>
+
+
+
+{% block logout_button%}
+
+<a href="{{ path('logout') }}"><b>logout</b></a><br><br><br>
+
+{% endblock %}
+
+{% for courses in course %}
+CourseName      : {{ courses.name }}<br>
+Category        : {{ courses.cname }}<br>
+Sub-Category    : {{ courses.sname }}<br>
+Description     : {{ courses.description }}<br>
+{% endfor %}
+{% autoescape 'html' %}
+    {{ content[0].content|raw }}      {# var won't be escaped #}
+    {# var won't be double-escaped #}
+{% endautoescape %}
+
+<br>
+<button type="button" class="edit" id="edit_btn">Click here to edit details of the above listed categories</button>
+
+<button type="button" class="addsubjects" id="addsubjects_btn">Click here to add subjects to the course {{ course[0].name }}</button>
+
+<button type="button" class="addtopics" id="addtopics_btn">Click here to add topics to the course {{ course[0].name }}</button><br><br>
+
+<button type="button" class="addlessons" id="addlessons_btn">Click here to add lessons to the course {{ course[0].name }}</button>
+
+<button type="button" class="addcontents" id="addcontents_btn">Click here to add contents to the lessons for Course {{ course[0].name }}</button>
+
+<button type="button" class="addquestions" id="addquestions_btn">Click here to add questions to the topics for Course {{ course[0].name }}</button>
+{{ dump(course[0].id) }}
+
+<script>
+$(document).ready(function(){
+    $("#updatecourse").hide();   
+  $("#edit_btn").click(function(){
+    $("#updatecourse").slideToggle();
+  });
+  
+  $("#addsubject").hide(); 
+    $("#addsubjects_btn").click(function(){
+    $("#addsubject").slideToggle();
+  });
+  
+  $("#addtopic").hide(); 
+    $("#addtopics_btn").click(function(){
+    $("#addtopic").slideToggle();
+  });
+  
+  $("#addlesson").hide(); 
+    $("#addlessons_btn").click(function(){
+    $("#addlesson").slideToggle();
+  });
+  
+  $("#addcontent").hide(); 
+    $("#addcontents_btn").click(function(){
+    $("#addcontent").slideToggle();
+  });
+  
+  $("#addquestion").hide(); 
+    $("#addquestions_btn").click(function(){
+    $("#addquestion").slideToggle();
+  });
+});
+</script>
+
+
+
+<div id="updatecourse" class="course_box">
+<pre>
+<form id="update_course_form" name = "CourseDetails">
+Course Name  : <input class="course_name" type="text" id="cname" name="coursename">
+
+<!--how do i pass the value of id to js page--> 
+Category     : <select id="category" name="category" >
+{% for categories in category %}
+  <option value={{ categories.id }} > {{ categories.name }} </option>
+  {% endfor %}
+</select>
+
+Sub-Category : <select id="subcategory" name="subcategory">
+    {% for subcategories in subcategory %}
+  <option value={{ subcategories.id }} > {{ subcategories.name }} </option>
+  {% endfor %}
+</select>
+
+Description  : <br><textarea rows="4" cols="50" name="description" id="course_desc"></textarea>
+<div class="submit">
+<button type="button" class="submit_box" id="update_btn" value={{ course[0].id }} >Update Course</button><br><br><br><br>
+</div>
+</form>
+</pre>
+    </div>
+
+
+
+<div id="addsubject" name="Subjects" class="addsubject_box">
+<form id="addsubject_form">
+    <pre>
+SubjectName        : <input class="subject_name" type="text" id="sname">
+SubjectDescription : <br><textarea rows="4" cols="50" name="description" id="subject_desc"></textarea>
+Type               : <select id="subtype">
+  <option value= "0">Free</option>
+  <option value= "1">Paid</option>
+</select>
+(Select Paid if you want the complete
+contents of this subject to be visible
+to paid users otherwise select free if
+you want to make some contents free.)
+<div class="submit">
+<button type="button" class="submit_box" id="addsub_btn" value={{ course[0].id }} >Add Subject</button><br><br><br><br>
+</div>
+    </pre>
+</form>
+</div>
+
+
+
+<div id="addtopic" name="Topics" class="addtopic_box">
+<form id="addtopic_form">
+    <pre>
+TopicName        : <input class="topic_name" type="text" id="tname">
+TopicDescription : <br><textarea rows="4" cols="50" name="description" id="topic_desc"></textarea>
+
+Subject : <select id="topic_subject" name="topic_sub">
+    {% for subjects in subject %}
+  <option value={{ subjects.id }} > {{ subjects.subjectname }} </option>
+  {% endfor %}
+</select>
+
+{# if selected subject is paid then do not give choice of free/paid #}
+
+Type             : <select id="topictype">
+  <option value= "0">Free</option>
+  <option value= "1">Paid</option>
+</select>
+(Select Paid if you want the complete
+contents of this topic to be visible
+to paid users otherwise select free if
+you want to make some contents free.)
+<div class="submit">
+<button type="button" class="submit_box" id="addtopic_btn">Add Topic</button><br><br><br><br>
+</div>
+    </pre>
+</form>
+</div>
+
+
+
+<div id="addlesson" name="Lessons" class="addlesson_box">
+<form id="addlesson_form">
+    <pre>
+LessonName        : <input class="lesson_name" type="text" id="lname">
+Subject           : <select id="lesson_subject" name="lesson_sub">
+    {% for subjects in subject %}
+  <option value={{ subjects.id }} > {{ subjects.subjectname }} </option>
+  {% endfor %}
+</select>
+
+Topic             : <select id="lesson_topic" name="lesson_topics">
+    
+</select>
+
+{# if selected subject is paid then do not give choice of free/paid #}
+
+Type             : <select id="lessontype">
+  <option value= "0">Free</option>
+  <option value= "1">Paid</option>
+</select>
+(Select Paid if you want the complete
+contents of this lesson to be visible
+to paid users otherwise select free if
+you want to make some contents free.)
+<div class="submit">
+<button type="button" class="submit_box" id="addlesson_btn">Add Lesson</button><br><br><br><br>
+</div>
+    </pre>
+</form>
+</div>
+
+
+
+<div id="addcontent" name="Contents" class="addcontent_box">
+<form id="addcontent_form">
+    <pre>
+ContentName       : <input class="content_name" type="text" id="ctname">
+Subject           : <select id="content_subject" name="content_sub">
+    {% for subjects in subject %}
+  <option value={{ subjects.id }} > {{ subjects.subjectname }} </option>
+  {% endfor %}
+</select>
+
+Topic             : <select id="content_topic" name="content_topics">
+    
+</select>
+
+Lesson            : <select id="content_lesson" name="content_lessons">
+   
+</select>
+{# if selected subject is paid then do not give choice of free/paid #}
+
+Type             : <select id="contenttype">
+  <option value= "0">Free</option>
+  <option value= "1">Paid</option>
+</select>
+(Select Paid if you want the complete
+contents of this content to be visible
+to paid users otherwise select free if
+you want to make some contents free.)
+
+Type Content      : <br><br><br><textarea rows="10" cols="40" name="content" id="contents"></textarea>
+<script src="{{ asset('js/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
+<script>
+                // Replace the <textarea id="editor1"> with a CKEditor
+                // instance, using default configuration.
+                CKEDITOR.replace( 'contents' );
+            </script>
+<div class="submit">
+<button type="button" class="submit_box" id="addcontent_btn">Add Content</button><br><br><br><br>
+</div>
+    </pre>
+</form>
+</div>
+
+
+<div id="addquestion" name="Questions" class="addquestion_box">
+<form id="addquestion_form">
+    <pre>
+
+Subject           : <select id="lesson_subject" name="lesson_sub">
+    {% for subjects in subject %}
+  <option value={{ subjects.id }} > {{ subjects.subjectname }} </option>
+  {% endfor %}
+</select>
+
+Topic             : <select id="lesson_topic" name="lesson_topics">
+    
+</select>
+
+Type Your Question      : <br><br><br><textarea rows="10" cols="40" name="question" id="question_topic"></textarea>
+<script src="{{ asset('js/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
+<script>
+                // Replace the <textarea id="editor1"> with a CKEditor
+                // instance, using default configuration.
+                CKEDITOR.replace( 'question_topic' );
+</script>
+<br>
+<br>
+Select Answer :    <select id="answer" name="answer_ques">
+    
+  <option value= "1">A </option>
+  <option value= "2">B </option>
+  <option value= "3">C </option>
+  <option value= "4">D </option>
+  <option value= "5">E </option>
+</select>
+<br><br>
+<div class="submit">
+<button type="button" class="submit_box" id="addquestion_btn">Add Question</button><br><br><br><br>
+</div>
+    </pre>
+</form>
+</div>
+<br><br><br><br>
+
+
+
+{% block paymentplan_button %}
+
+<a href="{{ path('admin_createpplanview') }}"><b>Click here to generate Payment Plan</b></a><br><br>
+
+{% endblock %}
+
+
+
+{% block update_paymentplan_button %}
+
+<a href="{{ path('admin_updatepplanview') }}"><b>Click here to update a Payment Plan</b></a><br><br>
+
+{% endblock %}
+
+
+
+{% endblock %}

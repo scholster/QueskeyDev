@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Response;
 class SearchController extends Controller
 {
     
-    private $array = array();
 
     public function searchAction()
     {
@@ -18,15 +17,22 @@ class SearchController extends Controller
             $string=$request->request->get('string');
             $em=$this->getDoctrine()->getManager();
             
-            $query = $em->createQuery('SELECT c.name, c.id, c.description 
+            $query = $em->createQuery('SELECT c.id, c.name, c.description, s.name as subcatname, cat.name as catname 
                                        FROM Queskey\FrontEndBundle\Entity\Course c 
-                                       where c.name LIKE :string')->setParameter('string', '%'.$string.'%');
+                                       JOIN c.subcat s
+                                       JOIN s.cat cat
+                                       WHERE c.name LIKE :string
+                                       OR s.name LIKE :string')->setParameter('string', '%'.$string.'%');
 
-            $result = $query->getResult();
+            $courses = $query->getResult();
             
-            if($result)
+            if($courses)
                 {
-                $response=new Response(json_encode($result));
+                foreach($courses as $key => $course)
+                    {
+                        $courses[$key]['url'] = $this->generateUrl('course',array('id'=>$course['id']));
+                    }
+                $response=new Response(json_encode($courses));
                 return $response;
                 }
                 
@@ -57,8 +63,10 @@ class SearchController extends Controller
         {
             
             $subCategories = $request->get('subcat');        
-            $this->dbHandle($subCategories);          
-            $courses = $this->array;          
+            $courses = $this->dbHandle($subCategories);
+            foreach($courses as $key => $course){
+                $courses[$key]['url'] = $this->generateUrl('course',array('id'=>$course['id']));
+            }
             $response = new Response(json_encode($courses));
             return $response;
         }
@@ -72,28 +80,14 @@ class SearchController extends Controller
     public function dbHandle($subCategories)
     {
         $em = $this->getDoctrine()->getManager();
-        $courses = array();
-            
-        foreach($subCategories as $subcat)
-        {
-            $courseQuery = $em->createQuery('SELECT c.id, c.name, c.description 
-                                             FROM Queskey\FrontEndBundle\Entity\Course c  
-                                             where c.subcat = :subcat and c.published = 1')->setParameter('subcat' , $subcat);
-
-            $courses = $courseQuery->getResult();
-            $this->multiToOne($courses);
-        }
-        return ;
-    }
-
-    
-    
-    public function multiToOne($courses)
-    {
-        foreach($courses as $course)
-        {
-        $this->array[] = $course;
-        }
-    }
-    
+                
+        $courseQuery = $em->createQuery('SELECT c.id, c.name, c.description, s.name as subcatname, cat.name as catname 
+                                         FROM Queskey\FrontEndBundle\Entity\Course c 
+                                         JOIN c.subcat s
+                                         JOIN s.cat cat  
+                                         where c.subcat IN (:subcat) and c.published = 1')->setParameter('subcat' , $subCategories);
+        
+        $courses = $courseQuery->getResult();
+        return $courses;
+    }    
 }

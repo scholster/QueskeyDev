@@ -1,14 +1,10 @@
 {% set loggedInUser = app.session.get('User') %}
-
 {% block title %}FrontEndBundle:Homepage:index{% endblock %}
 
 
-
 {% block javascript %}
-
 <script type='text/javascript' src='js/jquery.js'></script></script>
 <script type='text/javascript' src='js/core.js?v=1'></script>
-
 {% endblock %}
 
 
@@ -21,6 +17,23 @@
 
 {% endblock%}
 
+
+{%block myCourses%}
+<p>-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/</p><br>
+<button id='myCourses_btn'>Show/hide Subscribed Courses</button>
+<div id="myCourses">
+    {%for myCourse in myCourses%}
+        <ul><h4><a href="{{ path("course", { 'id' : myCourse.id})}}">{{ myCourse.name }}</a></h4>
+            <li><b>CatName</b> : {{ myCourse.catname }}</li>
+            <li><b>SubCatName</b> : {{ myCourse.subcatname }}</li>
+            <li><b>Description</b> : {{ myCourse.description }}</li>
+        </ul>
+        <p>..................................</p><br>
+    {%endfor%}
+</div>
+<p>-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/</p><br>
+
+{%endblock%}
 
 
 {% block logout_button%}
@@ -79,18 +92,21 @@
 
 
 {% block default_courses%}
-
+<p>-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/</p><br>
 <div id="default_courses">
 Courses :
 <br>
 {%for course in courses %}
-<ul><ul>
+<ul>
 <h4><a href="{{ path("course", { 'id' : course.id})}}">{{ course.name }}</a></h4>
-<li><p>{{ course.description }}</p></li>
-</ul></ul><br>
+<li><b>CatName</b> : {{ course.catname }}</li>
+<li><b>SubCatName</b> : {{ course.subcatname }}</li>
+<li><b>Description</b> : {{ course.description }}</li>
+</ul>
+<p>..................................</p><br>
 {%endfor%}
 </div>
-
+<p>-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/</p><br>
 {% endblock%}
 
 

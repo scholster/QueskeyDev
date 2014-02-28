@@ -10,11 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Course
 {
     /**
-     * @var integer
-     */
-    private $id;
-
-    /**
      * @var string
      */
     private $name;
@@ -30,27 +25,51 @@ class Course
     private $published;
 
     /**
-     * @var \Queskey\FrontEndBundle\Entity\User
+     * @var integer
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
      */
-    private $instructor;
+    private $id;
+
+    /**
+     * @var \Queskey\FrontEndBundle\Entity\User
+=======
+>>>>>>> 5ae0d2ff7e0fcb46dc6dba8d9e9e1dd0ebcdd7a4
+=======
+>>>>>>> 5ae0d2ff7e0fcb46dc6dba8d9e9e1dd0ebcdd7a4
+=======
+>>>>>>> 5ae0d2ff7e0fcb46dc6dba8d9e9e1dd0ebcdd7a4
+=======
+>>>>>>> 5ae0d2ff7e0fcb46dc6dba8d9e9e1dd0ebcdd7a4
+     */
+    private $id;
 
     /**
      * @var \Queskey\FrontEndBundle\Entity\SubCategory
      */
     private $subcat;
 
-
     /**
-     * Get id
-     *
-     * @return integer 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 5ae0d2ff7e0fcb46dc6dba8d9e9e1dd0ebcdd7a4
+=======
+>>>>>>> 5ae0d2ff7e0fcb46dc6dba8d9e9e1dd0ebcdd7a4
+=======
+>>>>>>> 5ae0d2ff7e0fcb46dc6dba8d9e9e1dd0ebcdd7a4
+     * @var \Queskey\FrontEndBundle\Entity\User
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    private $instructor;
+
 
     /**
+>>>>>>> 5ae0d2ff7e0fcb46dc6dba8d9e9e1dd0ebcdd7a4
      * Set name
      *
      * @param string $name
@@ -120,26 +139,41 @@ class Course
     }
 
     /**
-     * Set instructor
+     * Get id
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
      *
-     * @param \Queskey\FrontEndBundle\Entity\User $instructor
-     * @return Course
+     * @return integer 
      */
-    public function setInstructor(\Queskey\FrontEndBundle\Entity\User $instructor = null)
+    public function getId()
     {
-        $this->instructor = $instructor;
-
-        return $this;
+        return $this->id;
     }
 
     /**
-     * Get instructor
+     * Set instructor
+=======
+>>>>>>> 5ae0d2ff7e0fcb46dc6dba8d9e9e1dd0ebcdd7a4
+=======
+>>>>>>> 5ae0d2ff7e0fcb46dc6dba8d9e9e1dd0ebcdd7a4
      *
-     * @return \Queskey\FrontEndBundle\Entity\User 
+     * @return integer 
      */
-    public function getInstructor()
+    public function getId()
     {
-        return $this->instructor;
+        return $this->id;
+<<<<<<< HEAD
+=======
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+=======
+>>>>>>> 5ae0d2ff7e0fcb46dc6dba8d9e9e1dd0ebcdd7a4
     }
 
     /**
@@ -163,5 +197,67 @@ class Course
     public function getSubcat()
     {
         return $this->subcat;
+<<<<<<< HEAD
+>>>>>>> 5ae0d2ff7e0fcb46dc6dba8d9e9e1dd0ebcdd7a4
+    }
+
+    /**
+     * Set instructor
+=======
+>>>>>>> 5ae0d2ff7e0fcb46dc6dba8d9e9e1dd0ebcdd7a4
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+=======
+>>>>>>> 5ae0d2ff7e0fcb46dc6dba8d9e9e1dd0ebcdd7a4
+    }
+
+    /**
+     * Set instructor
+     *
+     * @param \Queskey\FrontEndBundle\Entity\User $instructor
+     * @return Course
+     */
+    public function setInstructor(\Queskey\FrontEndBundle\Entity\User $instructor = null)
+    {
+        $this->instructor = $instructor;
+
+        return $this;
+    }
+
+    /**
+     * Get instructor
+     *
+     * @return \Queskey\FrontEndBundle\Entity\User 
+     */
+    public function getInstructor()
+    {
+        return $this->instructor;
+    }
+
+    /**
+     * Set instructor
+     *
+     * @param \Queskey\FrontEndBundle\Entity\User $instructor
+     * @return Course
+     */
+    public function setInstructor(\Queskey\FrontEndBundle\Entity\User $instructor = null)
+    {
+        $this->instructor = $instructor;
+
+        return $this;
+    }
+
+    /**
+     * Get instructor
+     *
+     * @return \Queskey\FrontEndBundle\Entity\User 
+     */
+    public function getInstructor()
+    {
+        return $this->instructor;
     }
 }
