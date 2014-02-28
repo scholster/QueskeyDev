@@ -20,7 +20,7 @@ class LoginController extends Controller
             $user = $userRepository->findOneBy(array("email"=>$data['email']));
             if($user && $user->getPassword()==$data['pwd'])
             {
-                $userLogin = new \Queskey\FrontEndBundle\Model\UserLogin($user->getId(), $user->getName(), $user->getEmail());
+                $userLogin = new \Queskey\FrontEndBundle\Model\UserLogin($user->getId(), $user->getName(), $user->getEmail(), $user->getAdmin());
                 $session = new \Symfony\Component\HttpFoundation\Session\Session();
                 $session->start();
                 $session->set("User", $userLogin);

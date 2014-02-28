@@ -7,16 +7,70 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class CourseController extends Controller {
     
-    public function indexAction($id)
+    private $loggedInUser;
+    
+    function __construct()
     {
         $session = new \Symfony\Component\HttpFoundation\Session\Session();
         $session->start();
-        $loggedInUser = $session->get("User");
+        $this->loggedInUser = $session->get("User");
         
-        if($loggedInUser)
+    }
+
+    public function indexAction($id)
+    {
+        
+        
+        if($this->loggedInUser)
         {
+            
+            $em = $this->getDoctrine()->getManager();
+            $insId = $this->checkIfAdmin($id, $em);
+
+        
+            if($this->loggedInUser->getAdmin() && $this->loggedInUser->getId() == $insId[0]['id'])            
+            {
+                return $this->redirect($this->generateUrl('courseEdit', array('id'=>$id)));
+            }
+            else
+            {
+                $array = $this->dbHandle($id, $em);
+                return $this->render('FrontEndBundle:Course:course.html.twig',array('course'=>$array['course_info'], 'subscriptionFlag'=>$array['subscriptionFlag']));
+            }
+        }
+        else
+        {
+            return $this->render('FrontEndBundle:Common:pleaseLogin.html.twig');
+        }
+    }
+    
+    
+    
+    
+    public function editAction($id)
+    {
         $em = $this->getDoctrine()->getManager();
-        $course_query = $em->createQuery('SELECT c.id, c.name, s.name as subcatname, cat.name as catname, c.description, i.name as ins_name,
+        $insId = $this->checkIfAdmin($id, $em);
+        if($this->loggedInUser->getAdmin() && $this->loggedInUser->getId() == $insId[0]['id'])
+        {
+            
+        $array = $this->dbHandle($id, $em);
+        return $this->render('FrontEndBundle:Course:courseEdit.html.twig',array('course'=>$array['course_info'], 'subscriptionFlag'=>$array['subscriptionFlag']));
+        
+        }
+        
+        else
+        {
+            return $this->render('FrontEndBundle:Default:notFound.html.twig');
+        }
+   }
+    
+    
+    
+    
+    public function dbHandle($id, $em)
+    {
+         $course_query = $em->createQuery('SELECT c.id, c.name, s.name as subcatname, cat.name as catname, c.description, i.name as ins_name,
                                           p.id as pid, p.price, p.expirytime, p.discountPercent,
                                           p.resubscriptionPrice, p.description
                                           FROM Queskey\FrontEndBundle\Entity\PaymentAssociation pass
@@ -26,19 +80,19 @@ class CourseController extends Controller {
                                           JOIN s.cat cat
                                           JOIN c.instructor i
                                           WHERE c.id = :id')->setParameter('id', $id);
+        $array = array();
+        $array['course_info'] = $course_query->getResult();
+        $userId = $this->loggedInUser->getId();
+//        var_dump($userId);
+//        die;
+        $array['subscriptionFlag'] = $this->checkSubscription($userId, $id, $em);
         
-        $course_info = $course_query->getResult();
+        return $array;
         
-        $subscriptionFlag = $this->checkSubscription($loggedInUser->getId(), $id, $em);
-        
-        return $this->render('FrontEndBundle:Course:course.html.twig',array('course'=>$course_info, 'subscriptionFlag'=>$subscriptionFlag));
-        }
-        
-        else
-        {
-            return $this->render('FrontEndBundle:Common:pleaseLogin.html.twig');
-        }
     }
+
+    
+    
     
     public function checkSubscription($userid, $courseid, $em)
     {
@@ -54,6 +108,16 @@ class CourseController extends Controller {
             return array('deleted'=>0, 'flag'=>0);
         }
         
+    }
+    
+    public function checkIfAdmin($id, $em)
+    {
+        $insIdQuery = $em->createQuery('SELECT i.id
+                                            FROM Queskey\FrontEndBundle\Entity\Course c
+                                            JOIN c.instructor i
+                                            WHERE c.id = :id')->setParameter('id', $id);
+            
+        return $insIdQuery->getResult();
     }
     
 }

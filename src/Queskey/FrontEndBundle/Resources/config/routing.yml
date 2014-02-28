@@ -28,6 +28,12 @@ course:
   defaults: { _controller: FrontEndBundle:Course:index }
   requirements:
         _method:  GET
+        
+courseEdit:
+  pattern: /admin/course/{id}
+  defaults: { _controller: FrontEndBundle:Course:edit }
+  requirements:
+        _method:  GET
 
 admin:
   pattern: /instructor

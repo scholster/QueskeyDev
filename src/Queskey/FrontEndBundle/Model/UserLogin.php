@@ -7,12 +7,14 @@ class UserLogin {
     private $id;
     private $name;
     private $email;
+    private $admin;
     
     
-    function __construct($id, $name, $email ) {
+    function __construct($id, $name, $email, $admin ) {
         $this->name = $name;
         $this->email = $email;
         $this->id = $id;
+        $this->admin = $admin;
     }
 
     
@@ -26,6 +28,10 @@ class UserLogin {
 
     public function getId() {
         return $this->id;
+    }
+    
+    public function getAdmin() {
+        return $this->admin;
     }
 
 
