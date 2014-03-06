@@ -64,10 +64,9 @@ $(document).ready(function()
         {
                 if({{ subscriptionFlag.flag }})
                 {
-                    if({{ subscriptionFlag.deleted }})
+                    if({{ subscriptionFlag.expired }})
                     {
-                        alert('your subscription has expired, redirecting to subscribe course');
-                        location.reload();
+                        alert('your subscription has expired, please resubscribe');
                     }
                     else
                         {
@@ -105,7 +104,7 @@ $(document).ready(function()
                                                 }
                                                 else
                                                 {
-                                                    alert('this course has alresy been subscribed by you');
+                                                    alert('course has been resubscribed');
                                                     window.location.href = '/';
                                                 }
                                         },

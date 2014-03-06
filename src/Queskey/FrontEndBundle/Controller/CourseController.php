@@ -28,7 +28,8 @@ class CourseController extends Controller {
             $insId = $this->checkIfAdmin($id, $em);
 
         
-            if($this->loggedInUser->getAdmin() && $this->loggedInUser->getId() == $insId[0]['id'])            
+//            if($this->loggedInUser->getAdmin() && $this->loggedInUser->getId() == $insId[0]['id'])
+            if($this->loggedInUser->getId() == $insId[0]['id'])            
             {
                 return $this->redirect($this->generateUrl('courseEdit', array('id'=>$id)));
             }
@@ -51,17 +52,25 @@ class CourseController extends Controller {
     {
         $em = $this->getDoctrine()->getManager();
         $insId = $this->checkIfAdmin($id, $em);
-        if($this->loggedInUser->getAdmin() && $this->loggedInUser->getId() == $insId[0]['id'])
+//        if($this->loggedInUser->getAdmin() && $this->loggedInUser->getId() == $insId[0]['id'])
+        if($this->loggedInUser)
         {
+            if($this->loggedInUser->getId() == $insId[0]['id'])
+            {
             
-        $array = $this->dbHandle($id, $em);
-        return $this->render('FrontEndBundle:Course:courseEdit.html.twig',array('course'=>$array['course_info'], 'subscriptionFlag'=>$array['subscriptionFlag']));
+            $array = $this->dbHandle($id, $em);
+            return $this->render('FrontEndBundle:Course:courseEdit.html.twig',array('course'=>$array['course_info'], 'subscriptionFlag'=>$array['subscriptionFlag']));
         
+            }
+        
+            else
+            {
+                return $this->render('FrontEndBundle:Default:notFound.html.twig');
+            }
         }
-        
         else
         {
-            return $this->render('FrontEndBundle:Default:notFound.html.twig');
+            return $this->render('FrontEndBundle:Common:pleaseLogin.html.twig');
         }
    }
     
@@ -100,12 +109,12 @@ class CourseController extends Controller {
         $course_info = $course->checkIfSubscribed($userid, $courseid, $em);
         if($course_info)
         {
-            $flag = $course->expiry($course_info, $em);
-            return array('deleted'=>$flag, 'flag'=>1);
+            $flag = $course->expiry($course_info);
+            return array('expired'=>$flag, 'flag'=>1);
         }
         else
         {
-            return array('deleted'=>0, 'flag'=>0);
+            return array('expired'=>0, 'flag'=>0);
         }
         
     }
