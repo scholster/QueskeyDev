@@ -25,6 +25,11 @@ class User
     private $password;
 
     /**
+     * @var boolean
+     */
+    private $admin;
+
+    /**
      * @var integer
      */
     private $id;
@@ -97,6 +102,29 @@ class User
     public function getPassword()
     {
         return $this->password;
+    }
+
+    /**
+     * Set admin
+     *
+     * @param boolean $admin
+     * @return User
+     */
+    public function setAdmin($admin)
+    {
+        $this->admin = $admin;
+
+        return $this;
+    }
+
+    /**
+     * Get admin
+     *
+     * @return boolean 
+     */
+    public function getAdmin()
+    {
+        return $this->admin;
     }
 
     /**
