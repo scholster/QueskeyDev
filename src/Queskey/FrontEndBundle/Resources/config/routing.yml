@@ -40,8 +40,7 @@ admin_view:
 admin_store:
   pattern: /instructor/store
   defaults: { _controller: FrontEndBundle:Admin:storecourse }
-  
-<<<<<<< HEAD
+
 admin_store_subject:
   pattern: /instructor/store/subject
   defaults: { _controller: FrontEndBundle:Admin:storesubject }
@@ -93,10 +92,7 @@ admin_update_paymentview:
 admin_create_topics:
   pattern: /instructor/create/topics
   defaults: { _controller: FrontEndBundle:Admin:topics }
-  
-
-  
-=======
+ 
 admin_view:
   pattern: /instructor/view
   defaults: { _controller: FrontEndBundle:Admin:viewcourse }
@@ -104,17 +100,3 @@ admin_view:
 subscription:
   pattern: /subscribe
   defaults: { _controller: FrontEndBundle:Subscription:new }
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 5ae0d2ff7e0fcb46dc6dba8d9e9e1dd0ebcdd7a4
-=======
->>>>>>> 5ae0d2ff7e0fcb46dc6dba8d9e9e1dd0ebcdd7a4
-=======
->>>>>>> 5ae0d2ff7e0fcb46dc6dba8d9e9e1dd0ebcdd7a4
-=======
->>>>>>> 5ae0d2ff7e0fcb46dc6dba8d9e9e1dd0ebcdd7a4
-=======
->>>>>>> 5ae0d2ff7e0fcb46dc6dba8d9e9e1dd0ebcdd7a4
