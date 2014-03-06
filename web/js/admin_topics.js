@@ -36,6 +36,11 @@ $("#addcontent_btn").click(function(){
        storecontent(val);        
 });
 
+$("#addquestion_btn").click(function(){
+    var val= CKEDITOR.instances['question_topic'].getData();
+       storequestion(val);        
+});
+
 });
 
 function populatetopic()
@@ -215,6 +220,26 @@ function storecontent(con)
             //redirect to further page to enter courses
         }}
     ,'json');
-    
-    
     }  
+    
+function storequestion(ques)
+    {
+        $.post("/instructor/store/question",{
+            question: ques,
+            option1: $("#option_1").val(),
+            option2: $("#option_2").val()
+        },function(data){
+            if(data[0]==="success")
+                {
+                    window.location.href = '/instructor/create/topics';
+                }
+                else
+                    {
+                        alert("fails");
+                        window.location.href = '/instructor';
+            //redirect to further page to enter courses
+        }}
+    ,'json');
+    
+    
+    } 

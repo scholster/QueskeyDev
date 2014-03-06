@@ -64,6 +64,10 @@ admin_view_lessons:
 admin_store_content:
   pattern: /instructor/store/content
   defaults: { _controller: FrontEndBundle:Admin:storecontent }
+
+admin_store_question:
+  pattern: /instructor/store/question
+  defaults: { _controller: FrontEndBundle:Admin:storequestion }
   
 admin_update:
   pattern: /instructor/update

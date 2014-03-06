@@ -496,4 +496,37 @@ class AdminController extends Controller {
             return $this->render('FrontEndBundle:Index:index.html.twig');
         }
     }
+    
+   public function storequestionAction() {
+        $instructorId = $this->checkadminAction();
+        if ($instructorId) {
+            $request = $this->get("request");
+            if ($request->isXmlHttpRequest() && $request->getMethod() == "POST") {
+                $data = $request->request->all();
+                var_dump($data);
+                die;
+                $em = $this->getDoctrine()->getManager();
+
+                $newContent = new \Queskey\FrontEndBundle\Entity\Lessoncontents;
+                $lessonId = $this->getDoctrine()->getRepository('FrontEndBundle:Courselessons')->find($data['content_lessonid']);
+                $newContent->setLessonid($lessonId);
+
+                $newContent->setContentname($data['contentname']);
+                $newContent->setContenttype($data['contenttype']);
+                $newContent->setContent($data['content']);
+
+                $em->persist($newContent);
+                $em->flush();
+
+                //send data back to js page
+                $response = new Response(json_encode(array("0" => 'success')));
+                return $response;
+            } else {
+                $response = new Response(json_encode(array("0" => 'fail')));
+                return $response;
+            }
+        } else {
+            return $this->render('FrontEndBundle:Index:index.html.twig');
+        }
+    }
 }

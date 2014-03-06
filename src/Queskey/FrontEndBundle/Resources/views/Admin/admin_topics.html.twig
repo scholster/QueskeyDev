@@ -38,19 +38,20 @@ Description     : {{ courses.description }}<br>
 <br>
 <button type="button" class="edit" id="edit_btn">Click here to edit details of the above listed categories</button>
 
-<button type="button" class="addsubjects" id="addsubjects_btn">Click here to add subjects to the course {{ course[0].name }}</button>
+<button type="button" class="addsubjects" id="addsubjects_btn">Add subjects to the course {{ course[0].name }}</button>
 
-<button type="button" class="addtopics" id="addtopics_btn">Click here to add topics to the course {{ course[0].name }}</button><br><br>
+<button type="button" class="addtopics" id="addtopics_btn">Add topics to the course {{ course[0].name }}</button><br><br>
 
-<button type="button" class="addlessons" id="addlessons_btn">Click here to add lessons to the course {{ course[0].name }}</button>
+<button type="button" class="addlessons" id="addlessons_btn">Add lessons to the course {{ course[0].name }}</button>
 
-<button type="button" class="addcontents" id="addcontents_btn">Click here to add contents to the lessons for Course {{ course[0].name }}</button>
+<button type="button" class="addcontents" id="addcontents_btn">Add contents to the lessons for Course {{ course[0].name }}</button>
 
-<button type="button" class="addquestions" id="addquestions_btn">Click here to add questions to the topics for Course {{ course[0].name }}</button>
+<button type="button" class="addquestions" id="addquestions_btn">Add questions to the topics for Course {{ course[0].name }}</button>
 {{ dump(course[0].id) }}
 
 <script>
 $(document).ready(function(){
+
     $("#updatecourse").hide();   
   $("#edit_btn").click(function(){
     $("#updatecourse").slideToggle();
@@ -80,7 +81,34 @@ $(document).ready(function(){
     $("#addquestions_btn").click(function(){
     $("#addquestion").slideToggle();
   });
+  
+  var MaxOptions       = 4; //maximum input boxes allowed
+    var Optionsform   = $("#Options"); //Input boxes wrapper ID
+    var AddButton       = $("#addoption_btn"); //Add button ID
+
+    var x = Optionsform.length; //initial text box count
+    var OptionCount=1; //to keep track of text box added
+    
+    $(AddButton).click(function (e)  //on add input button click
+{
+        if(x <= MaxOptions && OptionCount<5) //max input box allowed
+        {
+            OptionCount++; //text box added increment
+            //add input box
+            $(Optionsform).append('<div><input type="text" name="mytext[]" id="option_'+ OptionCount +'" placeholder="Option '+ OptionCount +'"/><a href="#" class="removeclass">&times;</a></div>');
+            x++; //text box increment
+        }
+return false;
 });
+
+$("body").on("click",".removeclass", function(e){ //user click on remove text
+        if( x > 1 ) {
+                $(this).parent('div').remove(); //remove text box
+                x--; //decrement textbox
+        }
+return false;
+}); 
+  });
 </script>
 
 
@@ -264,6 +292,12 @@ Type Your Question      : <br><br><br><textarea rows="10" cols="40" name="questi
                 CKEDITOR.replace( 'question_topic' );
 </script>
 <br>
+You can add a maximum of 5 choices/options.
+<button type="button" class="addoption" id="addoption_btn">Add more option</button>
+<div id="Options">
+<input type="text" name="mytext[]" id="option_1" placeholder="Option 1"/>
+</div>
+
 <br>
 Select Answer :    <select id="answer" name="answer_ques">
     
