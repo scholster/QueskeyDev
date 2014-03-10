@@ -153,37 +153,6 @@ class AdminController extends Controller {
     public function createpplanviewAction() {
         if ($this->checkadminAction()) {
             return $this->render('FrontEndBundle:Admin:admin_paymentplan.html.twig');
-        }
-    }
-
-    //list of all courses for which payment plan has not been created
-    public function createpplancourseAction() {
-        $instructorId = $this->checkadminAction();
-        if ($instructorId) {
-            $em = $this->getDoctrine()->getManager();
-
-            $course_query = $em->createQuery('SELECT c.name, c.description, c.id
-                                              FROM Queskey\FrontEndBundle\Entity\Course c
-                                              JOIN c.instructor u
-                                              WHERE u.id = :id and c.id NOT IN (SELECT ci.id FROM Queskey\FrontEndBundle\Entity\PaymentAssociation pa JOIN pa.course ci)
-                                              ')->setParameter('id', $instructorId);
-            $courses = $course_query->getResult();
-
-            if ($courses) {
-                $response = new Response(json_encode($courses));
-                return $response;
-            } else {
-                $response = new Response(json_encode(array("0" => 'fail')));
-                return $response;
-            }
-        } else {
-            return $this->render('FrontEndBundle:Index:index.html.twig');
-        }
-    }
-
-    public function createpplanviewAction() {
-        if ($this->checkadminAction()) {
-            return $this->render('FrontEndBundle:Admin:admin_paymentplan.html.twig');
         } else {
             return $this->render('FrontEndBundle:Index:index.html.twig');
         }
