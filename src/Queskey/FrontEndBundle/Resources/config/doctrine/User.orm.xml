@@ -7,13 +7,7 @@
     <field name="name" type="text" column="name" nullable="false"/>
     <field name="email" type="string" column="email" length="100" nullable="false"/>
     <field name="password" type="string" column="password" length="100" nullable="false"/>
-<<<<<<< HEAD
     <field name="admin" type="boolean" column="admin" nullable="false"/>
-=======
-<<<<<<< HEAD
     <field name="admin" type="boolean" column="admin" nullable="false"/>
-=======
->>>>>>> origin/anuj_18feb
->>>>>>> origin/akshat
   </entity>
 </doctrine-mapping>

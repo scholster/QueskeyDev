@@ -106,9 +106,7 @@ admin_view:
 subscription:
   pattern: /subscribe
   defaults: { _controller: FrontEndBundle:Subscription:new }
-<<<<<<< HEAD
-=======
-
+  
 admin_store_subject:
   pattern: /instructor/store/subject
   defaults: { _controller: FrontEndBundle:Admin:storesubject }
@@ -164,4 +162,3 @@ admin_update_paymentview:
 admin_create_topics:
   pattern: /instructor/create/topics
   defaults: { _controller: FrontEndBundle:Admin:topics }
->>>>>>> origin/akshat

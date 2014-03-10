@@ -122,7 +122,6 @@ class AdminController extends Controller {
             }
         } else {
             return $this->render('FrontEndBundle:Index:index.html.twig');
-<<<<<<< HEAD
         }
     }
 
@@ -154,7 +153,6 @@ class AdminController extends Controller {
     public function createpplanviewAction() {
         if ($this->checkadminAction()) {
             return $this->render('FrontEndBundle:Admin:admin_paymentplan.html.twig');
-=======
         }
     }
 
@@ -178,14 +176,11 @@ class AdminController extends Controller {
                 $response = new Response(json_encode(array("0" => 'fail')));
                 return $response;
             }
->>>>>>> origin/akshat
         } else {
             return $this->render('FrontEndBundle:Index:index.html.twig');
         }
     }
 
-<<<<<<< HEAD
-=======
     public function createpplanviewAction() {
         if ($this->checkadminAction()) {
             return $this->render('FrontEndBundle:Admin:admin_paymentplan.html.twig');
@@ -194,7 +189,6 @@ class AdminController extends Controller {
         }
     }
 
->>>>>>> origin/akshat
     public function paymentplancreateAction() {
         $instructorId = $this->checkadminAction();
         if ($instructorId) {
@@ -281,7 +275,6 @@ class AdminController extends Controller {
     public function topicsAction(){
         if ($this->checkadminAction()) {
             $em = $this->getDoctrine()->getManager();
-<<<<<<< HEAD
             
             $query1 = $em->createQuery(
                     'SELECT C.id, C.name
@@ -315,7 +308,6 @@ class AdminController extends Controller {
             /*var_dump($content);
             die;*/
             return $this->render('FrontEndBundle:Admin:admin_topics.html.twig',array('course' => $course, 'category'=>$category, 'subcategory'=>$sub_cat, 'subject'=>$subject, 'content'=>$content));
-=======
             
             $query1 = $em->createQuery(
                     'SELECT C.id, C.name
@@ -363,9 +355,9 @@ class AdminController extends Controller {
             
             return $this->render('FrontEndBundle:Admin:admin_topics.html.twig',array('course' => $course, 'category'=>$category, 
                                  'subcategory'=>$sub_cat, 'subject'=>$subject, 'content'=>$content, 'topic'=>$topics, 'lesson'=>$lessons));
->>>>>>> origin/akshat
-        } else {
-            return $this->render('FrontEndBundle:Index:index.html.twig');
+        } else 
+            {
+                return $this->render('FrontEndBundle:Index:index.html.twig');
         }
     }
     
@@ -415,7 +407,6 @@ class AdminController extends Controller {
                 $newSubject->setCourseid($courseId);
 
                 $newSubject->setSubjectname($data['subjectname']);
-<<<<<<< HEAD
 
                 $newSubject->setSubjectdescription($data['subdescription']);
                 $newSubject->setType($data['type']);
@@ -423,15 +414,11 @@ class AdminController extends Controller {
                 $em->persist($newSubject);
                 $em->flush();
 
-=======
-
                 $newSubject->setSubjectdescription($data['subdescription']);
                 $newSubject->setType($data['type']);
 
                 $em->persist($newSubject);
                 $em->flush();
-
->>>>>>> origin/akshat
                 //send data back to js page
                 $response = new Response(json_encode(array("0" => 'success')));
                 return $response;
@@ -593,8 +580,6 @@ class AdminController extends Controller {
             return $this->render('FrontEndBundle:Index:index.html.twig');
         }
     }
-<<<<<<< HEAD
-=======
     
    public function storequestionAction() {
         $instructorId = $this->checkadminAction();
@@ -628,5 +613,4 @@ class AdminController extends Controller {
             return $this->render('FrontEndBundle:Index:index.html.twig');
         }
     }
->>>>>>> origin/akshat
 }
