@@ -11,8 +11,8 @@ $("#category").bind("change",(function(){
 }));
 
 $("#submit_btn").click(function(){
-       storecourse();       
-   });
+       storecourse();        
+});
    
 
    
@@ -47,10 +47,19 @@ function storecourse()
             subcat: $("#subcategory").val(),
             description: $("#course_desc").val()
         },function(data){
-            
+            if(data[0]==="success")
+                {
+                    window.location.href = '/instructor/create/topics';
+                }
+                else
+                    {
+                        alert("fails");
+                        window.location.href = '/instructor';
             //redirect to further page to enter courses
-        }
+        }}
     ,'json');
+    
+    
     }
     
 function viewcourse()
@@ -70,3 +79,31 @@ function viewcourse()
                 }
             },'json');
 }
+
+/*function validateForm()
+{
+    console.log("bcj");
+var x=document.forms["CourseDetails"]["coursename"].value;
+var y=document.forms["CourseDetails"]["category"].value;
+var a=document.forms["CourseDetails"]["subcategory"].value;
+
+if (x===null || x==="")
+  {
+  alert("Course name must be filled out");
+  return false;
+  }
+if (y===null || y==="")
+  {
+  alert("Category must be filled out");
+  return false;
+  }
+if (a===null || a==="")
+  {
+  alert("SubCategory must be filled out");
+  return false;
+  }
+  else{
+      return true;
+  }
+
+}*/

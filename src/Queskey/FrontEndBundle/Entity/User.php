@@ -24,11 +24,14 @@ class User
      */
     private $password;
 
+<<<<<<< HEAD
     /**
      * @var boolean
      */
     private $admin;
 
+=======
+>>>>>>> origin/anuj_18feb
     /**
      * @var integer
      */
@@ -105,6 +108,7 @@ class User
     }
 
     /**
+<<<<<<< HEAD
      * Set admin
      *
      * @param boolean $admin
@@ -128,6 +132,8 @@ class User
     }
 
     /**
+=======
+>>>>>>> origin/anuj_18feb
      * Get id
      *
      * @return integer 
