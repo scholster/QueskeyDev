@@ -4,7 +4,12 @@
 
 
 {% block javascript %}
+<<<<<<< HEAD
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+=======
+<script type='text/javascript' src="{{ asset('js/jquery.js') }}"></script>
+<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>-->
+>>>>>>> origin/akshat
 <script type='text/javascript' src="{{ asset('js/admin_topics.js') }}"></script>
 <script type='text/javascript' src="{{ asset('js/admindashboard.js') }}" ></script>
 {% endblock %}
@@ -38,6 +43,7 @@ Description     : {{ courses.description }}<br>
 <br>
 <button type="button" class="edit" id="edit_btn">Click here to edit details of the above listed categories</button>
 
+<<<<<<< HEAD
 <button type="button" class="addsubjects" id="addsubjects_btn">Click here to add subjects to the course {{ course[0].name }}</button>
 
 <button type="button" class="addtopics" id="addtopics_btn">Click here to add topics to the course {{ course[0].name }}</button><br><br>
@@ -47,10 +53,25 @@ Description     : {{ courses.description }}<br>
 <button type="button" class="addcontents" id="addcontents_btn">Click here to add contents to the lessons for Course {{ course[0].name }}</button>
 
 <button type="button" class="addquestions" id="addquestions_btn">Click here to add questions to the topics for Course {{ course[0].name }}</button>
+=======
+<button type="button" class="addsubjects" id="addsubjects_btn">Add subjects to the course {{ course[0].name }}</button>
+
+<button type="button" class="addtopics" id="addtopics_btn">Add topics to the course {{ course[0].name }}</button><br><br>
+
+<button type="button" class="addlessons" id="addlessons_btn">Add lessons to the course {{ course[0].name }}</button>
+
+<button type="button" class="addcontents" id="addcontents_btn">Add contents to the lessons for Course {{ course[0].name }}</button>
+
+<button type="button" class="addquestions" id="addquestions_btn">Add questions to the topics for Course {{ course[0].name }}</button>
+>>>>>>> origin/akshat
 {{ dump(course[0].id) }}
 
 <script>
 $(document).ready(function(){
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/akshat
     $("#updatecourse").hide();   
   $("#edit_btn").click(function(){
     $("#updatecourse").slideToggle();
@@ -80,7 +101,38 @@ $(document).ready(function(){
     $("#addquestions_btn").click(function(){
     $("#addquestion").slideToggle();
   });
+<<<<<<< HEAD
 });
+=======
+  
+  var MaxOptions       = 4; //maximum input boxes allowed
+    var Optionsform   = $("#Options"); //Input boxes wrapper ID
+    var AddButton       = $("#addoption_btn"); //Add button ID
+
+    var x = Optionsform.length; //initial text box count
+    var OptionCount=1; //to keep track of text box added
+    
+    $(AddButton).click(function (e)  //on add input button click
+{
+        if(x <= MaxOptions && OptionCount<5) //max input box allowed
+        {
+            OptionCount++; //text box added increment
+            //add input box
+            $(Optionsform).append('<div><input type="text" name="mytext[]" id="option_'+ OptionCount +'" placeholder="Option '+ OptionCount +'"/><a href="#" class="removeclass">&times;</a></div>');
+            x++; //text box increment
+        }
+return false;
+});
+
+$("body").on("click",".removeclass", function(e){ //user click on remove text
+        if( x > 1 ) {
+                $(this).parent('div').remove(); //remove text box
+                x--; //decrement textbox
+        }
+return false;
+}); 
+  });
+>>>>>>> origin/akshat
 </script>
 
 
@@ -138,15 +190,25 @@ you want to make some contents free.)
 <div id="addtopic" name="Topics" class="addtopic_box">
 <form id="addtopic_form">
     <pre>
+<<<<<<< HEAD
 TopicName        : <input class="topic_name" type="text" id="tname">
 TopicDescription : <br><textarea rows="4" cols="50" name="description" id="topic_desc"></textarea>
 
+=======
+>>>>>>> origin/akshat
 Subject : <select id="topic_subject" name="topic_sub">
     {% for subjects in subject %}
   <option value={{ subjects.id }} > {{ subjects.subjectname }} </option>
   {% endfor %}
 </select>
 
+<<<<<<< HEAD
+=======
+TopicName        : <input class="topic_name" type="text" id="tname">
+TopicDescription : <br><textarea rows="4" cols="50" name="description" id="topic_desc"></textarea>
+
+
+>>>>>>> origin/akshat
 {# if selected subject is paid then do not give choice of free/paid #}
 
 Type             : <select id="topictype">
@@ -169,7 +231,10 @@ you want to make some contents free.)
 <div id="addlesson" name="Lessons" class="addlesson_box">
 <form id="addlesson_form">
     <pre>
+<<<<<<< HEAD
 LessonName        : <input class="lesson_name" type="text" id="lname">
+=======
+>>>>>>> origin/akshat
 Subject           : <select id="lesson_subject" name="lesson_sub">
     {% for subjects in subject %}
   <option value={{ subjects.id }} > {{ subjects.subjectname }} </option>
@@ -177,9 +242,19 @@ Subject           : <select id="lesson_subject" name="lesson_sub">
 </select>
 
 Topic             : <select id="lesson_topic" name="lesson_topics">
+<<<<<<< HEAD
     
 </select>
 
+=======
+    {% for topics in topic %}
+  <option value={{ topics.id }} > {{ topics.topicname }} </option>
+  {% endfor %}
+</select>
+
+LessonName        : <input class="lesson_name" type="text" id="lname">
+
+>>>>>>> origin/akshat
 {# if selected subject is paid then do not give choice of free/paid #}
 
 Type             : <select id="lessontype">
@@ -203,6 +278,10 @@ you want to make some contents free.)
 <form id="addcontent_form">
     <pre>
 ContentName       : <input class="content_name" type="text" id="ctname">
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/akshat
 Subject           : <select id="content_subject" name="content_sub">
     {% for subjects in subject %}
   <option value={{ subjects.id }} > {{ subjects.subjectname }} </option>
@@ -210,11 +289,23 @@ Subject           : <select id="content_subject" name="content_sub">
 </select>
 
 Topic             : <select id="content_topic" name="content_topics">
+<<<<<<< HEAD
     
 </select>
 
 Lesson            : <select id="content_lesson" name="content_lessons">
    
+=======
+    {% for topics in topic %}
+  <option value={{ topics.id }} > {{ topics.topicname }} </option>
+  {% endfor %}
+</select>
+
+Lesson            : <select id="content_lesson" name="content_lessons">
+    {% for lessons in lesson %}
+  <option value={{ lessons.id }} > {{ lessons.lessonname }} </option>
+  {% endfor %}
+>>>>>>> origin/akshat
 </select>
 {# if selected subject is paid then do not give choice of free/paid #}
 
@@ -253,7 +344,13 @@ Subject           : <select id="lesson_subject" name="lesson_sub">
 </select>
 
 Topic             : <select id="lesson_topic" name="lesson_topics">
+<<<<<<< HEAD
     
+=======
+    {% for topics in topic %}
+  <option value={{ topics.id }} > {{ topics.topicname }} </option>
+  {% endfor %}
+>>>>>>> origin/akshat
 </select>
 
 Type Your Question      : <br><br><br><textarea rows="10" cols="40" name="question" id="question_topic"></textarea>
@@ -264,6 +361,7 @@ Type Your Question      : <br><br><br><textarea rows="10" cols="40" name="questi
                 CKEDITOR.replace( 'question_topic' );
 </script>
 <br>
+<<<<<<< HEAD
 <br>
 Select Answer :    <select id="answer" name="answer_ques">
     
@@ -272,6 +370,35 @@ Select Answer :    <select id="answer" name="answer_ques">
   <option value= "3">C </option>
   <option value= "4">D </option>
   <option value= "5">E </option>
+=======
+You can add a maximum of 5 choices/options.
+<button type="button" class="addoption" id="addoption_btn">Add more option</button>
+<div id="Options">
+<input type="text" name="mytext[]" id="option_1" placeholder="Option 1"/>
+</div>
+
+Select Answer :    <select id="answer" name="answer_ques">
+    
+  <option value= "1">A</option>
+  <option value= "2">B</option>
+  <option value= "3">C</option>
+  <option value= "4">D</option>
+  <option value= "5">E</option>
+</select>
+
+Solution      : <br><br><br><textarea rows="10" cols="40" name="question" id="question_solution"></textarea>
+<script src="{{ asset('js/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
+<script>
+                // Replace the <textarea id="editor1"> with a CKEditor
+                // instance, using default configuration.
+                CKEDITOR.replace( 'question_solution' );
+</script>
+
+Level :    <select id="level" name="ques_level"> 
+  <option value= "1">Easy</option>
+  <option value= "2">Medium</option>
+  <option value= "3">Difficult</option>
+>>>>>>> origin/akshat
 </select>
 <br><br>
 <div class="submit">

@@ -43,30 +43,30 @@ FrontEndBundle:Homepage:index
         <li id="expiryTime" value="{{ course[0].expirytime}}">Course expirytime : {{course[0].expirytime}}</li><br>
         <li>Course discount : {{course[0].discountPercent}}</li><br>
         <li>course re-subscription fee : ${{course[0].resubscriptionPrice}}</li><br><br>
+</div>
 {% endblock %}
         
 {% block subscribe%}
-        <div id="subscribe_study">
-        <button id="subscribe">Subscribe</button>
+<div id="study">
+<button id="study_btn">study</button><br><br>
+</div>
+        <div id="edit_course">
+            <button id="edit">edit</button>
         </div>
 {% endblock %}
-</div>
 
 
-<div id="confirm">
-    <button id="confirm_btn">Confirm</button>
-</div>
 
-
-{% block jss%}
+{#% block jss%}
 <script>
 $(document).ready(function()
         {
                 if({{ subscriptionFlag.flag }})
                 {
-                    if({{ subscriptionFlag.expired }})
+                    if({{ subscriptionFlag.deleted }})
                     {
-                        alert('your subscription has expired, please resubscribe');
+                        alert('your subscription has expired, redirecting to subscribe course');
+                        location.reload();
                     }
                     else
                         {
@@ -104,7 +104,7 @@ $(document).ready(function()
                                                 }
                                                 else
                                                 {
-                                                    alert('course has been resubscribed');
+                                                    alert('this course has alresy been subscribed by you');
                                                     window.location.href = '/';
                                                 }
                                         },
@@ -116,4 +116,4 @@ $(document).ready(function()
         }
         );
         </script>
-{%endblock%}
+{%endblock%#}

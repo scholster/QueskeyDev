@@ -2,18 +2,34 @@
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
   <entity name="Queskey\FrontEndBundle\Entity\Course" table="course">
     <indexes>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> origin/akshat
       <index name="subcat_id" columns="subcat_id"/>
       <index name="instructor_id" columns="instructor_id"/>
     </indexes>
     <unique-constraints>
       <unique-constraint name="id" columns="id"/>
     </unique-constraints>
+<<<<<<< HEAD
+=======
+=======
+      <index name="IDX_169E6FB980D12166" columns="subcat_id"/>
+      <index name="IDX_169E6FB98C4FC193" columns="instructor_id"/>
+    </indexes>
+>>>>>>> origin/anuj_18feb
+>>>>>>> origin/akshat
     <id name="id" type="integer" column="id">
       <generator strategy="IDENTITY"/>
     </id>
     <field name="name" type="string" column="name" length="128" nullable="false"/>
     <field name="description" type="string" column="description" length="512" nullable="true"/>
     <field name="published" type="boolean" column="published" nullable="false"/>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> origin/akshat
     <many-to-one field="subcat" target-entity="SubCategory">
       <join-columns>
         <join-column name="subcat_id" referenced-column-name="id"/>
@@ -22,6 +38,19 @@
     <many-to-one field="instructor" target-entity="User">
       <join-columns>
         <join-column name="instructor_id" referenced-column-name="id"/>
+<<<<<<< HEAD
+=======
+=======
+    <many-to-one field="instructor" target-entity="User">
+      <join-columns>
+        <join-column name="instructor_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="subcat" target-entity="SubCategory">
+      <join-columns>
+        <join-column name="subcat_id" referenced-column-name="id"/>
+>>>>>>> origin/anuj_18feb
+>>>>>>> origin/akshat
       </join-columns>
     </many-to-one>
   </entity>

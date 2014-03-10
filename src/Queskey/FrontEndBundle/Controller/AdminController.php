@@ -122,6 +122,7 @@ class AdminController extends Controller {
             }
         } else {
             return $this->render('FrontEndBundle:Index:index.html.twig');
+<<<<<<< HEAD
         }
     }
 
@@ -153,11 +154,47 @@ class AdminController extends Controller {
     public function createpplanviewAction() {
         if ($this->checkadminAction()) {
             return $this->render('FrontEndBundle:Admin:admin_paymentplan.html.twig');
+=======
+        }
+    }
+
+    //list of all courses for which payment plan has not been created
+    public function createpplancourseAction() {
+        $instructorId = $this->checkadminAction();
+        if ($instructorId) {
+            $em = $this->getDoctrine()->getManager();
+
+            $course_query = $em->createQuery('SELECT c.name, c.description, c.id
+                                              FROM Queskey\FrontEndBundle\Entity\Course c
+                                              JOIN c.instructor u
+                                              WHERE u.id = :id and c.id NOT IN (SELECT ci.id FROM Queskey\FrontEndBundle\Entity\PaymentAssociation pa JOIN pa.course ci)
+                                              ')->setParameter('id', $instructorId);
+            $courses = $course_query->getResult();
+
+            if ($courses) {
+                $response = new Response(json_encode($courses));
+                return $response;
+            } else {
+                $response = new Response(json_encode(array("0" => 'fail')));
+                return $response;
+            }
+>>>>>>> origin/akshat
         } else {
             return $this->render('FrontEndBundle:Index:index.html.twig');
         }
     }
 
+<<<<<<< HEAD
+=======
+    public function createpplanviewAction() {
+        if ($this->checkadminAction()) {
+            return $this->render('FrontEndBundle:Admin:admin_paymentplan.html.twig');
+        } else {
+            return $this->render('FrontEndBundle:Index:index.html.twig');
+        }
+    }
+
+>>>>>>> origin/akshat
     public function paymentplancreateAction() {
         $instructorId = $this->checkadminAction();
         if ($instructorId) {
@@ -244,6 +281,7 @@ class AdminController extends Controller {
     public function topicsAction(){
         if ($this->checkadminAction()) {
             $em = $this->getDoctrine()->getManager();
+<<<<<<< HEAD
             
             $query1 = $em->createQuery(
                     'SELECT C.id, C.name
@@ -277,6 +315,55 @@ class AdminController extends Controller {
             /*var_dump($content);
             die;*/
             return $this->render('FrontEndBundle:Admin:admin_topics.html.twig',array('course' => $course, 'category'=>$category, 'subcategory'=>$sub_cat, 'subject'=>$subject, 'content'=>$content));
+=======
+            
+            $query1 = $em->createQuery(
+                    'SELECT C.id, C.name
+                    FROM Queskey\FrontEndBundle\Entity\Category C
+                    WHERE C.published=1
+                    ');
+            $category = $query1->getResult();
+            $a = $category[0]['id'];
+            $query2 = $em->createQuery(
+                            'SELECT SC.id,SC.name
+                        FROM Queskey\FrontEndBundle\Entity\SubCategory SC
+                        WHERE SC.cat=:cat and SC.published=1
+                        ')->setParameter('cat', $a);
+            $sub_cat = $query2->getResult();
+            
+            $qry=$em->createQuery('SELECT C.id, C.name, C.description, s.name as sname, c.name as cname 
+                                   FROM \Queskey\FrontEndBundle\Entity\Course C
+                                   JOIN C.subcat s
+                                   JOIN s.cat c
+                                   ORDER BY C.id DESC');
+            $course=$qry->setMaxResults(1)->getResult();
+            
+            $subjectqry=$em->createQuery('SELECT Cs.id, Cs.subjectname, Cs.type
+                                   FROM \Queskey\FrontEndBundle\Entity\Coursesubjects Cs
+                                   JOIN Cs.courseid c
+                                   WHERE c.id=:id')->setParameter('id',$course[0]['id']);
+            $subject = $subjectqry->getResult();
+            //content extracted just for an initial display
+            $qrycon = $em->createQuery('SELECT C.content FROM \Queskey\FrontEndBundle\Entity\Lessoncontents C WHERE C.id=2');
+            $content=$qrycon->getResult();
+            /*var_dump($content);
+            die;*/
+            
+            $topics_qry=$em->createQuery('SELECT Ct.id,Ct.topicname
+                                          FROM \Queskey\FrontEndBundle\Entity\Coursetopics Ct
+                                          JOIN Ct.subjectid si
+                                          WHERE si.id=1');
+            $topics = $topics_qry->getResult();
+            
+            $lessons_qry=$em->createQuery('SELECT Cl.id,Cl.lessonname
+                                          FROM \Queskey\FrontEndBundle\Entity\Courselessons Cl
+                                          JOIN Cl.topicid ti
+                                          WHERE ti.id=1');
+            $lessons = $lessons_qry->getResult();
+            
+            return $this->render('FrontEndBundle:Admin:admin_topics.html.twig',array('course' => $course, 'category'=>$category, 
+                                 'subcategory'=>$sub_cat, 'subject'=>$subject, 'content'=>$content, 'topic'=>$topics, 'lesson'=>$lessons));
+>>>>>>> origin/akshat
         } else {
             return $this->render('FrontEndBundle:Index:index.html.twig');
         }
@@ -328,6 +415,7 @@ class AdminController extends Controller {
                 $newSubject->setCourseid($courseId);
 
                 $newSubject->setSubjectname($data['subjectname']);
+<<<<<<< HEAD
 
                 $newSubject->setSubjectdescription($data['subdescription']);
                 $newSubject->setType($data['type']);
@@ -335,6 +423,15 @@ class AdminController extends Controller {
                 $em->persist($newSubject);
                 $em->flush();
 
+=======
+
+                $newSubject->setSubjectdescription($data['subdescription']);
+                $newSubject->setType($data['type']);
+
+                $em->persist($newSubject);
+                $em->flush();
+
+>>>>>>> origin/akshat
                 //send data back to js page
                 $response = new Response(json_encode(array("0" => 'success')));
                 return $response;
@@ -496,4 +593,40 @@ class AdminController extends Controller {
             return $this->render('FrontEndBundle:Index:index.html.twig');
         }
     }
+<<<<<<< HEAD
+=======
+    
+   public function storequestionAction() {
+        $instructorId = $this->checkadminAction();
+        if ($instructorId) {
+            $request = $this->get("request");
+            if ($request->isXmlHttpRequest() && $request->getMethod() == "POST") {
+                $data = $request->request->all();
+                var_dump($data);
+                die;
+                $em = $this->getDoctrine()->getManager();
+
+                $newContent = new \Queskey\FrontEndBundle\Entity\Lessoncontents;
+                $lessonId = $this->getDoctrine()->getRepository('FrontEndBundle:Courselessons')->find($data['content_lessonid']);
+                $newContent->setLessonid($lessonId);
+
+                $newContent->setContentname($data['contentname']);
+                $newContent->setContenttype($data['contenttype']);
+                $newContent->setContent($data['content']);
+
+                $em->persist($newContent);
+                $em->flush();
+
+                //send data back to js page
+                $response = new Response(json_encode(array("0" => 'success')));
+                return $response;
+            } else {
+                $response = new Response(json_encode(array("0" => 'fail')));
+                return $response;
+            }
+        } else {
+            return $this->render('FrontEndBundle:Index:index.html.twig');
+        }
+    }
+>>>>>>> origin/akshat
 }

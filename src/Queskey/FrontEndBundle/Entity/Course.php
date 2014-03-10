@@ -26,6 +26,14 @@ class Course
 
     /**
      * @var integer
+<<<<<<< HEAD
+=======
+     */
+    private $id;
+
+    /**
+     * @var \Queskey\FrontEndBundle\Entity\User
+>>>>>>> origin/anuj_18feb
      */
     private $id;
 
@@ -35,12 +43,15 @@ class Course
     private $subcat;
 
     /**
+<<<<<<< HEAD
      * @var \Queskey\FrontEndBundle\Entity\User
      */
     private $instructor;
 
 
     /**
+=======
+>>>>>>> origin/anuj_18feb
      * Set name
      *
      * @param string $name
@@ -111,6 +122,19 @@ class Course
 
     /**
      * Get id
+<<<<<<< HEAD
+=======
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set instructor
+>>>>>>> origin/anuj_18feb
      *
      * @return integer 
      */

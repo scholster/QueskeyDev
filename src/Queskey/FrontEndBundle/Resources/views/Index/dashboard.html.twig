@@ -19,9 +19,10 @@
 
 
 {%block myCourses%}
-<p>-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/</p><br>
+
 <button id='myCourses_btn'>Show/hide Subscribed Courses</button>
 <div id="myCourses">
+<p>-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/</p><br>
     {%for myCourse in myCourses%}
         <ul><h4><a href="{{ path("course", { 'id' : myCourse.id})}}">{{ myCourse.name }}</a></h4>
             <li><b>CatName</b> : {{ myCourse.catname }}</li>
@@ -30,8 +31,9 @@
         </ul>
         <p>..................................</p><br>
     {%endfor%}
-</div>
 <p>-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/</p><br>
+</div><br><br><br>
+
 
 {%endblock%}
 
@@ -92,10 +94,10 @@
 
 
 {% block default_courses%}
-<p>-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/</p><br>
 <div id="default_courses">
 Courses :
 <br>
+<p>-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/</p><br>
 {%for course in courses %}
 <ul>
 <h4><a href="{{ path("course", { 'id' : course.id})}}">{{ course.name }}</a></h4>
@@ -105,8 +107,8 @@ Courses :
 </ul>
 <p>..................................</p><br>
 {%endfor%}
-</div>
 <p>-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/</p><br>
+</div>
 {% endblock%}
 
 

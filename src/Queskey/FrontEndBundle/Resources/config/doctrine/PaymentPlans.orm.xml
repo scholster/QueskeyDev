@@ -8,6 +8,14 @@
     <field name="expirytime" type="integer" column="expirytime" nullable="false"/>
     <field name="discountPercent" type="float" column="discount_percent" precision="10" scale="0" nullable="false"/>
     <field name="resubscriptionPrice" type="float" column="resubscription_price" precision="10" scale="0" nullable="false"/>
+<<<<<<< HEAD
     <field name="description" type="string" column="description" length="512" nullable="true"/>
+=======
+<<<<<<< HEAD
+    <field name="description" type="string" column="description" length="512" nullable="true"/>
+=======
+    <field name="description" type="string" column="description" length="512" nullable="false"/>
+>>>>>>> origin/anuj_18feb
+>>>>>>> origin/akshat
   </entity>
 </doctrine-mapping>

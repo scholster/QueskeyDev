@@ -2,7 +2,15 @@
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
   <entity name="Queskey\FrontEndBundle\Entity\SubCategory" table="sub_category">
     <indexes>
+<<<<<<< HEAD
       <index name="cat_id" columns="cat_id"/>
+=======
+<<<<<<< HEAD
+      <index name="cat_id" columns="cat_id"/>
+=======
+      <index name="IDX_BCE3F798E6ADA943" columns="cat_id"/>
+>>>>>>> origin/anuj_18feb
+>>>>>>> origin/akshat
     </indexes>
     <id name="id" type="integer" column="id">
       <generator strategy="IDENTITY"/>

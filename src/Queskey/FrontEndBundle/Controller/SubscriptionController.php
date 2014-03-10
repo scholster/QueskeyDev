@@ -37,7 +37,8 @@ class SubscriptionController extends Controller
             $newSubscription->setJoiningtime($date);            
             $days = $subscription['expiryTime'].' days';
             $expiryDays = clone $date;
-            $newSubscription->setExpirytime($expiryDays->modify($days));
+            $expiryDays->modify($days);
+            $newSubscription->setExpirytime($expiryDays);
             
             try
             {
@@ -46,6 +47,15 @@ class SubscriptionController extends Controller
             }
             catch(\Exception $e)
             {
+                $query = $em->createQuery('UPDATE Queskey\FrontEndBundle\Entity\Subscriptions s
+                                           SET s.joiningtime = :date,
+                                               s.expirytime = :expiry
+                                           WHERE s.userid = :userId
+                                           AND s.courseid = :courseId')->setParameters(array('date'=>$date,
+                                                                                            'expiry'=>$expiryDays,
+                                                                                            'userId'=>$loggedInUser->getId(),
+                                                                                            'courseId'=>$subscription['course_id']));
+                $query->getResult();
                 $msg = $e->getMessage();
                 $response = new Response(json_encode(array('success'=>$msg)));
                 return $response;
