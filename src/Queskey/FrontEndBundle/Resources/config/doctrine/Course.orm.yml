@@ -1,0 +1,56 @@
+Queskey\FrontEndBundle\Entity\Course:
+    type: entity
+    table: course
+    indexes:
+        IDX_169E6FB980D12166:
+            columns:
+                - subcat_id
+        IDX_169E6FB98C4FC193:
+            columns:
+                - instructor_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: false
+            length: 128
+            fixed: false
+            comment: ''
+        description:
+            type: string
+            nullable: true
+            length: 512
+            fixed: false
+            comment: ''
+        published:
+            type: boolean
+            nullable: false
+            comment: ''
+    manyToOne:
+        subcat:
+            targetEntity: SubCategory
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                subcat_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        instructor:
+            targetEntity: User
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                instructor_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

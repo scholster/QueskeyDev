@@ -10,6 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
 class Subscriptions
 {
     /**
+     * @var integer
+     */
+    private $id;
+
+    /**
      * @var \DateTime
      */
     private $joiningtime;
@@ -20,14 +25,9 @@ class Subscriptions
     private $expirytime;
 
     /**
-     * @var integer
+     * @var \Queskey\FrontEndBundle\Entity\User
      */
-    private $id;
-
-    /**
-     * @var \Queskey\FrontEndBundle\Entity\PaymentPlans
-     */
-    private $paymentplanid;
+    private $userid;
 
     /**
      * @var \Queskey\FrontEndBundle\Entity\Course
@@ -35,10 +35,20 @@ class Subscriptions
     private $courseid;
 
     /**
-     * @var \Queskey\FrontEndBundle\Entity\User
+     * @var \Queskey\FrontEndBundle\Entity\PaymentPlans
      */
-    private $userid;
+    private $paymentplanid;
 
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Set joiningtime
@@ -87,36 +97,26 @@ class Subscriptions
     }
 
     /**
-     * Get id
+     * Set userid
      *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set paymentplanid
-     *
-     * @param \Queskey\FrontEndBundle\Entity\PaymentPlans $paymentplanid
+     * @param \Queskey\FrontEndBundle\Entity\User $userid
      * @return Subscriptions
      */
-    public function setPaymentplanid(\Queskey\FrontEndBundle\Entity\PaymentPlans $paymentplanid = null)
+    public function setUserid(\Queskey\FrontEndBundle\Entity\User $userid = null)
     {
-        $this->paymentplanid = $paymentplanid;
+        $this->userid = $userid;
 
         return $this;
     }
 
     /**
-     * Get paymentplanid
+     * Get userid
      *
-     * @return \Queskey\FrontEndBundle\Entity\PaymentPlans 
+     * @return \Queskey\FrontEndBundle\Entity\User 
      */
-    public function getPaymentplanid()
+    public function getUserid()
     {
-        return $this->paymentplanid;
+        return $this->userid;
     }
 
     /**
@@ -143,25 +143,25 @@ class Subscriptions
     }
 
     /**
-     * Set userid
+     * Set paymentplanid
      *
-     * @param \Queskey\FrontEndBundle\Entity\User $userid
+     * @param \Queskey\FrontEndBundle\Entity\PaymentPlans $paymentplanid
      * @return Subscriptions
      */
-    public function setUserid(\Queskey\FrontEndBundle\Entity\User $userid = null)
+    public function setPaymentplanid(\Queskey\FrontEndBundle\Entity\PaymentPlans $paymentplanid = null)
     {
-        $this->userid = $userid;
+        $this->paymentplanid = $paymentplanid;
 
         return $this;
     }
 
     /**
-     * Get userid
+     * Get paymentplanid
      *
-     * @return \Queskey\FrontEndBundle\Entity\User 
+     * @return \Queskey\FrontEndBundle\Entity\PaymentPlans 
      */
-    public function getUserid()
+    public function getPaymentplanid()
     {
-        return $this->userid;
+        return $this->paymentplanid;
     }
 }

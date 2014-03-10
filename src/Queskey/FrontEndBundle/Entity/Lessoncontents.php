@@ -10,6 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
 class Lessoncontents
 {
     /**
+     * @var integer
+     */
+    private $id;
+
+    /**
      * @var string
      */
     private $contentname;
@@ -25,15 +30,20 @@ class Lessoncontents
     private $content;
 
     /**
-     * @var integer
-     */
-    private $id;
-
-    /**
      * @var \Queskey\FrontEndBundle\Entity\Courselessons
      */
     private $lessonid;
 
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Set contentname
@@ -102,16 +112,6 @@ class Lessoncontents
     public function getContent()
     {
         return $this->content;
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**

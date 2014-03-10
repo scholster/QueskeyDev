@@ -10,25 +10,35 @@ use Doctrine\ORM\Mapping as ORM;
 class PaymentAssociation
 {
     /**
-     * @var boolean
-     */
-    private $allLimit;
-
-    /**
      * @var integer
      */
     private $id;
 
     /**
-     * @var \Queskey\FrontEndBundle\Entity\Course
+     * @var boolean
      */
-    private $course;
+    private $allLimit;
 
     /**
      * @var \Queskey\FrontEndBundle\Entity\PaymentPlans
      */
     private $paymentplan;
 
+    /**
+     * @var \Queskey\FrontEndBundle\Entity\Course
+     */
+    private $course;
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Set allLimit
@@ -54,13 +64,26 @@ class PaymentAssociation
     }
 
     /**
-     * Get id
+     * Set paymentplan
      *
-     * @return integer 
+     * @param \Queskey\FrontEndBundle\Entity\PaymentPlans $paymentplan
+     * @return PaymentAssociation
      */
-    public function getId()
+    public function setPaymentplan(\Queskey\FrontEndBundle\Entity\PaymentPlans $paymentplan = null)
     {
-        return $this->id;
+        $this->paymentplan = $paymentplan;
+
+        return $this;
+    }
+
+    /**
+     * Get paymentplan
+     *
+     * @return \Queskey\FrontEndBundle\Entity\PaymentPlans 
+     */
+    public function getPaymentplan()
+    {
+        return $this->paymentplan;
     }
 
     /**
@@ -84,28 +107,5 @@ class PaymentAssociation
     public function getCourse()
     {
         return $this->course;
-    }
-
-    /**
-     * Set paymentplan
-     *
-     * @param \Queskey\FrontEndBundle\Entity\PaymentPlans $paymentplan
-     * @return PaymentAssociation
-     */
-    public function setPaymentplan(\Queskey\FrontEndBundle\Entity\PaymentPlans $paymentplan = null)
-    {
-        $this->paymentplan = $paymentplan;
-
-        return $this;
-    }
-
-    /**
-     * Get paymentplan
-     *
-     * @return \Queskey\FrontEndBundle\Entity\PaymentPlans 
-     */
-    public function getPaymentplan()
-    {
-        return $this->paymentplan;
     }
 }

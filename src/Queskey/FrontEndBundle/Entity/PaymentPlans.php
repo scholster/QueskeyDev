@@ -10,6 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
 class PaymentPlans
 {
     /**
+     * @var integer
+     */
+    private $id;
+
+    /**
      * @var float
      */
     private $price;
@@ -34,11 +39,16 @@ class PaymentPlans
      */
     private $description;
 
-    /**
-     * @var integer
-     */
-    private $id;
 
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Set price
@@ -153,15 +163,5 @@ class PaymentPlans
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 }

@@ -10,6 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
 class Coursesubjects
 {
     /**
+     * @var integer
+     */
+    private $id;
+
+    /**
      * @var string
      */
     private $subjectname;
@@ -25,15 +30,20 @@ class Coursesubjects
     private $type;
 
     /**
-     * @var integer
-     */
-    private $id;
-
-    /**
      * @var \Queskey\FrontEndBundle\Entity\Course
      */
     private $courseid;
 
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Set subjectname
@@ -102,16 +112,6 @@ class Coursesubjects
     public function getType()
     {
         return $this->type;
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**

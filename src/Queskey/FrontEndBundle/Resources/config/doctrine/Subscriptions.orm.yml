@@ -1,0 +1,69 @@
+Queskey\FrontEndBundle\Entity\Subscriptions:
+    type: entity
+    table: subscriptions
+    indexes:
+        paymentPlanId:
+            columns:
+                - paymentPlanId
+        userId:
+            columns:
+                - userId
+        courseId:
+            columns:
+                - courseId
+    uniqueConstraints:
+        userId_2:
+            columns:
+                - userId
+                - courseId
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        joiningtime:
+            type: datetime
+            nullable: false
+            comment: ''
+            default: '0000-00-00 00:00:00'
+            column: joiningTime
+        expirytime:
+            type: datetime
+            nullable: false
+            comment: ''
+            default: '0000-00-00 00:00:00'
+            column: expiryTime
+    manyToOne:
+        userid:
+            targetEntity: User
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                userId:
+                    referencedColumnName: id
+            orphanRemoval: false
+        courseid:
+            targetEntity: Course
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                courseId:
+                    referencedColumnName: id
+            orphanRemoval: false
+        paymentplanid:
+            targetEntity: PaymentPlans
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                paymentPlanId:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

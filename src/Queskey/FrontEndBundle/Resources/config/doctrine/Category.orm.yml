@@ -1,0 +1,30 @@
+Queskey\FrontEndBundle\Entity\Category:
+    type: entity
+    table: category
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: true
+            length: 128
+            fixed: false
+            comment: ''
+        description:
+            type: string
+            nullable: true
+            length: 512
+            fixed: false
+            comment: ''
+        published:
+            type: boolean
+            nullable: false
+            comment: ''
+    lifecycleCallbacks: {  }

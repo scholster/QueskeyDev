@@ -1,0 +1,45 @@
+Queskey\FrontEndBundle\Entity\Lessoncontents:
+    type: entity
+    table: lessoncontents
+    indexes:
+        lessonid:
+            columns:
+                - lessonid
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        contentname:
+            type: string
+            nullable: false
+            length: 128
+            fixed: false
+            comment: ''
+        contenttype:
+            type: boolean
+            nullable: false
+            comment: ''
+            default: '0'
+        content:
+            type: text
+            nullable: false
+            length: null
+            fixed: false
+            comment: ''
+    manyToOne:
+        lessonid:
+            targetEntity: Courselessons
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                lessonid:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

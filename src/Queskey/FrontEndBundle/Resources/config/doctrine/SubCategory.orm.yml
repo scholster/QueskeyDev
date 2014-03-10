@@ -1,0 +1,44 @@
+Queskey\FrontEndBundle\Entity\SubCategory:
+    type: entity
+    table: sub_category
+    indexes:
+        IDX_BCE3F798E6ADA943:
+            columns:
+                - cat_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: true
+            length: 128
+            fixed: false
+            comment: ''
+        description:
+            type: string
+            nullable: true
+            length: 512
+            fixed: false
+            comment: ''
+        published:
+            type: boolean
+            nullable: false
+            comment: ''
+    manyToOne:
+        cat:
+            targetEntity: Category
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                cat_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

@@ -1,0 +1,78 @@
+Queskey\FrontEndBundle\Entity\Questions:
+    type: entity
+    table: questions
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        topicid:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            column: topicId
+        lessonid:
+            type: integer
+            nullable: true
+            unsigned: false
+            comment: ''
+            column: lessonId
+        question:
+            type: text
+            nullable: false
+            length: null
+            fixed: false
+            comment: ''
+        option1:
+            type: string
+            nullable: false
+            length: 512
+            fixed: false
+            comment: ''
+        option2:
+            type: string
+            nullable: false
+            length: 512
+            fixed: false
+            comment: ''
+        option3:
+            type: string
+            nullable: false
+            length: 512
+            fixed: false
+            comment: ''
+        option4:
+            type: string
+            nullable: false
+            length: 512
+            fixed: false
+            comment: ''
+        option5:
+            type: string
+            nullable: false
+            length: 512
+            fixed: false
+            comment: ''
+        correctoption:
+            type: smallint
+            nullable: false
+            unsigned: false
+            comment: ''
+        solution:
+            type: text
+            nullable: false
+            length: null
+            fixed: false
+            comment: ''
+        level:
+            type: smallint
+            nullable: false
+            unsigned: false
+            comment: ''
+    lifecycleCallbacks: {  }

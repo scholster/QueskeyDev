@@ -1,0 +1,39 @@
+Queskey\FrontEndBundle\Entity\Courselessons:
+    type: entity
+    table: courselessons
+    indexes:
+        topicid:
+            columns:
+                - topicid
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        lessonname:
+            type: string
+            nullable: false
+            length: 128
+            fixed: false
+            comment: ''
+        lessontype:
+            type: boolean
+            nullable: false
+            comment: ''
+            default: '0'
+    manyToOne:
+        topicid:
+            targetEntity: Coursetopics
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                topicid:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

@@ -10,6 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
 class Course
 {
     /**
+     * @var integer
+     */
+    private $id;
+
+    /**
      * @var string
      */
     private $name;
@@ -25,11 +30,6 @@ class Course
     private $published;
 
     /**
-     * @var integer
-     */
-    private $id;
-
-    /**
      * @var \Queskey\FrontEndBundle\Entity\SubCategory
      */
     private $subcat;
@@ -39,6 +39,16 @@ class Course
      */
     private $instructor;
 
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Set name
@@ -107,16 +117,6 @@ class Course
     public function getPublished()
     {
         return $this->published;
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**

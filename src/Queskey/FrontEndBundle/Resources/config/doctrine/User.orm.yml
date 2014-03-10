@@ -1,0 +1,37 @@
+Queskey\FrontEndBundle\Entity\User:
+    type: entity
+    table: user
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: text
+            nullable: false
+            length: null
+            fixed: false
+            comment: ''
+        email:
+            type: string
+            nullable: false
+            length: 100
+            fixed: false
+            comment: ''
+        password:
+            type: string
+            nullable: false
+            length: 100
+            fixed: false
+            comment: ''
+        admin:
+            type: boolean
+            nullable: false
+            comment: ''
+            default: '0'
+    lifecycleCallbacks: {  }

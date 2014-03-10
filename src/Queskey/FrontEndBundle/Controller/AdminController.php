@@ -113,8 +113,13 @@ class AdminController extends Controller {
 
             $courses = $course_query->getResult();
 
-            if ($courses) {
-                $response = new Response(json_encode($courses));
+            if ($courses) 
+                {
+                    foreach($courses as $key => $course)
+                    {
+                        $courses[$key]['url'] = $this->generateUrl('course',array('id'=>$course['id']));
+                    }
+                    $response = new Response(json_encode($courses));
                 return $response;
             } else {
                 $response = new Response(json_encode(array("0" => 'fail')));
@@ -122,37 +127,6 @@ class AdminController extends Controller {
             }
         } else {
             return $this->render('FrontEndBundle:Index:index.html.twig');
-        }
-    }
-
-    //list of all courses for which payment plan has not been created
-    public function createpplancourseAction() {
-        $instructorId = $this->checkadminAction();
-        if ($instructorId) {
-            $em = $this->getDoctrine()->getManager();
-
-            $course_query = $em->createQuery('SELECT c.name, c.description, c.id
-                                              FROM Queskey\FrontEndBundle\Entity\Course c
-                                              JOIN c.instructor u
-                                              WHERE u.id = :id and c.id NOT IN (SELECT ci.id FROM Queskey\FrontEndBundle\Entity\PaymentAssociation pa JOIN pa.course ci)
-                                              ')->setParameter('id', $instructorId);
-            $courses = $course_query->getResult();
-
-            if ($courses) {
-                $response = new Response(json_encode($courses));
-                return $response;
-            } else {
-                $response = new Response(json_encode(array("0" => 'fail')));
-                return $response;
-            }
-        } else {
-            return $this->render('FrontEndBundle:Index:index.html.twig');
-        }
-    }
-
-    public function createpplanviewAction() {
-        if ($this->checkadminAction()) {
-            return $this->render('FrontEndBundle:Admin:admin_paymentplan.html.twig');
         }
     }
 
@@ -303,38 +277,6 @@ class AdminController extends Controller {
                                    WHERE c.id=:id')->setParameter('id',$course[0]['id']);
             $subject = $subjectqry->getResult();
             
-            $qrycon = $em->createQuery('SELECT C.content FROM \Queskey\FrontEndBundle\Entity\Lessoncontents C WHERE C.id=2');
-            $content=$qrycon->getResult();
-            /*var_dump($content);
-            die;*/
-            return $this->render('FrontEndBundle:Admin:admin_topics.html.twig',array('course' => $course, 'category'=>$category, 'subcategory'=>$sub_cat, 'subject'=>$subject, 'content'=>$content));
-            
-            $query1 = $em->createQuery(
-                    'SELECT C.id, C.name
-                    FROM Queskey\FrontEndBundle\Entity\Category C
-                    WHERE C.published=1
-                    ');
-            $category = $query1->getResult();
-            $a = $category[0]['id'];
-            $query2 = $em->createQuery(
-                            'SELECT SC.id,SC.name
-                        FROM Queskey\FrontEndBundle\Entity\SubCategory SC
-                        WHERE SC.cat=:cat and SC.published=1
-                        ')->setParameter('cat', $a);
-            $sub_cat = $query2->getResult();
-            
-            $qry=$em->createQuery('SELECT C.id, C.name, C.description, s.name as sname, c.name as cname 
-                                   FROM \Queskey\FrontEndBundle\Entity\Course C
-                                   JOIN C.subcat s
-                                   JOIN s.cat c
-                                   ORDER BY C.id DESC');
-            $course=$qry->setMaxResults(1)->getResult();
-            
-            $subjectqry=$em->createQuery('SELECT Cs.id, Cs.subjectname, Cs.type
-                                   FROM \Queskey\FrontEndBundle\Entity\Coursesubjects Cs
-                                   JOIN Cs.courseid c
-                                   WHERE c.id=:id')->setParameter('id',$course[0]['id']);
-            $subject = $subjectqry->getResult();
             //content extracted just for an initial display
             $qrycon = $em->createQuery('SELECT C.content FROM \Queskey\FrontEndBundle\Entity\Lessoncontents C WHERE C.id=2');
             $content=$qrycon->getResult();
@@ -591,13 +533,14 @@ class AdminController extends Controller {
                 die;
                 $em = $this->getDoctrine()->getManager();
 
-                $newContent = new \Queskey\FrontEndBundle\Entity\Lessoncontents;
-                $lessonId = $this->getDoctrine()->getRepository('FrontEndBundle:Courselessons')->find($data['content_lessonid']);
-                $newContent->setLessonid($lessonId);
+                $newQuestion = new \Queskey\FrontEndBundle\Entity\Questions;
+                $topicId = $this->getDoctrine()->getRepository('FrontEndBundle:Coursetopics')->find($data['topicid']);
+                $newQuestion->setTopicid($topicId);
 
-                $newContent->setContentname($data['contentname']);
-                $newContent->setContenttype($data['contenttype']);
-                $newContent->setContent($data['content']);
+                $newQuestion->setQuestion($data['question']);
+                $newQuestion->setCorrectoption($data['correctopt']);
+                $newQuestion->setSolution($data['solution']);
+                $newQuestion->setLevel($data['level']);
 
                 $em->persist($newContent);
                 $em->flush();

@@ -1,0 +1,45 @@
+Queskey\FrontEndBundle\Entity\PaymentAssociation:
+    type: entity
+    table: payment_association
+    uniqueConstraints:
+        payment_id:
+            columns:
+                - paymentPlan_id
+        course_id:
+            columns:
+                - course_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        allLimit:
+            type: boolean
+            nullable: false
+            comment: ''
+            column: all_limit
+    manyToOne:
+        paymentplan:
+            targetEntity: PaymentPlans
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                paymentPlan_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        course:
+            targetEntity: Course
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                course_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

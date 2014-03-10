@@ -1,0 +1,47 @@
+Queskey\FrontEndBundle\Entity\PaymentPlans:
+    type: entity
+    table: payment_plans
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        price:
+            type: float
+            nullable: false
+            precision: 10
+            scale: 0
+            comment: ''
+            default: '0'
+        expirytime:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+        discountPercent:
+            type: float
+            nullable: false
+            precision: 10
+            scale: 0
+            comment: ''
+            default: '0'
+            column: discount_percent
+        resubscriptionPrice:
+            type: float
+            nullable: false
+            precision: 10
+            scale: 0
+            comment: ''
+            column: resubscription_price
+        description:
+            type: string
+            nullable: false
+            length: 512
+            fixed: false
+            comment: ''
+    lifecycleCallbacks: {  }

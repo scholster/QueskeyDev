@@ -36,15 +36,11 @@ $("#addcontent_btn").click(function(){
        storecontent(val);        
 });
 
-<<<<<<< HEAD
-=======
 $("#addquestion_btn").click(function(){
-    var ques= CKEDITOR.instances['question_topic'].getData();
+    var ques= CKEDITOR.instances['question'].getData();
     var soln= CKEDITOR.instances['question_solution'].getData();
        storequestion(ques,soln);        
 });
-
->>>>>>> origin/akshat
 });
 
 function populatetopic()
@@ -226,18 +222,25 @@ function storecontent(con)
     ,'json');
     
     
-    } 
-    }  
+    }   
     
 function storequestion(ques,soln)
     {
+        obj = {};
+            
+            $("#Options:input[name*='mytext[]']").each(function (index) {
+                obj['option' + index] = $(this).val();
+            });
+            console.log(obj);
         $.post("/instructor/store/question",{
+            options: obj,
             question: ques,
-            option1: $("#option_1").val(),
+            topicid: $("#ques_lesson_topic").val(),
+            /*option1: $("#option_1").val(),
             option2: $("#option_2").val(),
             option3: $("#option_3").val(),
             option4: $("#option_4").val(),
-            option5: $("#option_5").val(),
+            option5: $("#option_5").val(),*/
             correctopt:  $("#answer").val(),
             solution: soln,
             level:  $("#ques_level").val()
@@ -252,7 +255,5 @@ function storequestion(ques,soln)
                         window.location.href = '/instructor';
             //redirect to further page to enter courses
         }}
-    ,'json');
-    
-    
+    ,'json');  
     } 

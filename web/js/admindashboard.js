@@ -73,7 +73,7 @@ function viewcourse()
                 else
                 {
                     $.each(courses,function(key,value){
-                        $("#course_view").append('<h3><a href="/course_id='+value.id+'">'+value.name+'</a></h3><p>'+value.description+'</p>' );
+                        $("#course_view").append('<h3><a href="'+value.url+'">'+value.name+'</a></h3><p>'+value.description+'</p>' );
                     });
 
                 }
