@@ -37,8 +37,9 @@ $("#addcontent_btn").click(function(){
 });
 
 $("#addquestion_btn").click(function(){
-    var val= CKEDITOR.instances['question_topic'].getData();
-       storequestion(val);        
+    var ques= CKEDITOR.instances['question_topic'].getData();
+    var soln= CKEDITOR.instances['question_solution'].getData();
+       storequestion(ques,soln);        
 });
 
 });
@@ -222,12 +223,18 @@ function storecontent(con)
     ,'json');
     }  
     
-function storequestion(ques)
+function storequestion(ques,soln)
     {
         $.post("/instructor/store/question",{
             question: ques,
             option1: $("#option_1").val(),
-            option2: $("#option_2").val()
+            option2: $("#option_2").val(),
+            option3: $("#option_3").val(),
+            option4: $("#option_4").val(),
+            option5: $("#option_5").val(),
+            correctopt:  $("#answer").val(),
+            solution: soln,
+            level:  $("#ques_level").val()
         },function(data){
             if(data[0]==="success")
                 {

@@ -4,7 +4,8 @@
 
 
 {% block javascript %}
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type='text/javascript' src="{{ asset('js/jquery.js') }}"></script>
+<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>-->
 <script type='text/javascript' src="{{ asset('js/admin_topics.js') }}"></script>
 <script type='text/javascript' src="{{ asset('js/admindashboard.js') }}" ></script>
 {% endblock %}
@@ -166,14 +167,15 @@ you want to make some contents free.)
 <div id="addtopic" name="Topics" class="addtopic_box">
 <form id="addtopic_form">
     <pre>
-TopicName        : <input class="topic_name" type="text" id="tname">
-TopicDescription : <br><textarea rows="4" cols="50" name="description" id="topic_desc"></textarea>
-
 Subject : <select id="topic_subject" name="topic_sub">
     {% for subjects in subject %}
   <option value={{ subjects.id }} > {{ subjects.subjectname }} </option>
   {% endfor %}
 </select>
+
+TopicName        : <input class="topic_name" type="text" id="tname">
+TopicDescription : <br><textarea rows="4" cols="50" name="description" id="topic_desc"></textarea>
+
 
 {# if selected subject is paid then do not give choice of free/paid #}
 
@@ -197,7 +199,6 @@ you want to make some contents free.)
 <div id="addlesson" name="Lessons" class="addlesson_box">
 <form id="addlesson_form">
     <pre>
-LessonName        : <input class="lesson_name" type="text" id="lname">
 Subject           : <select id="lesson_subject" name="lesson_sub">
     {% for subjects in subject %}
   <option value={{ subjects.id }} > {{ subjects.subjectname }} </option>
@@ -205,8 +206,12 @@ Subject           : <select id="lesson_subject" name="lesson_sub">
 </select>
 
 Topic             : <select id="lesson_topic" name="lesson_topics">
-    
+    {% for topics in topic %}
+  <option value={{ topics.id }} > {{ topics.topicname }} </option>
+  {% endfor %}
 </select>
+
+LessonName        : <input class="lesson_name" type="text" id="lname">
 
 {# if selected subject is paid then do not give choice of free/paid #}
 
@@ -231,6 +236,7 @@ you want to make some contents free.)
 <form id="addcontent_form">
     <pre>
 ContentName       : <input class="content_name" type="text" id="ctname">
+
 Subject           : <select id="content_subject" name="content_sub">
     {% for subjects in subject %}
   <option value={{ subjects.id }} > {{ subjects.subjectname }} </option>
@@ -238,11 +244,15 @@ Subject           : <select id="content_subject" name="content_sub">
 </select>
 
 Topic             : <select id="content_topic" name="content_topics">
-    
+    {% for topics in topic %}
+  <option value={{ topics.id }} > {{ topics.topicname }} </option>
+  {% endfor %}
 </select>
 
 Lesson            : <select id="content_lesson" name="content_lessons">
-   
+    {% for lessons in lesson %}
+  <option value={{ lessons.id }} > {{ lessons.lessonname }} </option>
+  {% endfor %}
 </select>
 {# if selected subject is paid then do not give choice of free/paid #}
 
@@ -281,7 +291,9 @@ Subject           : <select id="lesson_subject" name="lesson_sub">
 </select>
 
 Topic             : <select id="lesson_topic" name="lesson_topics">
-    
+    {% for topics in topic %}
+  <option value={{ topics.id }} > {{ topics.topicname }} </option>
+  {% endfor %}
 </select>
 
 Type Your Question      : <br><br><br><textarea rows="10" cols="40" name="question" id="question_topic"></textarea>
@@ -298,14 +310,27 @@ You can add a maximum of 5 choices/options.
 <input type="text" name="mytext[]" id="option_1" placeholder="Option 1"/>
 </div>
 
-<br>
 Select Answer :    <select id="answer" name="answer_ques">
     
-  <option value= "1">A </option>
-  <option value= "2">B </option>
-  <option value= "3">C </option>
-  <option value= "4">D </option>
-  <option value= "5">E </option>
+  <option value= "1">A</option>
+  <option value= "2">B</option>
+  <option value= "3">C</option>
+  <option value= "4">D</option>
+  <option value= "5">E</option>
+</select>
+
+Solution      : <br><br><br><textarea rows="10" cols="40" name="question" id="question_solution"></textarea>
+<script src="{{ asset('js/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
+<script>
+                // Replace the <textarea id="editor1"> with a CKEditor
+                // instance, using default configuration.
+                CKEDITOR.replace( 'question_solution' );
+</script>
+
+Level :    <select id="level" name="ques_level"> 
+  <option value= "1">Easy</option>
+  <option value= "2">Medium</option>
+  <option value= "3">Difficult</option>
 </select>
 <br><br>
 <div class="submit">

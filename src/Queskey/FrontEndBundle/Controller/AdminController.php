@@ -271,12 +271,26 @@ class AdminController extends Controller {
                                    JOIN Cs.courseid c
                                    WHERE c.id=:id')->setParameter('id',$course[0]['id']);
             $subject = $subjectqry->getResult();
-            
+            //content extracted just for an initial display
             $qrycon = $em->createQuery('SELECT C.content FROM \Queskey\FrontEndBundle\Entity\Lessoncontents C WHERE C.id=2');
             $content=$qrycon->getResult();
             /*var_dump($content);
             die;*/
-            return $this->render('FrontEndBundle:Admin:admin_topics.html.twig',array('course' => $course, 'category'=>$category, 'subcategory'=>$sub_cat, 'subject'=>$subject, 'content'=>$content));
+            
+            $topics_qry=$em->createQuery('SELECT Ct.id,Ct.topicname
+                                          FROM \Queskey\FrontEndBundle\Entity\Coursetopics Ct
+                                          JOIN Ct.subjectid si
+                                          WHERE si.id=1');
+            $topics = $topics_qry->getResult();
+            
+            $lessons_qry=$em->createQuery('SELECT Cl.id,Cl.lessonname
+                                          FROM \Queskey\FrontEndBundle\Entity\Courselessons Cl
+                                          JOIN Cl.topicid ti
+                                          WHERE ti.id=1');
+            $lessons = $lessons_qry->getResult();
+            
+            return $this->render('FrontEndBundle:Admin:admin_topics.html.twig',array('course' => $course, 'category'=>$category, 
+                                 'subcategory'=>$sub_cat, 'subject'=>$subject, 'content'=>$content, 'topic'=>$topics, 'lesson'=>$lessons));
         } else {
             return $this->render('FrontEndBundle:Index:index.html.twig');
         }
