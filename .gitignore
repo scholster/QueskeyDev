@@ -18,3 +18,4 @@ app/config/parameters.yml
 nbproject/*
 /src/Queskey/FrontEndBundle/Entity/
 /src/Queskey/FrontEndBundle/Resources/config/doctrine/
+/src/Queskey/FrontEndBundle/Resources/config/
