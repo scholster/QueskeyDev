@@ -224,11 +224,9 @@ function storecontent(con)
             //redirect to further page to enter courses
         }}
     ,'json');
-<<<<<<< HEAD
     
     
-    }  
-=======
+    } 
     }  
     
 function storequestion(ques,soln)
@@ -258,4 +256,3 @@ function storequestion(ques,soln)
     
     
     } 
->>>>>>> origin/akshat
