@@ -89,11 +89,10 @@ class CourseController extends Controller {
                                           JOIN s.cat cat
                                           JOIN c.instructor i
                                           WHERE c.id = :id')->setParameter('id', $id);
+        
         $array = array();
-        $array['course_info'] = $course_query->getResult();
+        $array['course_info'] = $course_query->getResult();;
         $userId = $this->loggedInUser->getId();
-//        var_dump($userId);
-//        die;
         $array['subscriptionFlag'] = $this->checkSubscription($userId, $id, $em);
         
         return $array;
