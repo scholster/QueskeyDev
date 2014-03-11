@@ -28,6 +28,7 @@ class RegisterController extends Controller
                 $newUser->setName($data['username']);
                 $newUser->setEmail($data['email']);
                 $newUser->setPassword($data['pwd']);
+                $newUser->setAdmin(0);
                 
                 $em->persist($newUser);
                 $em->flush();
@@ -42,7 +43,7 @@ class RegisterController extends Controller
     {
         $registerRepository=$em->getRepository('FrontEndBundle:User');
         $user=$registerRepository->findOneBy(array("email"=>$newUser->getEmail()));
-        $userLogin = new \Queskey\FrontEndBundle\Model\UserLogin($user->getId(), $user->getName(), $user->getEmail());
+        $userLogin = new \Queskey\FrontEndBundle\Model\UserLogin($user->getId(), $user->getName(), $user->getEmail(), $user->getAdmin());
         $session = new \Symfony\Component\HttpFoundation\Session\Session();
         $session->start();
         $session->set("User", $userLogin);
