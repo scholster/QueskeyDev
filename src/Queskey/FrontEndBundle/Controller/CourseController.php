@@ -20,35 +20,75 @@ class CourseController extends Controller {
     public function indexAction($id)
     {
         
+        $em = $this->getDoctrine()->getManager();
         
         if($this->loggedInUser)
         {
             
-            $em = $this->getDoctrine()->getManager();
             $insId = $this->checkIfAdmin($id, $em);
-
+            
+            if($insId)
+            {
         
 //            if($this->loggedInUser->getAdmin() && $this->loggedInUser->getId() == $insId[0]['id'])
             if($this->loggedInUser->getId() == $insId[0]['id'])            
             {
-                return $this->redirect($this->generateUrl('courseEdit', array('id'=>$id)));
+                return $this->redirect($this->generateUrl('courseAdmin', array('id'=>$id)));
             }
             else
             {
-                $array = $this->dbHandle($id, $em);
-                return $this->render('FrontEndBundle:Course:course.html.twig',array('course'=>$array['course_info'], 'subscriptionFlag'=>$array['subscriptionFlag']));
+                $array['courseInfo'] = $this->dbHandle($id, $em);
+                $array['subscriptionFlag'] = $this->checkSubscription($id, $em);
+                
+                if($array['courseInfo'])
+                {
+                                       
+                    if($array['subscriptionFlag']['flag'] && !$array['subscriptionFlag']['expired'])
+                    {
+                        $url = $this->generateUrl('courseContent', array('id'=>$id));
+                        $array['courseInfo']['url'] = $url;
+                        return $this->render('FrontEndBundle:Course:courseHome.html.twig',array('course'=>$array['courseInfo']));
+                    }
+                    else
+                    {
+                        return $this->render('FrontEndBundle:Course:courseDetails.html.twig', array('course'=>$array['courseInfo'], 'subscriptionFlag'=>$array['subscriptionFlag']));
+                    }
+                }
+                else
+                {
+                return $this->render('FrontEndBundle:Default:notFound.html.twig');
+                }
             }
         }
+        
         else
         {
-            return $this->render('FrontEndBundle:Common:pleaseLogin.html.twig');
+            return $this->render('FrontEndBundle:Default:notFound.html.twig');
         }
-    }
+        }
+        
+        else
+        {
+//            return $this->render('FrontEndBundle:Common:pleaseLogin.html.twig');
+              $array['courseInfo'] = $this->dbHandle($id, $em);
+              $array['subscriptionFlag'] = $this->checkSubscription($id, $em);
+              
+              if($array['courseInfo'])
+              {
+                return $this->render('FrontEndBundle:Course:courseDetails.html.twig',array('course'=>$array['courseInfo'], 'subscriptionFlag'=>$array['subscriptionFlag']));
+              }
+              else
+              {
+              return $this->render('FrontEndBundle:Default:notFound.html.twig');
+              }
+        }
+}
+        
     
     
     
     
-    public function editAction($id)
+    public function adminAction($id)
     {
         $em = $this->getDoctrine()->getManager();
         $insId = $this->checkIfAdmin($id, $em);
@@ -58,9 +98,18 @@ class CourseController extends Controller {
             if($this->loggedInUser->getId() == $insId[0]['id'])
             {
             
-            $array = $this->dbHandle($id, $em);
-            return $this->render('FrontEndBundle:Course:courseEdit.html.twig',array('course'=>$array['course_info'], 'subscriptionFlag'=>$array['subscriptionFlag']));
-        
+            $array['courseInfo'] = $this->dbHandle($id, $em);
+            if($array['courseInfo'])
+            {
+                $url = $this->generateUrl('courseContent', array('id'=>$id));
+                $array['courseInfo']['url'] = $url;
+                return $this->render('FrontEndBundle:Course:courseAdmin.html.twig',array('course'=>$array['courseInfo']));
+            }
+            else
+            {
+                return $this->render('FrontEndBundle:Default:notFound.html.twig');
+            }
+            
             }
         
             else
@@ -90,32 +139,36 @@ class CourseController extends Controller {
                                           JOIN c.instructor i
                                           WHERE c.id = :id')->setParameter('id', $id);
         
-        $array = array();
-        $array['course_info'] = $course_query->getResult();;
-        $userId = $this->loggedInUser->getId();
-        $array['subscriptionFlag'] = $this->checkSubscription($userId, $id, $em);
-        
-        return $array;
-        
+        $result = $course_query->getResult();
+        return $result[0];  
     }
 
     
     
     
-    public function checkSubscription($userid, $courseid, $em)
+    public function checkSubscription($courseid, $em)
     {
-        $course = new \Queskey\FrontEndBundle\Model\CheckSubscription();
-        $course_info = $course->checkIfSubscribed($userid, $courseid, $em);
-        if($course_info)
+        if($this->loggedInUser)
         {
-            $flag = $course->expiry($course_info);
-            return array('expired'=>$flag, 'flag'=>1);
+            $userId = $this->loggedInUser->getId();
+            $course = new \Queskey\FrontEndBundle\Model\CheckSubscription();
+            $course_info = $course->checkIfSubscribed($userId, $courseid, $em);
+            if($course_info)
+                {
+                    $flag = $course->expiry($course_info);
+                    return array('expired'=>$flag, 'flag'=>1);       // flag = 1 means user has the subscription.
+                }
+            else
+            {
+                return array('expired'=>0, 'flag'=>0);
+            }
         }
+        
         else
         {
             return array('expired'=>0, 'flag'=>0);
         }
-        
+    
     }
     
     public function checkIfAdmin($id, $em)
@@ -128,6 +181,11 @@ class CourseController extends Controller {
         return $insIdQuery->getResult();
     }
     
+
+    public function contentAction()
+    {
+        
+    }
 }
 
 ?>

@@ -29,9 +29,9 @@ course:
   requirements:
         _method:  GET
         
-courseEdit:
+courseAdmin:
   pattern: /admin/course/{id}
-  defaults: { _controller: FrontEndBundle:Course:edit }
+  defaults: { _controller: FrontEndBundle:Course:admin }
   requirements:
         _method:  GET
 
@@ -162,3 +162,9 @@ admin_update_paymentview:
 admin_create_topics:
   pattern: /instructor/create/topics
   defaults: { _controller: FrontEndBundle:Admin:topics }
+  
+courseContent:
+  pattern: /course/{id}/content
+  defaults: { _controller: FrontEndBundle:Course:content }
+  requirements:
+        _method:  GET

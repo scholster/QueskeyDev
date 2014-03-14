@@ -1,0 +1,56 @@
+{% set loggedInUser = app.session.get('User') %}
+{% extends 'FrontEndBundle:Course:course.html.twig' %}
+
+
+
+{% block subscribe %}
+<button id="subscribe_btn">Subscribe</button>
+{% endblock%}
+
+
+{% block subscribe_login %}
+<button id="subscribe_login_btn"><a href="/">Please Login To Subscribe</a></button>
+{% endblock %}
+
+
+{% block javascript %}
+<script>
+    $(document).ready(function()
+        {
+            if({{subscriptionFlag.flag}})
+                {
+                if({{subscriptionFlag.expired}})
+                 {
+                     alert('Your subscription has expired. Please Re-subscribe the course to continue reading');
+                 }
+                }
+            $('#subscribe_btn').click(function()
+                {
+                        $.post('/subscribe', {
+                                                'course_id' : {{ course.id}},//course_id,//$('#course_id').val(),
+                                                'pid' : {{ course.pid}},//pid,//$('#pid').val(),
+                                                'expiryTime' : {{ course.expirytime}}//expiryTime//$('#expiryTime').val()
+                                              },
+                               function(msg)
+                                  {
+                                      if(msg.success === 1)
+                                                {
+                                                    alert('successfully subscribed. Redirecting to dashboard');
+                                                    window.location.href = '/';
+                                                }
+                                            else if(msg.success === 0)
+                                                {
+                                                    alert('some error occurred, please try again');
+                                                }
+                                                else
+                                                {
+                                                    alert('course has been resubscribed');
+                                                    window.location.href = '/';
+                                                }
+                                        },
+                                        'json'
+                           );
+                    });
+                });
+</script>
+{% endblock %}

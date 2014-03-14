@@ -6,16 +6,14 @@ class CheckSubscription
 {
     public function myCourses($userid, $em)
     {
-        $date = new \DateTime(date('Y-m-d H:i:s'));
+//        $date = new \DateTime(date('Y-m-d H:i:s'));
         $query = $em->createQuery('SELECT c.id, c.name, c.description, subcat.name as subcatname, cat.name as catname 
                                    FROM Queskey\FrontEndBundle\Entity\Subscriptions s
                                    JOIN s.courseid c
                                    JOIN s.userid u
                                    JOIN c.subcat subcat
                                    JOIN subcat.cat cat
-                                   WHERE u.id = :userId 
-                                   AND s.expirytime >= :date')->setParameters(array('userId'=>$userid->getId(),
-                                                                                'date'=>$date));
+                                   WHERE u.id = :userId')->setParameter('userId',$userid->getId());
         $result = $query->getResult();
 
         return $result;

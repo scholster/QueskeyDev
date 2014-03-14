@@ -1,0 +1,12 @@
+{% set loggedInUser = app.session.get('User') %}
+{% extends 'FrontEndBundle:Course:courseHome.html.twig' %}
+
+{% block admin %}
+
+<a href="{{ path('admin') }}"><b><h4>Click here to go to admin panel</h4></b></a>
+
+{% endblock %}
+
+{% block editOption %}
+<button id="edit_btn">click to Edit this course</button>
+{% endblock %}
