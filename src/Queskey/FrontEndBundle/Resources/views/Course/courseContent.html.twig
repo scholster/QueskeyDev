@@ -1,7 +1,40 @@
-function subscribe(flag, expired, courseId, coursePid, courseExpirytime){
-            if(flag)
+{% set loggedInUser = app.session.get('User') %}
+{% extends 'FrontEndBundle:Course:course.html.twig' %}
+
+{% block course %}
+<h1>{{ topics[0]['cname']}} ---- id={{ topics[0]['id']}}</h1>
+{% endblock %}
+
+{% block subjects %}
+<h3>{{ topics[0]['subjectname']}} ---- id={{ topics[0]['sId']}}</h3>
+{% endblock %}
+
+{% block topics %}
+<h4>Topics</h4>
+{% for topic in topics %}
+<ul>
+    <li><a href="{{ topic.url }}">{{ topic.name }} ----- id = {{ topic.tId }}</a></li>
+    <li>{{ topic.description}}</li>
+</ul>
+{% endfor%}
+{% endblock %}
+
+{% block subscribe %}
+<button id="subscribe_btn">Subscribe</button>
+{% endblock%}
+
+{% block subscribe_login %}
+<button id="subscribe_login_btn"><a href="/">Please Login To Subscribe</a></button>
+{% endblock %}
+
+
+{#% block javascript %}
+<script>
+$(document).ready(function()
+        {
+            if({{subscriptionFlag.flag}})
                 {
-                if(expired)
+                if({{subscriptionFlag.expired}})
                  {
                      alert('Your subscription has expired. Please Re-subscribe the course to continue reading');
                  }
@@ -9,9 +42,9 @@ function subscribe(flag, expired, courseId, coursePid, courseExpirytime){
             $('#subscribe_btn').click(function()
                 {
                         $.post('/subscribe', {
-                                                'course_id' : courseId,//course_id,//$('#course_id').val(),
-                                                'pid' : coursePid,//pid,//$('#pid').val(),
-                                                'expiryTime' : courseExpirytime//expiryTime//$('#expiryTime').val()
+                                                'course_id' : {{ course.id}},//course_id,//$('#course_id').val(),
+                                                'pid' : {{ course.pid}},//pid,//$('#pid').val(),
+                                                'expiryTime' : {{ course.expirytime}}//expiryTime//$('#expiryTime').val()
                                               },
                                function(msg)
                                   {
@@ -33,4 +66,6 @@ function subscribe(flag, expired, courseId, coursePid, courseExpirytime){
                                         'json'
                            );
                     });
-}
+                });
+</script>
+{% endblock %#}

@@ -1,19 +1,39 @@
 {% set loggedInUser = app.session.get('User') %}
 {% extends 'FrontEndBundle:Course:course.html.twig' %}
 
-
+{% block subjects %}
+<h3>Subjects</h3>
+{% for subject in subjects %}
+<ul>
+    <li><a href="{{ subject.url }}">{{ subject.name }} ----- id = {{ subject.sId }}</a></li>
+    <li>{{ subject.description}}</li>
+</ul>
+{% endfor%}
+{% endblock%}
 
 {% block subscribe %}
 <button id="subscribe_btn">Subscribe</button>
 {% endblock%}
 
-
 {% block subscribe_login %}
 <button id="subscribe_login_btn"><a href="/">Please Login To Subscribe</a></button>
 {% endblock %}
 
-
 {% block javascript %}
+<script>
+$(document).ready(function()
+{
+    var flag = {{subscriptionFlag.flag}};
+    var expired = {{subscriptionFlag.expired}};
+    var courseId = {{ course.id }};
+    var coursePid = {{ course.pid }};
+    var courseExpirytime = {{ course.expirytime }}
+    subscribe(flag, expired, courseId, coursePid, courseExpirytime);
+});
+</script>
+<script type='text/javascript' src='{{ asset('js/subscribe.js') }}'></script>
+{% endblock %}
+{#% block javascript %}
 <script>
     $(document).ready(function()
         {
@@ -53,4 +73,4 @@
                     });
                 });
 </script>
-{% endblock %}
+{% endblock %#}

@@ -21,6 +21,12 @@
 </p>
 {% endblock %}
 
-{% block study %}
-<a href="{{ course.url }}"><button id="study_btn">Study</button></a><br><br>
+{% block subjects %}
+<h3>Subjects</h3>
+{% for subject in subjects %}
+<ul>
+    <li><a href="{{ subject.url }}">{{ subject.name }} ----- id = {{ subject.sId }}</a></li>
+    <li>{{ subject.description}}</li>
+</ul>
+{% endfor%}
 {% endblock%}

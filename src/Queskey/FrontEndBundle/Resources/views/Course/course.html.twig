@@ -56,9 +56,14 @@ FrontEndBundle:Homepage:index
 {% block analysis %}
 {% endblock %}
 
-{% block study %}
+{% block subjects %}
 {% endblock %}
  
+{% block topics %}
+{% endblock %}
+
+{% block lessons %}
+{% endblock %}
 {% block editOption %}
 {% endblock %}
 
@@ -128,9 +133,9 @@ $(document).ready(function()
 //                                var pid = $('#pid').val();
 //                                var expiryTime = $('#expiryTime').val();
                                 $.post('/subscribe', {
-                                                            'course_id' : {{ course[0].id}},//course_id,//$('#course_id').val(),
-                                                            'pid' : {{ course[0].pid}},//pid,//$('#pid').val(),
-                                                            'expiryTime' : {{ course[0].expirytime}}//expiryTime//$('#expiryTime').val()
+                                                            'course_id' : {{ course.id}},//course_id,//$('#course_id').val(),
+                                                            'pid' : {{ course.pid}},//pid,//$('#pid').val(),
+                                                            'expiryTime' : {{ course.expirytime}}//expiryTime//$('#expiryTime').val()
                                                             },
                                         function(msg)
                                         {

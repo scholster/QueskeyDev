@@ -1,0 +1,27 @@
+{% set loggedInUser = app.session.get('User') %}
+{% extends 'FrontEndBundle:Course:course.html.twig' %}
+
+{% block course %}
+<h1>{{ lessons[0]['cname']}} ---- id={{ lessons[0]['id']}}</h1>
+{% endblock %}
+
+{% block subjects %}
+<h2>{{ lessons[0]['subjectname']}} ---- id={{ lessons[0]['sId']}}</h2>
+{% endblock %}
+
+{% block topics %}
+<h3>{{ lessons[0]['topicname']}} ---- id={{ lessons[0]['tId']}}</h3>
+{% endblock %}
+
+{% block lessons %}
+<h4>Lessons</h4>
+{% for lesson in lessons %}
+<ul>
+    <li><u><b>{{ lesson.lessonname }} ----- id = {{ lesson.leid }}</b></u></li>
+    <li>{{ lesson.contentname}} ---- id={{ lesson.lcid }}</li>
+    {% autoescape 'html' %}
+    <li>{{ lesson.content|raw }}</li>
+    {% endautoescape %}
+</ul>
+{% endfor%}
+{% endblock %}

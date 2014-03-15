@@ -14,18 +14,15 @@ class CourseController extends Controller {
         $session = new \Symfony\Component\HttpFoundation\Session\Session();
         $session->start();
         $this->loggedInUser = $session->get("User");
-        
     }
 
     public function indexAction($id)
     {
         
-        $em = $this->getDoctrine()->getManager();
-        
         if($this->loggedInUser)
         {
             
-            $insId = $this->checkIfAdmin($id, $em);
+            $insId = $this->checkIfAdmin($id, $this->getEm());
             
             if($insId)
             {
@@ -37,26 +34,25 @@ class CourseController extends Controller {
             }
             else
             {
-                $array['courseInfo'] = $this->dbHandle($id, $em);
-                $array['subscriptionFlag'] = $this->checkSubscription($id, $em);
+                $array['courseInfo'] = $this->fetchCourseDetails($id, $this->getEm());
+                $array['courseSubjects'] = $this->fetchCourseSubjects($id, $this->getEm());
+                $array['subscriptionFlag'] = $this->checkSubscription($id, $this->getEm());
                 
                 if($array['courseInfo'])
                 {
                                        
                     if($array['subscriptionFlag']['flag'] && !$array['subscriptionFlag']['expired'])
                     {
-                        $url = $this->generateUrl('courseContent', array('id'=>$id));
-                        $array['courseInfo']['url'] = $url;
-                        return $this->render('FrontEndBundle:Course:courseHome.html.twig',array('course'=>$array['courseInfo']));
+                        return $this->render('FrontEndBundle:Course:courseHome.html.twig',array('course'=>$array['courseInfo'], 'subjects'=>$array['courseSubjects']));
                     }
                     else
                     {
-                        return $this->render('FrontEndBundle:Course:courseDetails.html.twig', array('course'=>$array['courseInfo'], 'subscriptionFlag'=>$array['subscriptionFlag']));
+                        return $this->render('FrontEndBundle:Course:courseDetails.html.twig', array('course'=>$array['courseInfo'], 'subscriptionFlag'=>$array['subscriptionFlag'], 'subjects'=>$array['courseSubjects']));
                     }
                 }
                 else
                 {
-                return $this->render('FrontEndBundle:Default:notFound.html.twig');
+                    return $this->render('FrontEndBundle:Default:notFound.html.twig');
                 }
             }
         }
@@ -70,8 +66,8 @@ class CourseController extends Controller {
         else
         {
 //            return $this->render('FrontEndBundle:Common:pleaseLogin.html.twig');
-              $array['courseInfo'] = $this->dbHandle($id, $em);
-              $array['subscriptionFlag'] = $this->checkSubscription($id, $em);
+              $array['courseInfo'] = $this->fetchCourseDetails($id, $this->getEm());
+              $array['subscriptionFlag'] = $this->checkSubscription($id, $this->getEm());
               
               if($array['courseInfo'])
               {
@@ -90,15 +86,14 @@ class CourseController extends Controller {
     
     public function adminAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
-        $insId = $this->checkIfAdmin($id, $em);
+        $insId = $this->checkIfAdmin($id, $this->getEm());
 //        if($this->loggedInUser->getAdmin() && $this->loggedInUser->getId() == $insId[0]['id'])
         if($this->loggedInUser)
         {
             if($this->loggedInUser->getId() == $insId[0]['id'])
             {
             
-            $array['courseInfo'] = $this->dbHandle($id, $em);
+            $array['courseInfo'] = $this->fetchCourseDetails($id, $this->getEm());
             if($array['courseInfo'])
             {
                 $url = $this->generateUrl('courseContent', array('id'=>$id));
@@ -123,10 +118,65 @@ class CourseController extends Controller {
         }
    }
     
+   
+   
+   public function contentAction($id, $sId)
+    {
+        if($this->loggedInUser)
+        {
+            $subscriptionFlag = $this->checkSubscription($id, $this->getEm());
+            $topics = $this->fetchCourseTopics($sId, $this->getEm());
+            if($topics)
+            {
+                return $this->render('FrontEndBundle:Course:courseContent.html.twig', array('topics'=>$topics, 'subscriptionFlag'=>$subscriptionFlag));
+            }
+            else
+            {
+                return $this->render('FrontEndBundle:Default:notFound.html.twig');
+            }  
+        }
+        else
+        {
+            return $this->render('FrontEndBundle:Default:notFound.html.twig');
+        }
+    }
     
     
     
-    public function dbHandle($id, $em)
+    public function contentAllAction($id, $tId)
+    {
+        if($this->loggedInUser)
+        {
+            $subscriptionFlag = $this->checkSubscription($id, $this->getEm());
+            if(!$subscriptionFlag['expired'] && $subscriptionFlag['flag'])
+            {
+                $lessons = $this->fetchCourseLessons($tId, $this->getEm());
+                if($lessons)
+                {
+                    return $this->render('FrontEndBundle:Course:courseAllContent.html.twig',array('lessons'=>$lessons));
+                }
+                else
+                {
+                    return $this->render('FrontEndBundle:Default:notFound.html.twig');
+                }
+                
+            }
+            else
+            {
+                return $this->render('FrontEndBundle:Default:notFound.html.twig');
+            }
+        }
+        else
+        {
+            return $this->render('FrontEndBundle:Default:notFound.html.twig');
+        }
+    }
+
+    
+
+
+
+    public function fetchCourseDetails($courseId, $em)
     {
          $course_query = $em->createQuery('SELECT c.id, c.name, s.name as subcatname, cat.name as catname, c.description, i.name as ins_name,
                                           p.id as pid, p.price, p.expirytime, p.discountPercent,
@@ -137,10 +187,28 @@ class CourseController extends Controller {
                                           JOIN c.subcat s
                                           JOIN s.cat cat
                                           JOIN c.instructor i
-                                          WHERE c.id = :id')->setParameter('id', $id);
+                                          WHERE c.id = :id')->setParameter('id', $courseId);
         
         $result = $course_query->getResult();
         return $result[0];  
+    }
+    
+    
+    
+     public function fetchCourseSubjects($courseId, $em)
+    {
+         $query = $em->createQuery('SELECT c.id, s.id as sId, s.subjectname as name, s.subjectdescription as description
+                                    FROM Queskey\FrontEndBundle\Entity\Coursesubjects s
+                                    JOIN s.courseid c
+                                    WHERE c.id = :id' )->setParameter('id', $courseId);
+        
+         $array = $query->getResult();
+         foreach($array as $key=>$value) 
+         {
+             $array[$key]['url'] = $this->generateUrl('courseSubject', array('id'=>$value['id'], 'sId'=>$value['sId']));
+         }
+         
+        return $array;  
     }
 
     
@@ -181,10 +249,53 @@ class CourseController extends Controller {
         return $insIdQuery->getResult();
     }
     
-
-    public function contentAction()
+    
+    public function fetchCourseTopics($sId, $em)
     {
+        $query = $em->createQuery('SELECT c.id, c.name as cname, s.id as sId, s.subjectname,
+                                          t.id as tId, t.topicname as name, t.topicdescription as description
+                                    FROM Queskey\FrontEndBundle\Entity\Coursetopics t
+                                    JOIN t.subjectid s
+                                    JOIN s.courseid c
+                                    WHERE s.id = :id' )->setParameter('id', $sId);
         
+         $array = $query->getResult();
+         
+         foreach($array as $key=>$value) 
+         {
+             $array[$key]['url'] = $this->generateUrl('courseTopic', array('id'=>$value['id'], 'sId'=>$value['sId'], 'tId'=>$value['tId']));
+         }
+         
+        return $array;
+    }
+    
+    
+    public function getEm()
+    {
+        return $this->getDoctrine()->getManager();
+    }
+    
+    
+    public function fetchCourseLessons($tId, $em)
+    {
+        $query = $em->createQuery('SELECT c.id, c.name as cname, s.id as sId, s.subjectname,
+                                          t.id as tId, t.topicname, lid.id as leid, lid.lessonname, l.id as lcid, l.contentname, l.content
+                                    FROM Queskey\FrontEndBundle\Entity\Lessoncontents l
+                                    JOIN l.lessonid lid
+                                    JOIN lid.topicid t
+                                    JOIN t.subjectid s
+                                    JOIN s.courseid c
+                                    WHERE t.id = :id' )->setParameter('id', $tId);
+        
+         $array = $query->getResult();
+//         var_dump($array);
+//         die;
+//         foreach($array as $key=>$value) 
+//         {
+//             $array[$key]['url'] = $this->generateUrl('courseTopic', array('id'=>$value['id'], 'sId'=>$value['sId'], 'tId'=>$value['tId']));
+//         }
+         
+        return $array;
     }
 }
 

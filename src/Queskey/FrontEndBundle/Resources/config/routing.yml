@@ -163,8 +163,14 @@ admin_create_topics:
   pattern: /instructor/create/topics
   defaults: { _controller: FrontEndBundle:Admin:topics }
   
-courseContent:
-  pattern: /course/{id}/content
+courseSubject:
+  pattern: /course/{id}/subject/{sId}
   defaults: { _controller: FrontEndBundle:Course:content }
+  requirements:
+        _method:  GET
+
+courseTopic:
+  pattern: /course/{id}/subject/{sId}/topic/{tId}
+  defaults: { _controller: FrontEndBundle:Course:contentAll }
   requirements:
         _method:  GET
