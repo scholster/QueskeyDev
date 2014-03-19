@@ -68,14 +68,28 @@ FrontEndBundle:Homepage:index
 {% endblock %}
 
 {% if loggedInUser %}
+{% if not subscriptionFlag.flag %}
 {% block subscribe %}
 {% endblock%}
+{% endif %}
 {% else %}
 {% block subscribe_login %}
 {% endblock %}
 {% endif %}
 
 {% block javascript %}
+<script>
+$(document).ready(function()
+{
+    var flag = {{subscriptionFlag.flag}};
+    var expired = {{subscriptionFlag.expired}};
+    var courseId = {{ course.id }};
+    var coursePid = {{ course.pid }};
+    var courseExpirytime = {{ course.expirytime }}
+    subscribe(flag, expired, courseId, coursePid, courseExpirytime);
+});
+</script>
+<script type='text/javascript' src='{{ asset('js/subscribe.js') }}'></script>
 {% endblock %}
 
 
