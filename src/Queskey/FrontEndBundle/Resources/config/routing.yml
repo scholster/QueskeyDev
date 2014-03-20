@@ -174,3 +174,8 @@ courseTopic:
   defaults: { _controller: FrontEndBundle:Course:contentAll }
   requirements:
         _method:  GET
+
+
+temp:
+  pattern: /temp
+  defaults: { _controller: FrontEndBundle:Index:temp }

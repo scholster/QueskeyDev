@@ -48,4 +48,10 @@ class IndexController extends Controller
         
         return $this->render("FrontEndBundle:Index:dashboard.html.twig",array("courses"=>$courses, "subCategories" => $subCategories, "myCourses"=>$myCourses));
     }
+    
+    
+    public function tempAction()
+    {
+        return $this->render('FrontEndBundle:Course:temp.html.twig');
+    }
 }
