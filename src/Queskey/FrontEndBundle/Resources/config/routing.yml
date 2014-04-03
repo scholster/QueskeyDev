@@ -175,7 +175,10 @@ courseTopic:
   requirements:
         _method:  GET
 
-
 temp:
   pattern: /temp
   defaults: { _controller: FrontEndBundle:Index:temp }
+  
+quiz:
+  pattern: /quiz/{id}
+  defaults: { _controller: FrontEndBundle:Quiz:index }

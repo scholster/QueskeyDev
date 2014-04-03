@@ -1,0 +1,56 @@
+Queskey\FrontEndBundle\Entity\Quesattempted:
+    type: entity
+    table: quesattempted
+    indexes:
+        userId:
+            columns:
+                - userId
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        quesid:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            column: quesId
+        subjectid:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            column: subjectId
+        answer:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+        iscorrect:
+            type: boolean
+            nullable: false
+            comment: ''
+            column: isCorrect
+        timetaken:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            column: timeTaken
+    manyToOne:
+        userid:
+            targetEntity: User
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                userId:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

@@ -21,6 +21,12 @@
 </p>
 {% endblock %}
 
+{% block quiz %}
+{% if subjects %}
+<a href="{{ path("quiz", {'id': subjects[0].id })}}"><button id="quizBtn">Take Quiz </button></a>
+{% endif %}
+{% endblock %}
+
 {% block subjects %}
 <h3>Subjects</h3>
 {% for subject in subjects %}

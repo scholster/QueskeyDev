@@ -1,0 +1,68 @@
+Queskey\FrontEndBundle\Entity\Analytics:
+    type: entity
+    table: analytics
+    indexes:
+        userId:
+            columns:
+                - userId
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        subjectid:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            column: subjectId
+        answered:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+        correct:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+        communityanswered:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            column: communityAnswered
+        communitycorrect:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            column: communityCorrect
+        timetaken:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            column: timeTaken
+        communitytimetaken:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            column: communityTimeTaken
+    manyToOne:
+        userid:
+            targetEntity: User
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                userId:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }
