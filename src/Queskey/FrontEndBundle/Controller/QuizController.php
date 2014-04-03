@@ -28,23 +28,21 @@ class QuizController extends Controller
             $subjects[] = $value['id'];
         }
         
-        $skey = array_rand($subjects, 1);
-        
-        
         $userId = $em->getRepository('FrontEndBundle:User')->find($this->loggedInUser->getId());
        
-        
-         $analytics = new \Queskey\FrontEndBundle\Model\Analytics();
-        $analytics->generateAnalytics($this->loggedInUser, $em, $subjects);
-        
         for($i = 0; $i < 5; $i++ )
         {
+            $skey = array_rand($subjects, 1);
             $this->dbPersist($userId, $subjects, $skey, $em);
         }
       
+        $analytics = new \Queskey\FrontEndBundle\Model\Analytics();
+        $analytics->generateAnalytics($this->loggedInUser, $em, $subjects);
+
         
         return $this->render('FrontEndBundle:Quiz:thanks.html.twig', array('id'=>$id));
     }
+    
     
     public function dbPersist($userId, $subjects, $skey, $em)
     {

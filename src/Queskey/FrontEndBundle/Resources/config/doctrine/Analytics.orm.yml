@@ -17,41 +17,41 @@ Queskey\FrontEndBundle\Entity\Analytics:
     fields:
         subjectid:
             type: integer
-            nullable: false
+            nullable: true
             unsigned: false
             comment: ''
             column: subjectId
         answered:
             type: integer
-            nullable: false
+            nullable: true
             unsigned: false
             comment: ''
         correct:
             type: integer
-            nullable: false
+            nullable: true
             unsigned: false
             comment: ''
         communityanswered:
             type: integer
-            nullable: false
+            nullable: true
             unsigned: false
             comment: ''
             column: communityAnswered
         communitycorrect:
             type: integer
-            nullable: false
+            nullable: true
             unsigned: false
             comment: ''
             column: communityCorrect
         timetaken:
             type: integer
-            nullable: false
+            nullable: true
             unsigned: false
             comment: ''
             column: timeTaken
         communitytimetaken:
             type: integer
-            nullable: false
+            nullable: true
             unsigned: false
             comment: ''
             column: communityTimeTaken
