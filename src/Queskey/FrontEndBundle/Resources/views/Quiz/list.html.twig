@@ -1,0 +1,14 @@
+{% set loggedInUser = app.session.get('User') %}
+
+
+{% block userDetails %}
+<h1>Welcome to the quiz list page</h1>
+{{ dump(loggedInUser) }}
+{% endblock %}
+
+{% block quizList %}
+<h3>List of the quizes</h3>
+{% for item in list %}
+<a href="{{ path('quiz', { 'id' : item })}}">quiz id {{ item }}
+{% endfor %}
+{% endblock %}

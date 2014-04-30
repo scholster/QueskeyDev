@@ -14,6 +14,7 @@ class Analytics
                                        WHERE q.subjectid IN (:subjectId)
                                        GROUP BY q.subjectid')->setParameter('subjectId', $subjects);
             $result = $query->getResult();
+            var_dump($result);
             $userId = $em->getRepository('FrontEndBundle:User')->find($userid->getId());
             $queryUser = $em->createQuery('SELECT q.subjectid,
                                        COUNT(q.answer) as answered, 
@@ -25,6 +26,7 @@ class Analytics
                                        GROUP BY q.subjectid')->setParameters(array('subjectId'=> $subjects,
                                                                                   'userId'=> $userId->getId()));
             $resultUser = $queryUser->getResult();
+            var_dump($resultUser);
  
             foreach ($subjects as $subject)
             {
@@ -39,6 +41,7 @@ class Analytics
                 }
             }
             
+            var_dump('execution success');
             return;
             
             

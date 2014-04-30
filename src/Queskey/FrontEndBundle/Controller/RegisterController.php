@@ -27,7 +27,7 @@ class RegisterController extends Controller
                 $newUser= new \Queskey\FrontEndBundle\Entity\User;
                 $newUser->setName($data['username']);
                 $newUser->setEmail($data['email']);
-                $newUser->setPassword($data['pwd']);
+                $newUser->setPassword(sha1($data['pwd']));
                 $newUser->setAdmin(0);
                 
                 $em->persist($newUser);

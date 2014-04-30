@@ -181,4 +181,20 @@ temp:
   
 quiz:
   pattern: /quiz/{id}
+  defaults: { _controller: FrontEndBundle:Quiz:quiz }
+  
+subjectQuiz:
+  pattern: /subjectQuiz/{id}
+  defaults: { _controller: FrontEndBundle:Quiz:subjectQuiz }
+  
+topicQuiz:
+  pattern: /topicQuiz/{id}
+  defaults: { _controller: FrontEndBundle:Quiz:topicQuiz }
+  
+lessonQuiz:
+  pattern: /lessonQuiz/{id}
+  defaults: { _controller: FrontEndBundle:Quiz:lessonQuiz }
+  
+quiztemp:
+  pattern: /quiztemp/{id}
   defaults: { _controller: FrontEndBundle:Quiz:index }

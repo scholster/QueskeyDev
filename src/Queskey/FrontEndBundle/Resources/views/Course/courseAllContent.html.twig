@@ -18,6 +18,7 @@
 {% for lesson in lessons %}
 <ul>
     <li><u><b>{{ lesson.lessonname }} ----- id = {{ lesson.leid }}</b></u></li>
+    <li>To take lesson quiz <a href="{{ path('lessonQuiz', { 'id' : lesson.leid })}}">click here</a></li>
     <li>{{ lesson.contentname}} ---- id={{ lesson.lcid }}</li>
     {% autoescape 'html' %}
     <li>{{ lesson.content|raw }}</li>

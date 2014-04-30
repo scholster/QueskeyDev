@@ -1,0 +1,92 @@
+Queskey\FrontEndBundle\Entity\Quiz:
+    type: entity
+    table: quiz
+    uniqueConstraints:
+        quiztype:
+            columns:
+                - quiztype
+        courseId:
+            columns:
+                - courseId
+        subjectId:
+            columns:
+                - subjectId
+        topicId:
+            columns:
+                - topicId
+        lessonId:
+            columns:
+                - lessonId
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    manyToOne:
+        courseid:
+            targetEntity: Course
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                courseId:
+                    referencedColumnName: id
+            orphanRemoval: false
+        subjectid:
+            targetEntity: Coursesubjects
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                subjectId:
+                    referencedColumnName: id
+            orphanRemoval: false
+        topicid:
+            targetEntity: Coursetopics
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                topicId:
+                    referencedColumnName: id
+            orphanRemoval: false
+        lessonid:
+            targetEntity: Courselessons
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                lessonId:
+                    referencedColumnName: topicid
+            orphanRemoval: false
+        quiztype:
+            targetEntity: Quiztypes
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                quiztype:
+                    referencedColumnName: id
+            orphanRemoval: false
+    manyToMany:
+        questionid:
+            targetEntity: Questions
+            cascade: {  }
+            mappedBy: null
+            inversedBy: quizid
+            joinTable:
+                name: quizques
+                joinColumns:
+                    -
+                        name: quizId
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: questionId
+                        referencedColumnName: id
+            orderBy: null
+    lifecycleCallbacks: {  }

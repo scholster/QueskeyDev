@@ -38,6 +38,25 @@ FrontEndBundle:Homepage:index
 {% endif %}
 
 
+{%block myCourses%}
+
+<button id='myCourses_btn'>Show/hide Subscribed Courses</button>
+<div id="myCourses">
+<p>-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/</p><br>
+    {%for myCourse in myCourses%}
+        <ul><h4><a href="{{ path("course", { 'id' : myCourse.id})}}">{{ myCourse.name }}</a></h4>
+            <li><b>CatName</b> : {{ myCourse.catname }}</li>
+            <li><b>SubCatName</b> : {{ myCourse.subcatname }}</li>
+            <li><b>Description</b> : {{ myCourse.description }}</li>
+        </ul>
+        <p>..................................</p><br>
+    {%endfor%}
+<p>-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/</p><br>
+</div><br><br><br>
+
+
+{%endblock%}
+
 {% block course%}
 <div id="course_details">
         <ul id="course_id" value="{{ course.id}}"><b>Course id</b> : {{course.id}}</ul><br>
@@ -60,14 +79,21 @@ FrontEndBundle:Homepage:index
 {% block analysis %}
 {% endblock %}
 
+{#% if subscriptionFlag.flag %}
 {% block quiz %}
 {% endblock %}
+{% endif %#}
 
 {% block subjects %}
 {% endblock %}
  
+{% if not subscriptionFlag.flag %}
 {% block topics %}
 {% endblock %}
+{% else %}
+{% block topicsSubscribed %}
+{% endblock %}
+{% endif %}
 
 {% block lessons %}
 {% endblock %}
@@ -75,7 +101,7 @@ FrontEndBundle:Homepage:index
 {% endblock %}
 
 {% if loggedInUser %}
-{% if not subscriptionFlag.flag %}
+{% if not subscriptionFlag.flag or subscriptionFlag.expired %}
 {% block subscribe %}
 {% endblock%}
 {% endif %}
@@ -88,6 +114,10 @@ FrontEndBundle:Homepage:index
 <script>
 $(document).ready(function()
 {
+     $("#myCourses").hide();
+     $("#myCourses_btn").click(function(){
+            $("#myCourses").toggle();
+        });
     var flag = {{subscriptionFlag.flag}};
     var expired = {{subscriptionFlag.expired}};
     var courseId = {{ course.id }};

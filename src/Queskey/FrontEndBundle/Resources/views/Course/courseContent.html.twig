@@ -19,6 +19,17 @@
 {% endfor%}
 {% endblock %}
 
+{% block topicsSubscribed %}
+<h4>Topics</h4>
+{% for topic in topics %}
+<ul>
+    <li><a href="{{ topic.url }}">{{ topic.name }} ----- id = {{ topic.tId }}</a></li>
+    <li>{{ topic.description}}</li>
+    <li>To take topic quiz <a href="{{ path('topicQuiz', { 'id' : topic.tId })}}">click here</a></li>
+</ul>
+{% endfor%}
+{% endblock %}
+
 {% block subscribe %}
 <button id="subscribe_btn">Subscribe</button>
 {% endblock%}

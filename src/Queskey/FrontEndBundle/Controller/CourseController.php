@@ -37,17 +37,18 @@ class CourseController extends Controller {
                 $array['courseInfo'] = $this->fetchCourseDetails($id, $this->getEm());
                 $array['courseSubjects'] = $this->fetchCourseSubjects($id, $this->getEm());
                 $array['subscriptionFlag'] = $this->checkSubscription($id, $this->getEm());
+                $array['myCourses'] = $this->myCourses();
                 
                 if($array['courseInfo'])
                 {
                                        
                     if($array['subscriptionFlag']['flag'] && !$array['subscriptionFlag']['expired'])
                     {
-                        return $this->render('FrontEndBundle:Course:courseHome.html.twig',array('course'=>$array['courseInfo'], 'subjects'=>$array['courseSubjects'],'subscriptionFlag'=>$array['subscriptionFlag']));
+                        return $this->render('FrontEndBundle:Course:courseHome.html.twig',array('course'=>$array['courseInfo'], 'subjects'=>$array['courseSubjects'],'subscriptionFlag'=>$array['subscriptionFlag'], 'myCourses'=>$array['myCourses']));
                     }
                     else
                     {
-                        return $this->render('FrontEndBundle:Course:courseDetails.html.twig', array('course'=>$array['courseInfo'], 'subscriptionFlag'=>$array['subscriptionFlag'], 'subjects'=>$array['courseSubjects']));
+                        return $this->render('FrontEndBundle:Course:courseDetails.html.twig', array('course'=>$array['courseInfo'], 'subscriptionFlag'=>$array['subscriptionFlag'], 'subjects'=>$array['courseSubjects'], 'myCourses'=>$array['myCourses']));
                     }
                 }
                 else
@@ -69,10 +70,11 @@ class CourseController extends Controller {
               $array['courseInfo'] = $this->fetchCourseDetails($id, $this->getEm());
               $array['courseSubjects'] = $this->fetchCourseSubjects($id, $this->getEm());
               $array['subscriptionFlag'] = $this->checkSubscription($id, $this->getEm());
+              $array['myCourses'] = $this->myCourses();
               
               if($array['courseInfo'])
               {
-                return $this->render('FrontEndBundle:Course:courseDetails.html.twig',array('course'=>$array['courseInfo'],'subjects'=>$array['courseSubjects'], 'subscriptionFlag'=>$array['subscriptionFlag']));
+                return $this->render('FrontEndBundle:Course:courseDetails.html.twig',array('course'=>$array['courseInfo'],'subjects'=>$array['courseSubjects'], 'subscriptionFlag'=>$array['subscriptionFlag'], 'myCourses'=>$array['myCourses']));
               }
               else
               {
@@ -96,11 +98,12 @@ class CourseController extends Controller {
             
             $array['courseInfo'] = $this->fetchCourseDetails($id, $this->getEm());
             $array['courseSubjects'] = $this->fetchCourseSubjects($id, $this->getEm());
+            $array['myCourses'] = $this->myCourses();
             if($array['courseInfo'])
             {
 //                $url = $this->generateUrl('course', array('id'=>$id));
 //                $array['courseInfo']['url'] = $url;
-                return $this->render('FrontEndBundle:Course:courseAdmin.html.twig',array('course'=>$array['courseInfo'], 'subjects'=>$array['courseSubjects'], 'subscriptionFlag'=>array('expired'=>0, 'flag'=>1)));
+                return $this->render('FrontEndBundle:Course:courseAdmin.html.twig',array('course'=>$array['courseInfo'], 'subjects'=>$array['courseSubjects'], 'subscriptionFlag'=>array('expired'=>0, 'flag'=>1), 'myCourses'=>$array['myCourses']));
             }
             else
             {
@@ -127,11 +130,12 @@ class CourseController extends Controller {
        $subscriptionFlag = $this->checkSubscription($id, $this->getEm());
        $courseInfo = $this->fetchCourseDetails($id, $this->getEm());
        $topics = $this->fetchCourseTopics($sId, $this->getEm());
+       $myCourses = $this->myCourses();
 //        if($this->loggedInUser)
 //        {
             if($topics)
             {
-                return $this->render('FrontEndBundle:Course:courseContent.html.twig', array('course'=> $courseInfo,'topics'=>$topics, 'subscriptionFlag'=>$subscriptionFlag));
+                return $this->render('FrontEndBundle:Course:courseContent.html.twig', array('course'=> $courseInfo,'topics'=>$topics, 'subscriptionFlag'=>$subscriptionFlag, 'myCourses' =>$myCourses));
             }
             else
             {
@@ -155,9 +159,10 @@ class CourseController extends Controller {
             {
                 $courseInfo = $this->fetchCourseDetails($id, $this->getEm());
                 $lessons = $this->fetchCourseLessons($tId, $this->getEm());
+                $myCourses = $this->myCourses();
                 if($lessons)
                 {
-                    return $this->render('FrontEndBundle:Course:courseAllContent.html.twig',array('lessons'=>$lessons, 'course'=>$courseInfo ,'subscriptionFlag'=>$subscriptionFlag));
+                    return $this->render('FrontEndBundle:Course:courseAllContent.html.twig',array('lessons'=>$lessons, 'course'=>$courseInfo ,'subscriptionFlag'=>$subscriptionFlag, 'myCourses'=>$myCourses));
                 }
                 else
                 {
@@ -269,7 +274,7 @@ class CourseController extends Controller {
          {
              $array[$key]['url'] = $this->generateUrl('courseTopic', array('id'=>$value['id'], 'sId'=>$value['sId'], 'tId'=>$value['tId']));
          }
-         
+
         return $array;
     }
     
@@ -300,6 +305,13 @@ class CourseController extends Controller {
 //         }
          
         return $array;
+    }
+    
+    public function myCourses()
+    {
+        $getMyCourse = new \Queskey\FrontEndBundle\Model\CheckSubscription();
+        $myCourses = $getMyCourse->myCourses($this->loggedInUser, $this->getEm());
+        return $myCourses;
     }
 }
 

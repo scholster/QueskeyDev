@@ -21,11 +21,11 @@
 </p>
 {% endblock %}
 
-{% block quiz %}
+{#% block quiz %}
 {% if subjects %}
 <a href="{{ path("quiz", {'id': subjects[0].id })}}"><button id="quizBtn">Take Quiz </button></a>
 {% endif %}
-{% endblock %}
+{% endblock %#}
 
 {% block subjects %}
 <h3>Subjects</h3>
@@ -33,6 +33,7 @@
 <ul>
     <li><a href="{{ subject.url }}">{{ subject.name }} ----- id = {{ subject.sId }}</a></li>
     <li>{{ subject.description}}</li>
+    <li>To take subject quiz <a href="{{ path('subjectQuiz', {'id': subject.sId })}}"> click here</a></li>
 </ul>
 {% endfor%}
 {% endblock%}

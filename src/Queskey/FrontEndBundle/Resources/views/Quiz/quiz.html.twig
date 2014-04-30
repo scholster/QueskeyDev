@@ -1,0 +1,24 @@
+{% set loggedInUser = app.session.get('User') %}
+
+{% block instructions %}
+<h1>ITS QUIZ TIME BABY id = {{ questions[0].id }}</h1>
+{% endblock %}
+
+{% block questions %}
+{% set count = 1 %}
+{% for question in questions %}
+<h5>{{ count }} . {{ question.question }}</h5>
+<ul class="{{ question.qId }}">
+    <li><input name="{{ question.qId }}" id="{{ question.qId }}_1" type="radio">{{ question.option1 }}</li>
+    <li><input name="{{ question.qId }}" id="{{ question.qId }}_2" type="radio">{{ question.option2 }}</li>
+    <li><input name="{{ question.qId }}" id="{{ question.qId }}_3" type="radio">{{ question.option3 }}</li>
+    <li><input name="{{ question.qId }}" id="{{ question.qId }}_4" type="radio">{{ question.option4 }}</li>
+    <li><input name="{{ question.qId }}" id="{{ question.qId }}_5" type="radio">{{ question.option5 }}</li>
+</ul>
+{% set count=count+1 %}
+{% endfor %}
+{% endblock%}
+
+{% block submit %}
+<button id="btn">submit</button>
+{% endblock %}

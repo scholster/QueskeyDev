@@ -18,7 +18,7 @@ class LoginController extends Controller
             
             $userRepository = $em->getRepository('FrontEndBundle:User');
             $user = $userRepository->findOneBy(array("email"=>$data['email']));
-            if($user && $user->getPassword()==$data['pwd'])
+            if($user && $user->getPassword()== sha1($data['pwd']))
             {
                 $userLogin = new \Queskey\FrontEndBundle\Model\UserLogin($user->getId(), $user->getName(), $user->getEmail(), $user->getAdmin());
                 $session = new \Symfony\Component\HttpFoundation\Session\Session();

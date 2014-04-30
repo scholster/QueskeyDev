@@ -1,6 +1,13 @@
 Queskey\FrontEndBundle\Entity\Questions:
     type: entity
     table: questions
+    indexes:
+        topicId:
+            columns:
+                - topicId
+        lessonId:
+            columns:
+                - lessonId
     id:
         id:
             type: integer
@@ -11,18 +18,6 @@ Queskey\FrontEndBundle\Entity\Questions:
             generator:
                 strategy: IDENTITY
     fields:
-        topicid:
-            type: integer
-            nullable: false
-            unsigned: false
-            comment: ''
-            column: topicId
-        lessonid:
-            type: integer
-            nullable: true
-            unsigned: false
-            comment: ''
-            column: lessonId
         question:
             type: text
             nullable: false
@@ -75,4 +70,31 @@ Queskey\FrontEndBundle\Entity\Questions:
             nullable: false
             unsigned: false
             comment: ''
+    manyToOne:
+        topicid:
+            targetEntity: Coursetopics
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                topicId:
+                    referencedColumnName: id
+            orphanRemoval: false
+        lessonid:
+            targetEntity: Courselessons
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                lessonId:
+                    referencedColumnName: id
+            orphanRemoval: false
+    manyToMany:
+        quizid:
+            targetEntity: Quiz
+            cascade: {  }
+            mappedBy: questionid
+            inversedBy: null
+            joinTable: null
+            orderBy: null
     lifecycleCallbacks: {  }

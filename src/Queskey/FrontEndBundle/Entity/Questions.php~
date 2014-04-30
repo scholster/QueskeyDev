@@ -332,4 +332,49 @@ class Questions
     {
         return $this->level;
     }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $quizid;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->quizid = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add quizid
+     *
+     * @param \Queskey\FrontEndBundle\Entity\Quiz $quizid
+     * @return Questions
+     */
+    public function addQuizid(\Queskey\FrontEndBundle\Entity\Quiz $quizid)
+    {
+        $this->quizid[] = $quizid;
+
+        return $this;
+    }
+
+    /**
+     * Remove quizid
+     *
+     * @param \Queskey\FrontEndBundle\Entity\Quiz $quizid
+     */
+    public function removeQuizid(\Queskey\FrontEndBundle\Entity\Quiz $quizid)
+    {
+        $this->quizid->removeElement($quizid);
+    }
+
+    /**
+     * Get quizid
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getQuizid()
+    {
+        return $this->quizid;
+    }
 }
