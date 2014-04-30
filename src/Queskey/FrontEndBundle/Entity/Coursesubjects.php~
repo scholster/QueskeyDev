@@ -25,6 +25,11 @@ class Coursesubjects
     private $subjectdescription;
 
     /**
+     * @var boolean
+     */
+    private $type;
+
+    /**
      * @var \Queskey\FrontEndBundle\Entity\Course
      */
     private $courseid;
@@ -84,6 +89,29 @@ class Coursesubjects
     public function getSubjectdescription()
     {
         return $this->subjectdescription;
+    }
+
+    /**
+     * Set type
+     *
+     * @param boolean $type
+     * @return Coursesubjects
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return boolean 
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 
     /**

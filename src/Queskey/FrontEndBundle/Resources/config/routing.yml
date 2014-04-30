@@ -34,6 +34,10 @@ courseEdit:
   defaults: { _controller: FrontEndBundle:Course:edit }
   requirements:
         _method:  GET
+        
+subscription:
+  pattern: /subscribe
+  defaults: { _controller: FrontEndBundle:Subscription:new }
 
 admin:
   pattern: /instructor
@@ -46,31 +50,7 @@ admin_view:
 admin_store:
   pattern: /instructor/store
   defaults: { _controller: FrontEndBundle:Admin:storecourse }
-
-admin_store_subject:
-  pattern: /instructor/store/subject
-  defaults: { _controller: FrontEndBundle:Admin:storesubject }
-  
-admin_store_topic:
-  pattern: /instructor/store/topic
-  defaults: { _controller: FrontEndBundle:Admin:storetopic }
-  
-admin_view_topics:
-  pattern: /instructor/view/topics
-  defaults: { _controller: FrontEndBundle:Admin:viewtopics }
-  
-admin_store_lesson:
-  pattern: /instructor/store/lesson
-  defaults: { _controller: FrontEndBundle:Admin:storelesson }
-
-admin_view_lessons:
-  pattern: /instructor/view/lessons
-  defaults: { _controller: FrontEndBundle:Admin:viewlessons }
-  
-admin_store_content:
-  pattern: /instructor/store/content
-  defaults: { _controller: FrontEndBundle:Admin:storecontent }
-  
+ 
 admin_update:
   pattern: /instructor/update
   defaults: { _controller: FrontEndBundle:Admin:updatecourse }
@@ -94,22 +74,22 @@ admin_updatepplanview:
 admin_update_paymentview:
   pattern: /instructor/update/paymentplan/courses
   defaults: { _controller: FrontEndBundle:Admin:updatepplancourse }
+
+admin_paymentupdate:
+  pattern: /instructor/paymentplan/update
+  defaults: { _controller: FrontEndBundle:Admin:paymentplanupdate }
   
 admin_create_topics:
-  pattern: /instructor/create/topics
+  pattern: /instructor/create/topics/{courseId}
   defaults: { _controller: FrontEndBundle:Admin:topics }
- 
-admin_view:
-  pattern: /instructor/view
-  defaults: { _controller: FrontEndBundle:Admin:viewcourse }
-  
-subscription:
-  pattern: /subscribe
-  defaults: { _controller: FrontEndBundle:Subscription:new }
-  
+
 admin_store_subject:
   pattern: /instructor/store/subject
   defaults: { _controller: FrontEndBundle:Admin:storesubject }
+
+admin_view_subdesc:
+  pattern: /instructor/view/subdesc
+  defaults: { _controller: FrontEndBundle:Admin:viewsubdesc }
   
 admin_store_topic:
   pattern: /instructor/store/topic
@@ -118,14 +98,34 @@ admin_store_topic:
 admin_view_topics:
   pattern: /instructor/view/topics
   defaults: { _controller: FrontEndBundle:Admin:viewtopics }
+
+admin_view_topdesc:
+  pattern: /instructor/view/topdesc
+  defaults: { _controller: FrontEndBundle:Admin:viewtopdesc }
   
 admin_store_lesson:
   pattern: /instructor/store/lesson
   defaults: { _controller: FrontEndBundle:Admin:storelesson }
+  
+admin_store_innerlesson:
+  pattern: /instructor/store/innerlesson
+  defaults: { _controller: FrontEndBundle:Admin:storeinnerlesson }
 
 admin_view_lessons:
   pattern: /instructor/view/lessons
   defaults: { _controller: FrontEndBundle:Admin:viewlessons }
+  
+admin_view_lestype:
+  pattern: /instructor/view/lessontype
+  defaults: { _controller: FrontEndBundle:Admin:viewlestype }
+  
+admin_view_innerlessons:
+  pattern: /instructor/view/innerlessons
+  defaults: { _controller: FrontEndBundle:Admin:viewinnerlessons }
+  
+admin_view_content:
+  pattern: /instructor/view/content
+  defaults: { _controller: FrontEndBundle:Admin:viewcontent }
   
 admin_store_content:
   pattern: /instructor/store/content
@@ -135,30 +135,46 @@ admin_store_question:
   pattern: /instructor/store/question
   defaults: { _controller: FrontEndBundle:Admin:storequestion }
   
-admin_update:
-  pattern: /instructor/update
-  defaults: { _controller: FrontEndBundle:Admin:updatecourse }
+admin_store_data_question:
+  pattern: /instructor/store/dataquestion
+  defaults: { _controller: FrontEndBundle:Admin:store_dataquestion }
   
-admin_createpplanview:
-  pattern: /instructor/paymentplan
-  defaults: { _controller: FrontEndBundle:Admin:createpplanview }
+admin_store_quiz:
+  pattern: /instructor/store/quiz
+  defaults: { _controller: FrontEndBundle:Admin:storequiz }
   
-admin_create_paymentview:
-  pattern: /instructor/create/paymentplan
-  defaults: { _controller: FrontEndBundle:Admin:createpplancourse }
+admin_view_subquestions:
+  pattern: /instructor/view/subquestions
+  defaults: { _controller: FrontEndBundle:Admin:view_sub_questions }
   
-admin_paymentcreate:
-  pattern: /instructor/paymentplan/create
-  defaults: { _controller: FrontEndBundle:Admin:paymentplancreate }
+admin_view_topicquestions:
+  pattern: /instructor/view/topicquestions
+  defaults: { _controller: FrontEndBundle:Admin:view_topic_questions }
   
-admin_updatepplanview:
-  pattern: /instructor/update/paymentplan
-  defaults: { _controller: FrontEndBundle:Admin:updatepplanview }
+admin_view_lessonquestions:
+  pattern: /instructor/view/lessonquestions
+  defaults: { _controller: FrontEndBundle:Admin:view_lesson_questions }
   
-admin_update_paymentview:
-  pattern: /instructor/update/paymentplan/courses
-  defaults: { _controller: FrontEndBundle:Admin:updatepplancourse }
+admin_view_quizquestions:
+  pattern: /instructor/view/quizquestions
+  defaults: { _controller: FrontEndBundle:Admin:view_quiz_questions }
   
-admin_create_topics:
-  pattern: /instructor/create/topics
-  defaults: { _controller: FrontEndBundle:Admin:topics }
+admin_edit_subject:
+  pattern: /instructor/edit/subject
+  defaults: { _controller: FrontEndBundle:AdminEdit:editsubject }
+  
+admin_edit_topic:
+  pattern: /instructor/edit/topic
+  defaults: { _controller: FrontEndBundle:AdminEdit:edittopic }
+  
+admin_edit_lesson:
+  pattern: /instructor/edit/lesson
+  defaults: { _controller: FrontEndBundle:AdminEdit:editlesson }
+  
+admin_edit_innerlesson:
+  pattern: /instructor/edit/innerlesson
+  defaults: { _controller: FrontEndBundle:AdminEdit:editinnerlesson }
+  
+admin_edit_quiz:
+  pattern: /instructor/edit/quiz
+  defaults: { _controller: FrontEndBundle:AdminEdit:edit_quiz }

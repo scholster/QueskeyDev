@@ -5,6 +5,9 @@ Queskey\FrontEndBundle\Entity\Lessoncontents:
         lessonid:
             columns:
                 - lessonid
+        innerlessonid:
+            columns:
+                - innerlessonid
     id:
         id:
             type: integer
@@ -15,17 +18,6 @@ Queskey\FrontEndBundle\Entity\Lessoncontents:
             generator:
                 strategy: IDENTITY
     fields:
-        contentname:
-            type: string
-            nullable: false
-            length: 128
-            fixed: false
-            comment: ''
-        contenttype:
-            type: boolean
-            nullable: false
-            comment: ''
-            default: '0'
         content:
             type: text
             nullable: false
@@ -40,6 +32,15 @@ Queskey\FrontEndBundle\Entity\Lessoncontents:
             inversedBy: null
             joinColumns:
                 lessonid:
+                    referencedColumnName: id
+            orphanRemoval: false
+        innerlessonid:
+            targetEntity: Courseinnerlessons
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                innerlessonid:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }

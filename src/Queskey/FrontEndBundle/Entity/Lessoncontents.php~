@@ -17,6 +17,16 @@ class Lessoncontents
     /**
      * @var string
      */
+    private $contentname;
+
+    /**
+     * @var boolean
+     */
+    private $contenttype;
+
+    /**
+     * @var string
+     */
     private $content;
 
     /**
@@ -38,6 +48,52 @@ class Lessoncontents
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set contentname
+     *
+     * @param string $contentname
+     * @return Lessoncontents
+     */
+    public function setContentname($contentname)
+    {
+        $this->contentname = $contentname;
+
+        return $this;
+    }
+
+    /**
+     * Get contentname
+     *
+     * @return string 
+     */
+    public function getContentname()
+    {
+        return $this->contentname;
+    }
+
+    /**
+     * Set contenttype
+     *
+     * @param boolean $contenttype
+     * @return Lessoncontents
+     */
+    public function setContenttype($contenttype)
+    {
+        $this->contenttype = $contenttype;
+
+        return $this;
+    }
+
+    /**
+     * Get contenttype
+     *
+     * @return boolean 
+     */
+    public function getContenttype()
+    {
+        return $this->contenttype;
     }
 
     /**

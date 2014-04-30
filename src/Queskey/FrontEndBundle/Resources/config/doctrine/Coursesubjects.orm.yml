@@ -27,12 +27,6 @@ Queskey\FrontEndBundle\Entity\Coursesubjects:
             length: 512
             fixed: false
             comment: ''
-        type:
-            type: boolean
-            nullable: false
-            comment: ''
-            default: '0'
-            column: Type
     manyToOne:
         courseid:
             targetEntity: Course

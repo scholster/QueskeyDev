@@ -1,0 +1,122 @@
+<script>
+$(document).ready(function(){
+
+    var MaxQuestions       = 4; //maximum input boxes allowed
+    var Questionsform      = $("#Options"); //Input boxes wrapper ID
+    var Level              = $("#dataques_level_1");
+    var AddButton          = $("#add_newquestion_btn"); //Add button ID
+
+    var x = Questionsform.length; //initial text box count
+    var QuestionCount=1; //to keep track of text box added
+    
+    $(AddButton).click(function (e)  //on add input button click
+{
+        if(x <= MaxQuestions) //max input box allowed
+        {
+            QuestionCount++; //text box added increment
+            //add input box
+            $(Level).after('<div>Type Your Question      : <br><br><br><textarea name="dataquestion" id="dataquestion_'+ QuestionCount +'"></textarea><src="{{ asset('js/ckeditor/ckeditor.js') }}" type="text/javascript">
+                CKEDITOR.replace( 'dataquestion_1' );
+               <a href="#" class="removeclass">&times;</a></div>');
+       var Question = $("#dataquestion_'+ QuestionCount +'");
+       $(Question).after('<div><input type="text" name="mytext[]" id="data_option_1_'+ QuestionCount +'" placeholder="Option 1"/>\n\
+                               <input type="text" name="mytext[]" id="data_option_2_'+ QuestionCount +'" placeholder="Option 2"/>\n\
+                               <input type="text" name="mytext[]" id="data_option_3_'+ QuestionCount +'" placeholder="Option 3"/></div>')
+            x++; //text box increment
+        }
+return false;
+});
+
+$("body").on("click",".removeclass", function(e){ //user click on remove text
+        if( x > 1 ) {
+                $(this).parent('div').remove(); //remove text box
+                x--; //decrement textbox
+        }
+return false;
+}); 
+
+  });
+</script>
+
+
+<div id="add_dataquestion" name="DataQuestions" class="add_dataquestion_box">
+<form id="add_dataquestion_form">
+    <pre>
+Subject           : <select id="dataquestion_subject" name="lesson_sub">
+    {% for subjects in subject %}
+  <option value={{ subjects.id }} > {{ subjects.subjectname }} </option>
+  {% endfor %}
+</select>
+
+Topic             : <select id="dataquestion_topic" name="lesson_topics">
+    {% for topics in topic %}
+  <option value={{ topics.id }} > {{ topics.topicname }} </option>
+  {% endfor %}
+</select>
+
+Lesson            : <select id="dataquestion_lesson" name="dataquestion_lessons">
+    {% for lessons in lesson %}
+  <option value={{ lessons.id }} > {{ lessons.lessonname }} </option>
+  {% endfor %}
+  <option value=NULL > None </option>
+</select>
+<br><br>
+Type Your Data      : <br><br><br><textarea rows="10" cols="40" name="question_data" id="question_data"></textarea>
+<script src="{{ asset('js/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
+<script>
+                // Replace the <textarea id="editor1"> with a CKEditor
+                // instance, using default configuration.
+                CKEDITOR.replace( 'question_data' );
+</script>
+<br><br>
+
+Type Your Question      : <br><br><br><textarea rows="10" cols="40" name="dataquestion" id="dataquestion_1"></textarea>
+<script src="{{ asset('js/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
+<script>
+                // Replace the <textarea id="editor1"> with a CKEditor
+                // instance, using default configuration.
+                CKEDITOR.replace( 'dataquestion_1' );
+</script>
+<br>
+<br>
+You can add a maximum of 5 choices/options.
+<button type="button" class="addoption" id="addoption_btn_1">Add more option</button>
+<div id="Options">
+<input type="text" name="mytext[]" id="data_option_1_1" placeholder="Option 1"/>
+<input type="text" name="mytext[]" id="data_option_2_1" placeholder="Option 2"/>
+<input type="text" name="mytext[]" id="data_option_3_1" placeholder="Option 3"/>
+<input type="text" name="mytext[]" id="data_option_4_1" placeholder="Option 4"/>
+<input type="text" name="mytext[]" id="data_option_5_1" placeholder="Option 5"/>
+</div>
+
+Select Answer :    <select id="data_answer_1" name="answer_ques">
+  <option value= "1">A</option>
+  <option value= "2">B</option>
+  <option value= "3">C</option>
+  <option value= "4">D</option>
+  <option value= "5">E</option>
+</select>
+
+Solution      : <br><br><br><textarea rows="10" cols="40" name="question" id="dataquestion_solution_1"></textarea>
+<script src="{{ asset('js/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
+<script>
+                // Replace the <textarea id="editor1"> with a CKEditor
+                // instance, using default configuration.
+                CKEDITOR.replace( 'dataquestion_solution_1' );
+</script>
+
+Level :    <select name="level" id="dataques_level_1"> 
+  <option value= "1">Easy</option>
+  <option value= "2">Medium</option>
+  <option value= "3">Difficult</option>
+</select>
+<br><br>
+
+<button type="button" class="submit_box" id="add_newquestion_btn">Add Question</button><br><br>
+
+<div class="submit">
+<button type="button" class="submit_box" id="add_dataquestion_btn">Add Data Question</button><br><br><br><br>
+</div>
+    </pre>
+</form>
+</div>

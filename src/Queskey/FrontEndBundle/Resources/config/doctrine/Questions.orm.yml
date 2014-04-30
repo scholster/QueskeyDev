@@ -1,6 +1,19 @@
 Queskey\FrontEndBundle\Entity\Questions:
     type: entity
     table: questions
+    indexes:
+        topicid:
+            columns:
+                - topicId
+        lessonid:
+            columns:
+                - lessonId
+        dataid:
+            columns:
+                - dataid
+        subjectid:
+            columns:
+                - subjectId
     id:
         id:
             type: integer
@@ -11,18 +24,6 @@ Queskey\FrontEndBundle\Entity\Questions:
             generator:
                 strategy: IDENTITY
     fields:
-        topicid:
-            type: integer
-            nullable: false
-            unsigned: false
-            comment: ''
-            column: topicId
-        lessonid:
-            type: integer
-            nullable: true
-            unsigned: false
-            comment: ''
-            column: lessonId
         question:
             type: text
             nullable: false
@@ -31,31 +32,31 @@ Queskey\FrontEndBundle\Entity\Questions:
             comment: ''
         option1:
             type: string
-            nullable: false
+            nullable: true
             length: 512
             fixed: false
             comment: ''
         option2:
             type: string
-            nullable: false
+            nullable: true
             length: 512
             fixed: false
             comment: ''
         option3:
             type: string
-            nullable: false
+            nullable: true
             length: 512
             fixed: false
             comment: ''
         option4:
             type: string
-            nullable: false
+            nullable: true
             length: 512
             fixed: false
             comment: ''
         option5:
             type: string
-            nullable: false
+            nullable: true
             length: 512
             fixed: false
             comment: ''
@@ -75,4 +76,49 @@ Queskey\FrontEndBundle\Entity\Questions:
             nullable: false
             unsigned: false
             comment: ''
+    manyToOne:
+        topicid:
+            targetEntity: Coursetopics
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                topicId:
+                    referencedColumnName: id
+            orphanRemoval: false
+        lessonid:
+            targetEntity: Courselessons
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                lessonId:
+                    referencedColumnName: id
+            orphanRemoval: false
+        dataid:
+            targetEntity: QuestionData
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                dataid:
+                    referencedColumnName: id
+            orphanRemoval: false
+        subjectid:
+            targetEntity: Coursesubjects
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                subjectId:
+                    referencedColumnName: id
+            orphanRemoval: false
+    manyToMany:
+        quizid:
+            targetEntity: Quiz
+            cascade: {  }
+            mappedBy: questionid
+            inversedBy: null
+            joinTable: null
+            orderBy: null
     lifecycleCallbacks: {  }

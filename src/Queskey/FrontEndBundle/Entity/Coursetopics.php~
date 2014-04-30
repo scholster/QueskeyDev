@@ -25,6 +25,11 @@ class Coursetopics
     private $topicdescription;
 
     /**
+     * @var boolean
+     */
+    private $topictype;
+
+    /**
      * @var \Queskey\FrontEndBundle\Entity\Coursesubjects
      */
     private $subjectid;
@@ -84,6 +89,29 @@ class Coursetopics
     public function getTopicdescription()
     {
         return $this->topicdescription;
+    }
+
+    /**
+     * Set topictype
+     *
+     * @param boolean $topictype
+     * @return Coursetopics
+     */
+    public function setTopictype($topictype)
+    {
+        $this->topictype = $topictype;
+
+        return $this;
+    }
+
+    /**
+     * Get topictype
+     *
+     * @return boolean 
+     */
+    public function getTopictype()
+    {
+        return $this->topictype;
     }
 
     /**

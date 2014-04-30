@@ -4,10 +4,31 @@
 
 
 {% block javascript %}
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<!--<script type='text/javascript' src="{{ asset('js/jquery.js') }}"></script>-->
+<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>-->
+<script type='text/javascript' src="{{ asset('js/jquery.js') }}"></script>
 <script type='text/javascript' src="{{ asset('js/admin_topics.js') }}"></script>
+<script>
+    var id = {{ course[0].id }};
+</script>
+<script type='text/javascript' src="{{ asset('js/addinnerlesson.js') }}"></script>
+<script type='text/javascript' src="{{ asset('js/adddataquestion.js') }}"></script>
 <script type='text/javascript' src="{{ asset('js/admindashboard.js') }}" ></script>
+<script type='text/javascript' src="{{ asset('js/admin_createquizz.js') }}" ></script>
+
+<script>
+            var editquiz = new Array;
+            {% for ques in quizques %}
+            editquiz.push({{ ques.id }});        
+            {% endfor %}
+            var editref = editquiz.slice();
+</script>
+
+<script type='text/javascript' src="{{ asset('js/admin_editquizz.js') }}" ></script>
+<script type='text/javascript' src="{{ asset('js/admin_editcourse.js') }}" ></script>
+{# <script>
+var a = {{path('admin_view_lestype')}}
+    
+</script> #}
 {% endblock %}
 
 
@@ -16,8 +37,6 @@
 <h1>Welcome to the Admin Topics & Course Creation page</h1>
 {{ dump(loggedInUser) }}
 <br><br>
-
-
 
 {% block logout_button%}
 
@@ -31,24 +50,47 @@ Category        : {{ courses.cname }}<br>
 Sub-Category    : {{ courses.sname }}<br>
 Description     : {{ courses.description }}<br>
 {% endfor %}
-{% autoescape 'html' %}
-    {{ content[0].content|raw }}      {# var won't be escaped #}
+{#{% autoescape 'html' %}
+    {{ content.content|raw }}      {# var won't be escaped #}
     {# var won't be double-escaped #}
-{% endautoescape %}
+{#{% endautoescape %}#}
 
 <br>
 <button type="button" class="edit" id="edit_btn">Click here to edit details of the above listed categories</button>
 
-<button type="button" class="addsubjects" id="addsubjects_btn">Add subjects to the course {{ course[0].name }}</button>
+<button type="button" class="add" id="add_course_details_btn">Add details to the Course</button>
 
-<button type="button" class="addtopics" id="addtopics_btn">Add topics to the course {{ course[0].name }}</button><br><br>
+<button type="button" class="addsubjects" id="addsubjects_btn">Add subjects to the course {{ course[0].name }}</button><br><br>
+{% if(subject != null) %}
+<button type="button" class="addtopics" id="addtopics_btn">Add topics</button>
+{% if(topic != null) %}
+<button type="button" class="addlessons" id="addlessons_btn">Add lessons</button>
+{% if(lesson != null) %}
+<button type="button" class="addinnerlessons" id="addinnerlessons_btn">Add inner lessons</button>
+{% if(innerlesson != null) %}
+<button type="button" class="addcontents" id="addcontents_btn">Add contents to the inner lessons</button><br><br>
 
-<button type="button" class="addlessons" id="addlessons_btn">Add lessons to the course {{ course[0].name }}</button>
+<button type="button" class="add_dataquestions" id="add_dataquestions_btn">Add data questions</button>
 
-<button type="button" class="addcontents" id="addcontents_btn">Add contents to the lessons for Course {{ course[0].name }}</button>
+<button type="button" class="addinner_questions" id="addinner_questions_btn">Add questions</button>
+{% if(question != null) %}
+<button type="button" class="create_quiz_btns" id="create_quiz_btn">Create Quiz</button>
+{% if(quiz != null) %}
+<button type="button" class="view_edit_quiz_btns" id="view_edit_quiz_btn">View & Edit Quiz</button><br><br>
 
-<button type="button" class="addquestions" id="addquestions_btn">Add questions to the topics for Course {{ course[0].name }}</button>
+<button type="button" class="editsubjects" id="editsubjects_btn">Edit Subject</button>
 
+<button type="button" class="edittopics" id="edittopics_btn">Edit Topic</button>
+
+<button type="button" class="editlessons" id="editlessons_btn">Edit Lesson</button>
+
+<button type="button" class="editinnerlessons" id="editinnerlessons_btn">Edit InnerLesson</button>
+{% endif %}
+{% endif %}
+{% endif %}
+{% endif %}
+{% endif %}
+{% endif %}
 {{ dump(course[0].id) }}
 
 <script>
@@ -56,6 +98,11 @@ $(document).ready(function(){
     $("#updatecourse").hide();   
   $("#edit_btn").click(function(){
     $("#updatecourse").slideToggle();
+  });
+  
+  $("#add_details").hide();
+  $("#add_course_details_btn").click(function(){
+      $("#add_details").slideToggle();
   });
   
   $("#addsubject").hide(); 
@@ -73,42 +120,55 @@ $(document).ready(function(){
     $("#addlesson").slideToggle();
   });
   
+  $("#addinnerlesson").hide(); 
+    $("#addinnerlessons_btn").click(function(){
+    $("#addinnerlesson").slideToggle();
+  });
+  
   $("#addcontent").hide(); 
     $("#addcontents_btn").click(function(){
     $("#addcontent").slideToggle();
   });
   
-  $("#addquestion").hide(); 
-    $("#addquestions_btn").click(function(){
-    $("#addquestion").slideToggle();
+  $("#add_dataquestion").hide(); 
+    $("#add_dataquestions_btn").click(function(){
+    $("#add_dataquestion").slideToggle();
   });
   
-  var MaxOptions       = 4; //maximum input boxes allowed
-    var Optionsform   = $("#Options"); //Input boxes wrapper ID
-    var AddButton       = $("#addoption_btn"); //Add button ID
-
-    var x = Optionsform.length; //initial text box count
-    var OptionCount=1; //to keep track of text box added
-    
-    $(AddButton).click(function (e)  //on add input button click
-{
-        if(x <= MaxOptions && OptionCount<5) //max input box allowed
-        {
-            OptionCount++; //text box added increment
-            //add input box
-            $(Optionsform).append('<input type="text" name="mytext[]" id="option_'+ OptionCount +'" placeholder="Option '+ OptionCount +'"/><a href="#" class="removeclass">&times;</a>');
-            x++; //text box increment
-        }
-return false;
-});
-
-$("body").on("click",".removeclass", function(e){ //user click on remove text
-        if( x > 1 ) {
-                $(this).parent('div').remove(); //remove text box
-                x--; //decrement textbox
-        }
-return false;
-}); 
+  $("#addinner_question").hide(); 
+    $("#addinner_questions_btn").click(function(){
+    $("#addinner_question").slideToggle();
+  });
+  
+  $("#create_quiz").hide(); 
+    $("#create_quiz_btn").click(function(){
+    $("#create_quiz").slideToggle();
+  });
+  
+  $("#view_edit_quiz").hide(); 
+    $("#view_edit_quiz_btn").click(function(){
+    $("#view_edit_quiz").slideToggle();
+  });
+  
+  $("#editsubject").hide(); 
+    $("#editsubjects_btn").click(function(){
+    $("#editsubject").slideToggle();
+  });
+  
+  $("#edittopic").hide(); 
+    $("#edittopics_btn").click(function(){
+    $("#edittopic").slideToggle();
+  });
+  
+  $("#editlesson").hide(); 
+    $("#editlessons_btn").click(function(){
+    $("#editlesson").slideToggle();
+  });
+  
+  $("#editinnerlesson").hide(); 
+    $("#editinnerlessons_btn").click(function(){
+    $("#editinnerlesson").slideToggle();
+  });
   });
 </script>
 
@@ -141,20 +201,29 @@ Description  : <br><textarea rows="4" cols="50" name="description" id="course_de
     </div>
 
 
+<div id="add_details" class="course_box">
+<pre>
+<form id="add_course_details_form" name = "CourseDetails">
+
+Overview        : <br><textarea rows="4" cols="50" name="overview" id="course_overview"></textarea>
+FAQ's           : Question : <input class="course_faqs" type="text" id="faq_1"><br>
+                  Answer   : <input class="course_faqs_answer" type="text" id="faq_answer_1"><br>
+                <button type="button" class="add_faqs_btns" id="faqs_btn">Add Question</button><br><br>
+Pre-Requisite   : <input class="course_pre" type="text" id="course_prerequisite"><br>
+<div class="submit">
+<button type="button" class="submit_box" id="add_details_btn" value={{ course[0].id }} >Add Details</button><br><br><br><br>
+</div>
+</form>
+</pre>
+    </div>
+
+
 
 <div id="addsubject" name="Subjects" class="addsubject_box">
 <form id="addsubject_form">
     <pre>
 SubjectName        : <input class="subject_name" type="text" id="sname">
 SubjectDescription : <br><textarea rows="4" cols="50" name="description" id="subject_desc"></textarea>
-Type               : <select id="subtype">
-  <option value= "0">Free</option>
-  <option value= "1">Paid</option>
-</select>
-(Select Paid if you want the complete
-contents of this subject to be visible
-to paid users otherwise select free if
-you want to make some contents free.)
 <div class="submit">
 <button type="button" class="submit_box" id="addsub_btn" value={{ course[0].id }} >Add Subject</button><br><br><br><br>
 </div>
@@ -177,6 +246,7 @@ TopicName        : <input class="topic_name" type="text" id="tname">
 TopicDescription : <br><textarea rows="4" cols="50" name="description" id="topic_desc"></textarea>
 {# if selected subject is paid then do not give choice of free/paid #}
 
+{# {% if(subject[0].type != true) %}
 Type             : <select id="topictype">
   <option value= "0">Free</option>
   <option value= "1">Paid</option>
@@ -185,6 +255,10 @@ Type             : <select id="topictype">
 contents of this topic to be visible
 to paid users otherwise select free if
 you want to make some contents free.)
+{% else %}
+Type : <b>Paid</b>
+{% endif %}#}
+
 <div class="submit">
 <button type="button" class="submit_box" id="addtopic_btn">Add Topic</button><br><br><br><br>
 </div>
@@ -230,6 +304,37 @@ you want to make some contents free.)
 
 
 
+<div id="addinnerlesson" name="InnerLessons" class="addinnerlesson_box">
+<form id="addinnerlesson_form">
+    <pre>
+Subject           : <select id="innerlesson_subject" name="innerlesson_sub">
+    {% for subjects in subject %}
+  <option value={{ subjects.id }} > {{ subjects.subjectname }} </option>
+  {% endfor %}
+</select>
+
+Topic             : <select id="innerlesson_topic" name="innerlesson_topics">
+    {% for topics in topic %}
+  <option value={{ topics.id }} > {{ topics.topicname }} </option>
+  {% endfor %}
+</select>
+
+Lesson            : <select id="innerlesson_lesson" name="innerlesson_lessons">
+    {% for lessons in lesson %}
+  <option value={{ lessons.id }} > {{ lessons.lessonname }} </option>
+  {% endfor %}
+</select>
+
+InnerLessonName   : <input class="innerlesson_name" type="text" id="ilname">
+<div class="submit">
+<button type="button" class="submit_box" id="addinnerlesson_btn">Add InnerLesson</button><br><br><br><br>
+</div>
+    </pre>
+</form>
+</div>
+
+
+
 <div id="addcontent" name="Contents" class="addcontent_box">
 <form id="addcontent_form">
     <pre>
@@ -250,16 +355,12 @@ Lesson            : <select id="content_lesson" name="content_lessons">
   <option value={{ lessons.id }} > {{ lessons.lessonname }} </option>
   {% endfor %}
 </select>
-{# if selected subject is paid then do not give choice of free/paid #}
 
-Type             : <select id="contenttype">
-  <option value= "0">Free</option>
-  <option value= "1">Paid</option>
+InnerLesson       : <select id="content_innerlesson" name="content_innerlessons">
+    {% for innerlessons in innerlesson %}
+  <option value={{ innerlessons.id }} > {{ innerlessons.innerlessonname }} </option>
+  {% endfor %}
 </select>
-(Select Paid if you want the complete
-contents of this content to be visible
-to paid users otherwise select free if
-you want to make some contents free.)
 
 Type Content      : <br><br><br><textarea rows="10" cols="40" name="content" id="contents"></textarea>
 <script src="{{ asset('js/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
@@ -276,37 +377,61 @@ Type Content      : <br><br><br><textarea rows="10" cols="40" name="content" id=
 </div>
 
 
-<div id="addquestion" name="Questions" class="addquestion_box">
-<form id="addquestion_form">
+
+<div id="add_dataquestion" name="DataQuestions" class="add_dataquestion_box">
+<form id="add_dataquestion_form">
     <pre>
-Subject           : <select id="question_subject" name="lesson_sub">
+Subject           : <select id="dataquestion_subject" name="lesson_sub">
     {% for subjects in subject %}
   <option value={{ subjects.id }} > {{ subjects.subjectname }} </option>
   {% endfor %}
 </select>
 
-Topic             : <select id="question_topic" name="lesson_topics">
+Topic             : <select id="dataquestion_topic" name="lesson_topics">
     {% for topics in topic %}
   <option value={{ topics.id }} > {{ topics.topicname }} </option>
   {% endfor %}
 </select>
 
-Type Your Question      : <br><br><br><textarea rows="10" cols="40" name="question" id="question"></textarea>
+Lesson            : <select id="dataquestion_lesson" name="dataquestion_lessons">
+    {% for lessons in lesson %}
+  <option value={{ lessons.id }} > {{ lessons.lessonname }} </option>
+  {% endfor %}
+  <option value=NULL > None </option>
+</select>
+<br><br>
+Type Your Data      : <br><br><br><textarea rows="10" cols="40" name="question_data" id="question_data"></textarea>
 <script src="{{ asset('js/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
 <script>
                 // Replace the <textarea id="editor1"> with a CKEditor
                 // instance, using default configuration.
-                CKEDITOR.replace( 'question' );
+                CKEDITOR.replace( 'question_data' );
 </script>
-<br>
+Level :    <select name="level" id="dataques_level"> 
+  <option value= "1">Easy</option>
+  <option value= "2">Medium</option>
+  <option value= "3">Difficult</option>
+</select>
+<br><br>
+Type Your Question_1     : <br><br><br><textarea rows="10" cols="40" name="dataquestion[]" id="dataquestion_1"></textarea>
+<script src="{{ asset('js/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
+<script>
+                // Replace the <textarea id="editor1"> with a CKEditor
+                // instance, using default configuration.
+                CKEDITOR.replace( 'dataquestion_1' );
+</script>
 <br>
 You can add a maximum of 5 choices/options.
 <button type="button" class="addoption" id="addoption_btn">Add more option</button>
 <div id="Options">
-<input type="text" name="mytext[]" id="option_1" placeholder="Option 1"/>
+<input type="text" name="mytext[]" id="data_option_1_1" placeholder="Option 1"/>
+<input type="text" name="mytext[]" id="data_option_2_1" placeholder="Option 2"/>
+<input type="text" name="mytext[]" id="data_option_3_1" placeholder="Option 3"/>
+<input type="text" name="mytext[]" id="data_option_4_1" placeholder="Option 4"/>
+<input type="text" name="mytext[]" id="data_option_5_1" placeholder="Option 5"/>
 </div>
 
-Select Answer :    <select id="answer" name="answer_ques">
+Select Answer :    <select id="data_answer_1" name="answer_ques[]">
   <option value= "1">A</option>
   <option value= "2">B</option>
   <option value= "3">C</option>
@@ -314,29 +439,431 @@ Select Answer :    <select id="answer" name="answer_ques">
   <option value= "5">E</option>
 </select>
 
-Solution      : <br><br><br><textarea rows="10" cols="40" name="question" id="question_solution"></textarea>
+Solution      : <br><br><br><textarea rows="10" cols="40" name="question_solution[]" id="dataquestion_solution_1"></textarea>
 <script src="{{ asset('js/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
 <script>
                 // Replace the <textarea id="editor1"> with a CKEditor
                 // instance, using default configuration.
-                CKEDITOR.replace( 'question_solution' );
+                CKEDITOR.replace( 'dataquestion_solution_1' );
+</script>
+<br><br>
+
+
+Type Your Question_2     : <br><br><br><textarea rows="10" cols="40" name="dataquestion[]" id="dataquestion_2"></textarea>
+<script src="{{ asset('js/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
+<script>
+                // Replace the <textarea id="editor1"> with a CKEditor
+                // instance, using default configuration.
+                CKEDITOR.replace( 'dataquestion_2' );
+</script>
+<br>
+You can add a maximum of 5 choices/options.
+<button type="button" class="addoption" id="addoption_btn">Add more option</button>
+<div id="Options">
+<input type="text" name="mytext[]" id="data_option_1_2" placeholder="Option 1"/>
+<input type="text" name="mytext[]" id="data_option_2_2" placeholder="Option 2"/>
+<input type="text" name="mytext[]" id="data_option_3_2" placeholder="Option 3"/>
+<input type="text" name="mytext[]" id="data_option_4_2" placeholder="Option 4"/>
+<input type="text" name="mytext[]" id="data_option_5_2" placeholder="Option 5"/>
+</div>
+
+Select Answer :    <select id="data_answer_2" name="answer_ques[]">
+  <option value= "1">A</option>
+  <option value= "2">B</option>
+  <option value= "3">C</option>
+  <option value= "4">D</option>
+  <option value= "5">E</option>
+</select>
+
+Solution      : <br><br><br><textarea rows="10" cols="40" name="question_solution[]" id="dataquestion_solution_2"></textarea>
+<script src="{{ asset('js/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
+<script>
+                // Replace the <textarea id="editor1"> with a CKEditor
+                // instance, using default configuration.
+                CKEDITOR.replace( 'dataquestion_solution_2' );
+</script>
+<br><br>
+
+
+Type Your Question_3     : <br><br><br><textarea rows="10" cols="40" name="dataquestion[]" id="dataquestion_3"></textarea>
+<script src="{{ asset('js/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
+<script>
+                // Replace the <textarea id="editor1"> with a CKEditor
+                // instance, using default configuration.
+                CKEDITOR.replace( 'dataquestion_3' );
+</script>
+<br>
+<br>
+You can add a maximum of 5 choices/options.
+<button type="button" class="addoption" id="addoption_btn">Add more option</button>
+<div id="Options">
+<input type="text" name="mytext[]" id="data_option_1_3" placeholder="Option 1"/>
+<input type="text" name="mytext[]" id="data_option_2_3" placeholder="Option 2"/>
+<input type="text" name="mytext[]" id="data_option_3_3" placeholder="Option 3"/>
+<input type="text" name="mytext[]" id="data_option_4_3" placeholder="Option 4"/>
+<input type="text" name="mytext[]" id="data_option_5_3" placeholder="Option 5"/>
+</div>
+
+Select Answer :    <select id="data_answer_3" name="answer_ques[]">
+  <option value= "1">A</option>
+  <option value= "2">B</option>
+  <option value= "3">C</option>
+  <option value= "4">D</option>
+  <option value= "5">E</option>
+</select>
+
+Solution      : <br><br><br><textarea rows="10" cols="40" name="question_solution[]" id="dataquestion_solution_3"></textarea>
+<script src="{{ asset('js/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
+<script>
+                // Replace the <textarea id="editor1"> with a CKEditor
+                // instance, using default configuration.
+                CKEDITOR.replace( 'dataquestion_solution_3' );
+</script>
+<br><br>
+
+
+<button type="button" class="submit_box" id="add_newquestion_btn">Add Question</button><br><br>
+<div class="submit">
+<button type="button" class="submit_box" id="add_dataquestion_btn">Add Data Question</button><br><br><br><br>
+</div>
+    </pre>
+</form>
+</div>
+
+
+
+<div id="addinner_question" name="InnerQuestions" class="addinnerquestion_box">
+<form id="addinnerquestion_form">
+    <pre>
+Subject           : <select id="innerquestion_subject" name="innerlesson_sub">
+    {% for subjects in subject %}
+  <option value={{ subjects.id }} > {{ subjects.subjectname }} </option>
+  {% endfor %}
+</select>
+
+Topic             : <select id="innerquestion_topic" name="innerlesson_topics">
+    {% for topics in topic %}
+  <option value={{ topics.id }} > {{ topics.topicname }} </option>
+  {% endfor %}
+</select>
+
+Lesson            : <select id="innerquestion_lesson" name="innerquestion_lessons">
+    {% for lessons in lesson %}
+  <option value={{ lessons.id }} > {{ lessons.lessonname }} </option>
+  {% endfor %}
+  <option value=NULL > None </option>
+</select>
+
+Type Your Question      : <br><br><br><textarea rows="10" cols="40" name="innerquestion" id="innerquestion"></textarea>
+<script src="{{ asset('js/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
+<script>
+                // Replace the <textarea id="editor1"> with a CKEditor
+                // instance, using default configuration.
+                CKEDITOR.replace( 'innerquestion' );
+</script>
+<br>
+You can add a maximum of 5 choices/options.
+<button type="button" class="addoption" id="addoption_btn">Add more option</button>
+<div id="Options">
+<input type="text" name="mytext[]" id="inneroption_1" placeholder="Option 1"/>
+<input type="text" name="mytext[]" id="inneroption_2" placeholder="Option 2"/>
+<input type="text" name="mytext[]" id="inneroption_3" placeholder="Option 3"/>
+<input type="text" name="mytext[]" id="inneroption_4" placeholder="Option 4"/>
+<input type="text" name="mytext[]" id="inneroption_5" placeholder="Option 5"/>
+</div>
+
+Select Answer :    <select id="inner_answer" name="answer_innerques">
+  <option value= "1">A</option>
+  <option value= "2">B</option>
+  <option value= "3">C</option>
+  <option value= "4">D</option>
+  <option value= "5">E</option>
+</select>
+
+Solution      : <br><br><br><textarea rows="10" cols="40" name="innerquestion" id="innerquestion_solution"></textarea>
+<script src="{{ asset('js/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
+<script>
+                // Replace the <textarea id="editor1"> with a CKEditor
+                // instance, using default configuration.
+                CKEDITOR.replace( 'innerquestion_solution' );
 </script>
 
-Level :    <select name="level" id="ques_level"> 
+Level :    <select name="level" id="innerques_level"> 
   <option value= "1">Easy</option>
   <option value= "2">Medium</option>
   <option value= "3">Difficult</option>
 </select>
 <br><br>
 <div class="submit">
-<button type="button" class="submit_box" id="addquestion_btn">Add Question</button><br><br><br><br>
+<button type="button" class="submit_box" id="addinnerquestion_btn">Add InnerQuestion</button><br><br><br><br>
+</div>
+    </pre>
+</form>
+</div>
+
+
+
+<div id="create_quiz" name="CreateQuizzes" class="QuizBox">
+<form id="create_quiz_form">
+    
+<h2><b>Select the lesson/topic from which you want the questions </b></h2>
+
+QuizType          : <select id="createquiz_type" name="createquiz_types">
+  <option value= "1">Subject Quiz</option>
+  <option value= "2">Topic Drill</option>
+  <option value= "3">Lesson Drill</option>
+  <option value= "4">Miscellaneous Quiz</option>
+</select> &nbsp &nbsp &nbsp
+
+Subject           : <select id="createquiz_subject" name="createquiz_sub">
+    {% for subjects in subject %}
+  <option value={{ subjects.id }} > {{ subjects.subjectname }} </option>
+  {% endfor %}
+</select> &nbsp &nbsp &nbsp
+
+Topic             : <select id="createquiz_topic" name="createquiz_topics">
+    {% for topics in topic %}
+  <option value={{ topics.id }} > {{ topics.topicname }} </option>
+  {% endfor %}
+</select> &nbsp &nbsp &nbsp 
+
+Lesson            : <select id="createquiz_lesson" name="createquiz_lessons">
+    {% for lessons in lesson %}
+  <option value={{ lessons.id }} > {{ lessons.lessonname }} </option>
+  {% endfor %}
+  <option value=NULL > None </option>
+</select>
+<br><br>
+<section class="container">
+    <link rel="stylesheet" href="/css/multiple_options.css" media="screen" />
+    <div>
+        <select id="leftValues" size="20" multiple></select>
+    </div>
+    <div>
+        <input type="button" id="btnLeft" value="&lt;&lt;" />
+        <input type="button" id="btnRight" value="&gt;&gt;" />
+    </div>
+    <div>
+        <select id="rightValues" size="20" multiple>
+            {% set i = 1 %}
+            {% for questions in question %}
+                <option value={{ questions.id }} > {{ questions.question|raw }} </option><br><br>
+            {% endfor %}
+        </select>
+    </div>
+</section>
+<pre>
+<div class="submit">
+<button type="button" class="submit_box" id="createquiz_btn" value={{ course[0].id }}>Create Quiz</button><br><br><br><br>
+</div>
+    </pre>   
+</form>
+</div>
+
+
+
+<div id="view_edit_quiz" name="ViewEditQuizzes" class="ViewEditQuizBox">
+<form id="view_edit_quiz_form">
+    
+<h2><b>Select the quiz id from which you want the questions </b></h2>
+
+Quiz ID's           : <select id="viewquiz_quiz" name="viewquiz_view">
+    {% for quizzes in quiz %}
+  <option value={{ quizzes.id }} > {{ quizzes.id }} </option>
+  {% endfor %}
+    </select> &nbsp &nbsp &nbsp
+    
+Subject           : <select id="edit_quiz_subject" name="edit_quiz_sub">
+    {% for subjects in subject %}
+  <option value={{ subjects.id }} > {{ subjects.subjectname }} </option>
+  {% endfor %}
+</select> &nbsp &nbsp &nbsp
+
+Topic             : <select id="edit_quiz_topic" name="edit_quiz_topics">
+    {% for topics in topic %}
+  <option value={{ topics.id }} > {{ topics.topicname }} </option>
+  {% endfor %}
+</select> &nbsp &nbsp &nbsp 
+
+Lesson            : <select id="edit_quiz_lesson" name="edit_quiz_lessons">
+    {% for lessons in lesson %}
+  <option value={{ lessons.id }} > {{ lessons.lessonname }} </option>
+  {% endfor %}
+  <option value=NULL > None </option>
+</select>
+<br><br>
+    <section class="container">
+    <link rel="stylesheet" href="/css/multiple_options.css" media="screen" />
+    <div>
+        <select id="edit_leftValues" size="20" multiple>
+        {% for ques in quizques %}
+                <option value={{ ques.id }} > {{ ques.question|raw }} </option><br><br>
+            {% endfor %}
+                </select>
+    </div>
+    <div>
+        <input type="button" id="edit_btnLeft" value="&lt;&lt;" />
+        <input type="button" id="edit_btnRight" value="&gt;&gt;" />
+    </div>
+    <div>
+        <select id="edit_rightValues" size="20" multiple>
+            {% set i = 1 %}
+            {% for questions in question %}
+                <option value={{ questions.id }} > {{ questions.question|raw }} </option><br><br>
+            {% endfor %}
+        </select>
+    </div>
+</section>
+  &nbsp &nbsp &nbsp
+  <div class="submit">
+<button type="button" class="submit_box" id="editquiz_btn" value={{ quiz[0].id }}>Edit Quiz</button><br><br><br><br>
+</div>
+</form>
+</div>
+
+
+<div id="editsubject" name="Subjects" class="editsubject_box">
+<form id="editsubject_form">
+    <pre>
+SelectSubject                : <select id="editsubject_id" name="editsubject_sub">
+    {% for subjects in subject %}
+  <option value={{ subjects.id }} > {{ subjects.subjectname }} </option>
+  {% endfor %}
+</select>
+
+Enter New SubjectName        : <input class="editsubject_name" type="text" id="editsname" value="{{ subject[0].subjectname }}" >
+
+SubjectDescription : <br><textarea rows="4" cols="50" name="description" id="editsubject_desc">
+{{ subdesc[0].subjectdescription }}
+</textarea>
+<div class="submit">
+<button type="button" class="submit_box" id="editsub_btn" value={{ course[0].id }} >Edit Subject</button><br><br>
+<button type="button" class="submit_box" id="removesub_btn" value={{ course[0].id }} >Remove Subject</button><br><br><br><br>
+</div>
+    </pre>
+</form>
+</div>
+
+
+
+<div id="edittopic" name="Topics" class="edittopic_box">
+<form id="edittopic_form">
+    <pre>
+SelectSubject                : <select id="edittopic_sub_id" name="edittopic_sub">
+    {% for subjects in subject %}
+  <option value={{ subjects.id }} > {{ subjects.subjectname }} </option>
+  {% endfor %}
+</select>
+
+SelectTopic                  : <select id="edit_topic_id" name="edittopic_topic">
+    {% for topics in topic %}
+  <option value={{ topics.id }} > {{ topics.topicname }} </option>
+  {% endfor %}
+</select>
+
+Enter New TopicName          : <input class="edittopic_name" type="text" id="edittname" value="{{ topic[0].topicname }}">
+
+TopicDescription : <br><textarea rows="10" cols="100" name="description" id="edittopic_desc">
+{{ topdesc[0].topicdescription }}
+</textarea>
+<div class="submit">
+<button type="button" class="submit_box" id="edittopic_btn">Edit Topic</button><br><br><br><br>
+<button type="button" class="submit_box" id="removetopic_btn">Remove Topic</button><br><br><br><br>
+</div>
+    </pre>
+</form>
+</div>
+
+
+
+<div id="editlesson" name="Topics" class="editlesson_box">
+<form id="editlesson_form">
+    <pre>
+SelectSubject                : <select id="editlesson_sub_id" name="editlesson_sub">
+    {% for subjects in subject %}
+  <option value={{ subjects.id }} > {{ subjects.subjectname }} </option>
+  {% endfor %}
+</select>
+
+SelectTopic                  : <select id="editlesson_topic_id" name="editlesson_topic">
+    {% for topics in topic %}
+  <option value={{ topics.id }} > {{ topics.topicname }} </option>
+  {% endfor %}
+</select>
+
+SelectLesson                 : <select id="editlesson_lesson_id" name="editlesson_lesson">
+    {% for lessons in lesson %}
+  <option value={{ lessons.id }} > {{ lessons.lessonname }} </option>
+  {% endfor %}
+</select>
+
+Enter New LessonName         : <input class="editlesson_name" type="text" id="editlname" value="{{ lesson[0].lessonname }}"><br>
+Edit Type                    : <select id="editlesson_lesson_type" name="editlesson_lesson">
+    {% if lestype[0].lessontype == 0 %}
+<option value = "0">Free</option>
+<option value = "1">Paid</option>
+{% else %}
+<option value= "1">Paid</option>
+<option value = "0">Free</option>
+{% endif %}
+</select>
+<div class="submit">
+<button type="button" class="submit_box" id="editlesson_btn">Edit Lesson</button><br><br><br><br>
+<button type="button" class="submit_box" id="removelesson_btn">Remove Lesson</button><br><br><br><br>
+</div>
+    </pre>
+</form>
+</div>
+
+
+
+<div id="editinnerlesson" name="Topics" class="editinnerlesson_box">
+<form id="editinnerlesson_form">
+    <pre>
+SelectSubject                : <select id="editinnerlesson_sub_id" name="editinnerlesson_sub">
+    {% for subjects in subject %}
+  <option value={{ subjects.id }} > {{ subjects.subjectname }} </option>
+  {% endfor %}
+</select>
+
+SelectTopic                  : <select id="editinnerlesson_topic_id" name="editinnerlesson_topic">
+    {% for topics in topic %}
+  <option value={{ topics.id }} > {{ topics.topicname }} </option>
+  {% endfor %}
+</select>
+
+SelectLesson                 : <select id="editinnerlesson_lesson_id" name="editinnerlesson_lesson">
+    {% for lessons in lesson %}
+  <option value={{ lessons.id }} > {{ lessons.lessonname }} </option>
+  {% endfor %}
+</select>
+
+SelectInnerLesson            : <select id="editinnerlesson_innerlesson_id" name="editinnerlesson_innerlesson">
+    {% for innerlessons in innerlesson %}
+  <option value={{ innerlessons.id }} > {{ innerlessons.innerlessonname }} </option>
+  {% endfor %}
+</select>
+
+Enter New InnerLessonName    : <input class="editinnerlesson_name" type="text" id="editilname" value="{{ innerlesson[0].innerlessonname }}">
+
+Inner Lesson Content         : <br><br><br><textarea rows="10" cols="40" name="editinnerlesson_content" id="editinnerlesson_innerlesson_content"></textarea>
+<script src="{{ asset('js/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
+<script>
+                // Replace the <textarea id="editor1"> with a CKEditor
+                // instance, using default configuration.
+                CKEDITOR.replace( 'editinnerlesson_innerlesson_content' );
+                {#CKEDITOR.instances['editinnerlesson_innerlesson_content'].setData( '{{ contents[0].content|raw }}' );#}
+</script>
+<br><br>
+
+<div class="submit">
+<button type="button" class="submit_box" id="editinnerlesson_btn" value={{ contents[0].id }}>Edit InnerLesson</button><br><br><br><br>
+<button type="button" class="submit_box" id="removeinnerlesson_btn">Remove InnerLesson</button><br><br><br><br>
 </div>
     </pre>
 </form>
 </div>
 <br><br><br><br>
-
-
 
 {% block paymentplan_button %}
 

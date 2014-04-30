@@ -9,6 +9,7 @@ FrontEndBundle:Homepage:index
 {% block js %}
 
 <script type='text/javascript' src='{{ asset('js/jquery.js') }}'></script>
+<script type='text/javascript' src='{{ asset('js/admin_topics.js') }}'></script>
 {#<script type='text/javascript' src='{{ asset('js/subscribe.js') }}'></script>#}
 {% endblock%}
 
@@ -53,18 +54,31 @@ FrontEndBundle:Homepage:index
         <li>course re-subscription fee : ${{course[0].resubscriptionPrice}}</li><br><br>
 </div>
 {% endblock %}
-        
 {% block subscribe%}
 <div id="study">
 <button id="study_btn">study</button><br><br>
 </div>
         <div id="edit_course">
-            <button id="edit">edit</button>
+            <a href="{{ path('admin_create_topics', {'courseId' : course[0].id}) }}">Edit Course</a>
+                
         </div>
 {% endblock %}
 
+<script>
+/*$(document).ready(function(){
+   $("#edit").click(function(){
+      $.post("/instructor/create/topics", {
+        courseId: {{ course[0].id }}
 
-
+    }, function(data) {
+        if (data[0] === "fail")
+        {
+            alert("No course selected");
+        }
+    }, 'json'); 
+   }); 
+});*/
+</script>
 {#% block jss%}
 <script>
 $(document).ready(function()

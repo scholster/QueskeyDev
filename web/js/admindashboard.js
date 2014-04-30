@@ -47,9 +47,10 @@ function storecourse()
             subcat: $("#subcategory").val(),
             description: $("#course_desc").val()
         },function(data){
-            if(data[0]==="success")
+            if(data[0]!== '0')
                 {
-                    window.location.href = '/instructor/create/topics';
+                    var id=data[0];
+                    window.location.href = '/instructor/create/topics/'+id;
                 }
                 else
                     {

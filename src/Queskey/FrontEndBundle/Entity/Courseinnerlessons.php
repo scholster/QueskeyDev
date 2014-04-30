@@ -5,9 +5,9 @@ namespace Queskey\FrontEndBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Lessoncontents
+ * Courseinnerlessons
  */
-class Lessoncontents
+class Courseinnerlessons
 {
     /**
      * @var integer
@@ -17,17 +17,12 @@ class Lessoncontents
     /**
      * @var string
      */
-    private $content;
+    private $innerlessonname;
 
     /**
      * @var \Queskey\FrontEndBundle\Entity\Courselessons
      */
     private $lessonid;
-
-    /**
-     * @var \Queskey\FrontEndBundle\Entity\Courseinnerlessons
-     */
-    private $innerlessonid;
 
 
     /**
@@ -41,33 +36,33 @@ class Lessoncontents
     }
 
     /**
-     * Set content
+     * Set innerlessonname
      *
-     * @param string $content
-     * @return Lessoncontents
+     * @param string $innerlessonname
+     * @return Courseinnerlessons
      */
-    public function setContent($content)
+    public function setInnerlessonname($innerlessonname)
     {
-        $this->content = $content;
+        $this->innerlessonname = $innerlessonname;
 
         return $this;
     }
 
     /**
-     * Get content
+     * Get innerlessonname
      *
      * @return string 
      */
-    public function getContent()
+    public function getInnerlessonname()
     {
-        return $this->content;
+        return $this->innerlessonname;
     }
 
     /**
      * Set lessonid
      *
      * @param \Queskey\FrontEndBundle\Entity\Courselessons $lessonid
-     * @return Lessoncontents
+     * @return Courseinnerlessons
      */
     public function setLessonid(\Queskey\FrontEndBundle\Entity\Courselessons $lessonid = null)
     {
@@ -84,28 +79,5 @@ class Lessoncontents
     public function getLessonid()
     {
         return $this->lessonid;
-    }
-
-    /**
-     * Set innerlessonid
-     *
-     * @param \Queskey\FrontEndBundle\Entity\Courseinnerlessons $innerlessonid
-     * @return Lessoncontents
-     */
-    public function setInnerlessonid(\Queskey\FrontEndBundle\Entity\Courseinnerlessons $innerlessonid = null)
-    {
-        $this->innerlessonid = $innerlessonid;
-
-        return $this;
-    }
-
-    /**
-     * Get innerlessonid
-     *
-     * @return \Queskey\FrontEndBundle\Entity\Courseinnerlessons 
-     */
-    public function getInnerlessonid()
-    {
-        return $this->innerlessonid;
     }
 }

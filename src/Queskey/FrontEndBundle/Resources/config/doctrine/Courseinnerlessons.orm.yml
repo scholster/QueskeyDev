@@ -1,10 +1,10 @@
-Queskey\FrontEndBundle\Entity\Coursetopics:
+Queskey\FrontEndBundle\Entity\Courseinnerlessons:
     type: entity
-    table: coursetopics
+    table: courseinnerlessons
     indexes:
-        subjectid:
+        lessonid:
             columns:
-                - subjectid
+                - lessonid
     id:
         id:
             type: integer
@@ -15,26 +15,20 @@ Queskey\FrontEndBundle\Entity\Coursetopics:
             generator:
                 strategy: IDENTITY
     fields:
-        topicname:
-            type: string
-            nullable: false
-            length: 128
-            fixed: false
-            comment: ''
-        topicdescription:
+        innerlessonname:
             type: string
             nullable: false
             length: 512
             fixed: false
             comment: ''
     manyToOne:
-        subjectid:
-            targetEntity: Coursesubjects
+        lessonid:
+            targetEntity: Courselessons
             cascade: {  }
             mappedBy: null
             inversedBy: null
             joinColumns:
-                subjectid:
+                lessonid:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }

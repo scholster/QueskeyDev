@@ -1,5 +1,4 @@
 $(document).ready(function(){
-    
     $("#update_btn").click(function(){
        updatecourse();        
 });
@@ -31,15 +30,40 @@ $("#content_topic").bind("change",(function(){
    populatecontentlesson(); 
 }));
 
+$("#content_lesson").bind("change",(function(){
+    $("#content_innerlesson").empty();
+   populatecontentinnerlesson(); 
+}));
+
+$("#innerquestion_subject").bind("change",(function(){
+    $("#innerquestion_topic").empty();
+   populateinnerquestion_topic(); 
+}));
+
+$("#innerquestion_topic").bind("change",(function(){
+    $("#innerquestion_lesson").empty();
+   populateinnerquestion_lesson(); 
+}));
+
+$("#innerlesson_subject").bind("change",(function(){
+    $("#innerlesson_topic").empty();
+   populateinnerlessontopic(); 
+}));
+
+$("#innerlesson_topic").bind("change",(function(){
+    $("#innerlesson_lesson").empty();
+   populateinnerlesson_lesson(); 
+}));
+
 $("#addcontent_btn").click(function(){
     var val= CKEDITOR.instances['contents'].getData();
        storecontent(val);        
 });
 
-$("#addquestion_btn").click(function(){
-    var ques= CKEDITOR.instances['question'].getData();
-    var soln= CKEDITOR.instances['question_solution'].getData();
-       storequestion(ques,soln);        
+$("#addinnerquestion_btn").click(function(){
+    var ques= CKEDITOR.instances['innerquestion'].getData();
+    var soln= CKEDITOR.instances['innerquestion_solution'].getData();
+       storeinnerquestion(ques,soln);        
 });
 });
 
@@ -83,6 +107,57 @@ function populatecontenttopic()
             {
                 $("#content_topic").append($('<option></option>').val(data[i].id).html(data[i].topicname));
             }
+            $("#content_lesson").empty();
+   populatecontentlesson();
+        }
+    }, 'json');
+}
+
+
+
+function populateinnerquestion_topic()
+{
+    $.post("/instructor/view/topics", {
+        lesson_subject: $("#innerquestion_subject").val()
+
+    }, function(data) {
+
+        if (data[0] === "fail")
+        {
+            alert("No topics in selected subject");
+        }
+        else
+        {
+            for (var i = 0; i < data.length; i++)
+            {
+                $("#innerquestion_topic").append($('<option></option>').val(data[i].id).html(data[i].topicname));
+            }
+        }
+        $("#innerquestion_lesson").empty();
+   populateinnerquestion_lesson();
+    }, 'json'); 
+}
+
+function populateinnerquestion_lesson()
+{
+    $.post("/instructor/view/lessons", {
+        topic_lesson: $("#innerquestion_topic").val()
+
+    }, function(data) {
+
+        if (data[0] === "fail")
+        {
+            alert("No lessons in selected topic");
+        }
+        else
+        {
+            
+            for (var i = 0; i < data.length; i++)
+            {
+                $("#innerquestion_lesson").append($('<option></option>').val(data[i].id).html(data[i].lessonname));
+                if(i===(data.length-1))
+                    $("#innerquestion_lesson").append($('<option></option>').val('0').html('None'));
+            }
         }
     }, 'json');
 }
@@ -106,9 +181,32 @@ function populatecontentlesson()
                 $("#content_lesson").append($('<option></option>').val(data[i].id).html(data[i].lessonname));
             }
         }
+        $("#content_innerlesson").empty();
+   populatecontentinnerlesson();
     }, 'json');
 }
 
+function populatecontentinnerlesson()
+{
+    $.post("/instructor/view/innerlessons", {
+        topic_lesson: $("#content_lesson").val()
+
+    }, function(data) {
+
+        if (data[0] === "fail")
+        {
+            alert("No Inner Lessons in selected lesson");
+        }
+        else
+        {
+            for (var i = 0; i < data.length; i++)
+            {
+                $("#content_innerlesson").append($('<option></option>').val(data[i].id).html(data[i].innerlessonname));
+            }
+        }
+    }, 'json');
+}
+    
 function updatecourse()
     {
         $.post("/instructor/update",{
@@ -120,7 +218,7 @@ function updatecourse()
         },function(data){
             if(data[0]==="success")
                 {
-                    window.location.href = '/instructor/create/topics';
+                    window.location.href = '/instructor/create/topics/'+id;
                 }
                 else
                     {
@@ -129,8 +227,6 @@ function updatecourse()
             //redirect to further page to enter courses
         }}
     ,'json');
-    
-    
     }
     
 function storesubject()
@@ -138,12 +234,11 @@ function storesubject()
         $.post("/instructor/store/subject",{
             courseid: $("#addsub_btn").val(),
             subjectname: $("#sname").val(),
-            subdescription: $("#subject_desc").val(),
-            type: $("#subtype").val()
+            subdescription: $("#subject_desc").val()
         },function(data){
             if(data[0]==="success")
                 {
-                    window.location.href = '/instructor/create/topics';
+                    window.location.href = '/instructor/create/topics/'+id;
                 }
                 else
                     {
@@ -161,12 +256,11 @@ function storetopic()
         $.post("/instructor/store/topic",{
             topicname: $("#tname").val(),
             topicdescription: $("#topic_desc").val(),
-            subjectid: $("#topic_subject").val(),
-            type: $("#topictype").val()
+            subjectid: $("#topic_subject").val()
         },function(data){
             if(data[0]==="success")
                 {
-                    window.location.href = '/instructor/create/topics';
+                    window.location.href = '/instructor/create/topics/'+id;
                 }
                 else
                     {
@@ -188,7 +282,7 @@ function storelesson()
         },function(data){
             if(data[0]==="success")
                 {
-                    window.location.href = '/instructor/create/topics';
+                    window.location.href = '/instructor/create/topics/'+id;
                 }
                 else
                     {
@@ -204,10 +298,44 @@ function storelesson()
 function storecontent(con)
     {
         $.post("/instructor/store/content",{
-            contentname: $("#ctname").val(),
             content_lessonid: $("#content_lesson").val(),
-            contenttype: $("#contenttype").val(),
+            content_inner_lessonid: $("#content_innerlesson").val(),
             content:con
+        },function(data){
+            if(data[0]==="success")
+                {
+                    window.location.href = '/instructor/create/topics/'+id;
+                }
+                else
+                    {
+                        alert("fails");
+                        window.location.href = '/instructor';
+            //redirect to further page to enter courses
+        }}
+    ,'json');
+    }   
+    
+/*function storequestion(ques,soln)
+    {
+        /*obj = {};
+            
+            $("#Options:input[name*='mytext[]']").each(function (index) {
+                obj['option' + index] = $(this).val();
+            });
+            console.log(obj);*/
+    /*var options = new Array();
+    options.push($("#option_1").val());
+    options.push($("#option_2").val());
+    options.push($("#option_3").val());
+    options.push($("#option_4").val());
+    options.push($("#option_5").val());
+        $.post("/instructor/store/question",{
+            options: JSON.stringify(options),
+            question: ques,
+            topicid: $("#question_topic").val(),
+            correctopt:  $("#answer").val(),
+            solution: soln,
+            level:  $("#ques_level").val()
         },function(data){
             if(data[0]==="success")
                 {
@@ -219,35 +347,77 @@ function storecontent(con)
                         window.location.href = '/instructor';
             //redirect to further page to enter courses
         }}
-    ,'json');
+    ,'json');  
+    } */
     
-    
-    }   
-    
-function storequestion(ques,soln)
+    function populateinnerlessontopic()
+{
+    $.post("/instructor/view/topics", {
+        lesson_subject: $("#innerlesson_subject").val()
+
+    }, function(data) {
+
+        if (data[0] === "fail")
+        {
+            alert("No topics in selected subject");
+        }
+        else
+        {
+
+            for (var i = 0; i < data.length; i++)
+            {
+                $("#innerlesson_topic").append($('<option></option>').val(data[i].id).html(data[i].topicname));
+            }
+            $("#innerlesson_lesson").empty();
+   populateinnerlesson_lesson();
+        }
+    }, 'json');
+}
+
+function populateinnerlesson_lesson()
+{
+    $.post("/instructor/view/lessons", {
+        topic_lesson: $("#innerlesson_topic").val()
+
+    }, function(data) {
+
+        if (data[0] === "fail")
+        {
+            alert("No topics in selected subject");
+        }
+        else
+        {
+
+            for (var i = 0; i < data.length; i++)
+            {
+                $("#innerlesson_lesson").append($('<option></option>').val(data[i].id).html(data[i].lessonname));
+            }
+        }
+    }, 'json');
+}
+
+function storeinnerquestion(ques,soln)
     {
-        obj = {};
-            
-            $("#Options:input[name*='mytext[]']").each(function (index) {
-                obj['option' + index] = $(this).val();
-            });
-            console.log(obj);
+
+    var options = new Array();
+    options.push($("#inneroption_1").val());
+    options.push($("#inneroption_2").val());
+    options.push($("#inneroption_3").val());
+    options.push($("#inneroption_4").val());
+    options.push($("#inneroption_5").val());
         $.post("/instructor/store/question",{
-            options: obj,
+            options: JSON.stringify(options),
             question: ques,
-            topicid: $("#ques_lesson_topic").val(),
-            /*option1: $("#option_1").val(),
-            option2: $("#option_2").val(),
-            option3: $("#option_3").val(),
-            option4: $("#option_4").val(),
-            option5: $("#option_5").val(),*/
-            correctopt:  $("#answer").val(),
+            subjectid: $("#innerquestion_subject").val(),
+            topicid: $("#innerquestion_topic").val(),
+            lessonid: $("#innerquestion_lesson").val(),
+            correctopt:  $("#inner_answer").val(),
             solution: soln,
-            level:  $("#ques_level").val()
+            level:  $("#innerques_level").val()
         },function(data){
             if(data[0]==="success")
                 {
-                    window.location.href = '/instructor/create/topics';
+                    window.location.href = '/instructor/create/topics/'+id;
                 }
                 else
                     {
