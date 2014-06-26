@@ -70,11 +70,10 @@ class CourseController extends Controller {
               $array['courseInfo'] = $this->fetchCourseDetails($id, $this->getEm());
               $array['courseSubjects'] = $this->fetchCourseSubjects($id, $this->getEm());
               $array['subscriptionFlag'] = $this->checkSubscription($id, $this->getEm());
-              $array['myCourses'] = $this->myCourses();
               
               if($array['courseInfo'])
               {
-                return $this->render('FrontEndBundle:Course:courseDetails.html.twig',array('course'=>$array['courseInfo'],'subjects'=>$array['courseSubjects'], 'subscriptionFlag'=>$array['subscriptionFlag'], 'myCourses'=>$array['myCourses']));
+                return $this->render('FrontEndBundle:Course:courseDetails.html.twig',array('course'=>$array['courseInfo'],'subjects'=>$array['courseSubjects'], 'subscriptionFlag'=>$array['subscriptionFlag'], 'myCourses'=>NULL));
               }
               else
               {
@@ -130,6 +129,8 @@ class CourseController extends Controller {
        $subscriptionFlag = $this->checkSubscription($id, $this->getEm());
        $courseInfo = $this->fetchCourseDetails($id, $this->getEm());
        $topics = $this->fetchCourseTopics($sId, $this->getEm());
+       if($this->loggedInUser)
+       {
        $myCourses = $this->myCourses();
 //        if($this->loggedInUser)
 //        {
@@ -140,7 +141,19 @@ class CourseController extends Controller {
             else
             {
                 return $this->render('FrontEndBundle:Common:notFound.html.twig');
-            }  
+            }   
+       }
+       else {
+                if($topics)
+                {
+                    return $this->render('FrontEndBundle:Course:courseContent.html.twig', array('course'=> $courseInfo,'topics'=>$topics, 'subscriptionFlag'=>$subscriptionFlag, 'myCourses' =>NULL));
+                }
+                else
+                {
+                    return $this->render('FrontEndBundle:Common:notFound.html.twig');
+                }
+           
+            }
 //        }
 //        else
 //        {

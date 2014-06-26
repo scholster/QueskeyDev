@@ -33,6 +33,8 @@ class LoginController extends Controller
             
             
         }
+        
+         return $this->render('FrontEndBundle:Common:notFound.html.twig');
     }
     
     public function logoutAction()
